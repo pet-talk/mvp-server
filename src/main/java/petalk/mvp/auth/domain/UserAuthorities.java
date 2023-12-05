@@ -1,13 +1,13 @@
 package petalk.mvp.auth.domain;
 
 /**
- * 유저 권한을 나타내는 클래스입니다.
+ * 보유중인 유저 권한을 나타내는 클래스입니다.
  */
 public class UserAuthorities {
 
-    private Authority authority;
+    private UserAuthority authority;
 
-    private UserAuthorities(Authority authority) {
+    private UserAuthorities(UserAuthority authority) {
         this.authority = authority;
     }
 
@@ -16,7 +16,7 @@ public class UserAuthorities {
      * @return 반려인 권한
      */
     public static UserAuthorities petOwner() {
-        return new UserAuthorities(Authority.PET_OWNER);
+        return new UserAuthorities(UserAuthority.PET_OWNER);
     }
 
     /**
@@ -24,16 +24,11 @@ public class UserAuthorities {
      * @return 수의사 권한
      */
     public static UserAuthorities vet() {
-        return new UserAuthorities(Authority.VET);
+        return new UserAuthorities(UserAuthority.VET);
     }
 
-    /**
-     * 계정 권한을 의미합니다.
-     */
-    public enum Authority {
-        // 반려인을 의미합니다.
-        PET_OWNER,
-        // 수의사를 의미합니다.
-        VET
+    public UserAuthority getAuthority() {
+        return authority;
     }
+
 }
