@@ -7,7 +7,7 @@ import java.util.UUID;
  * 세션을 나타내는 클래스입니다.
  *
  */
-public class UserSession {
+public class Session {
 
     /**
      * 세션 아이디입니다.
@@ -19,12 +19,16 @@ public class UserSession {
     private SessionId sessionId;
 
     //== 생성 메소드 ==//
-    private UserSession(SessionId sessionId) {
+    private Session(SessionId sessionId) {
         this.sessionId = sessionId;
     }
 
-    public static UserSession of(SessionId sessionId) {
-        return new UserSession(sessionId);
+    public static Session of(SessionId sessionId) {
+        return new Session(sessionId);
+    }
+
+    public static Session register() {
+        return new Session(SessionId.register());
     }
     //== 비즈니스 로직 ==//
     //== 수정 메소드 ==//
@@ -38,7 +42,7 @@ public class UserSession {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserSession that = (UserSession) o;
+        Session that = (Session) o;
         return Objects.equals(sessionId, that.sessionId);
     }
 
@@ -61,6 +65,11 @@ public class UserSession {
 
         public static SessionId from(UUID id) {
             return new SessionId(id);
+        }
+
+        public static SessionId register() {
+            UUID uuid = UUID.randomUUID();
+            return SessionId.from(uuid);
         }
 
         public UUID getValue() {
