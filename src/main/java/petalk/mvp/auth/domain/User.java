@@ -16,17 +16,39 @@ public class User {
         this.userAuthorities = userAuthorities;
     }
 
+    /**
+     * 기존 반려인 유저를 생성합니다.
+     * @param id 반려인 유저의 id
+     * @return 반려인 유저
+     */
     public static User existPetOwner(UUID id) {
         return new User(UserId.from(id), UserAuthorities.petOwner());
     }
 
+    /**
+     * 기존 수의사 유저를 생성합니다.
+     * @param id 수의사 유저의 id
+     * @return 수의사 유저
+     */
     public static User existVet(UUID id) {
         return new User(UserId.from(id), UserAuthorities.vet());
+    }
+
+    /**
+     * 새로운 반려인 유저를 생성합니다.
+     * @return 반려인 유저
+     */
+    public static User register() {
+        return new User(UserId.register(), UserAuthorities.petOwner());
     }
 
     //== 비즈니스 로직 ==//
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//
+
+    public UserAuthority getUserAuthority() {
+        return userAuthorities.getAuthority();
+    }
 
     public UserId getId() {
         return id;
@@ -41,6 +63,11 @@ public class User {
 
         private UserId(UUID id) {
             this.id = id;
+        }
+
+        public static UserId register() {
+            UUID uuid = UUID.randomUUID();
+            return new UserId(uuid);
         }
 
         public static UserId from(UUID id) {
