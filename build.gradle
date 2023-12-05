@@ -17,7 +17,14 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web' // tomcat, spring mvc등 웹 개발에 필요한 모든 의존성을 보유
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트 코드에 필요한 의존성 보유
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // spring data jpa 의존성 보유
+
+	annotationProcessor 'org.projectlombok:lombok' // 컴파일 시에 Lombok 관련 어노테이션 처리를 위해 의존성 추가
+	compileOnly 'org.projectlombok:lombok' // 컴파일 시에 Lombok 관련 코드 생성을 위해 의존성 추가
+
 
 	runtimeOnly 'com.h2database:h2' // h2 데이터베이스 의존성 보유
 
