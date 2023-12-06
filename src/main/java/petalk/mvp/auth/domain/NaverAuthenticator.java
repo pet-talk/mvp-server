@@ -6,6 +6,14 @@ package petalk.mvp.auth.domain;
 public class NaverAuthenticator implements SocialAuthenticator {
     private AccessToken token;
 
+    private NaverAuthenticator(AccessToken token) {
+        this.token = token;
+    }
+
+    public static NaverAuthenticator from(AccessToken token) {
+        return new NaverAuthenticator(token);
+    }
+
     @Override
     public AccessToken getAccessToken(String code) {
         return token;
