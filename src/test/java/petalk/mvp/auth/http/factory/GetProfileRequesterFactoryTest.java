@@ -39,7 +39,7 @@ class GetProfileRequesterFactoryTest {
         Authenticator naverAuthenticator = Authenticator.of(AuthorizationCode.from("code"), SocialType.NAVER);
 
         //when
-        GetSocialProfileRequester oauthTokenRequester = getProfileRequesterFactory.getOauthTokenRequester(naverAuthenticator);
+        GetSocialProfileRequester oauthTokenRequester = getProfileRequesterFactory.getProfileRequester(naverAuthenticator);
 
         //then
         assertThat(oauthTokenRequester).isInstanceOf(GetNaverProfileRequester.class);
