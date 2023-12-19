@@ -14,6 +14,7 @@ import petalk.mvp.auth.application.command.validator.AuthenticateValidator;
 import petalk.mvp.auth.domain.*;
 import petalk.mvp.core.annotation.UnitTest;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,7 +53,7 @@ class AuthenticateServiceTest {
 
         //given
         UUID uuid = UUID.randomUUID();
-        User user = User.existPetOwner(uuid);
+        User user = User.existPetOwner(uuid, LocalDateTime.now());
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
@@ -87,7 +88,7 @@ class AuthenticateServiceTest {
 
         //given
         UUID uuid = UUID.randomUUID();
-        User user = User.existPetOwner(uuid);
+        User user = User.existPetOwner(uuid, LocalDateTime.now());
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
