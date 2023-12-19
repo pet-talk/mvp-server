@@ -9,6 +9,8 @@ import petalk.mvp.auth.application.command.out.RegisterSessionPort;
 import petalk.mvp.auth.application.command.out.RegisterUserPort;
 import petalk.mvp.auth.domain.*;
 
+import java.time.LocalDateTime;
+
 /**
  * 인증을 담당하는 서비스입니다.
  */
@@ -30,17 +32,19 @@ public class AuthenticateService implements AuthenticateUsecase {
 
     @Override
     public AuthenticateResponse authenticate(AuthenticateCommand command) {
+        LocalDateTime now = LocalDateTime.now();
+
         Authenticator authenticator = Authenticator.of(command.getToken(), command.getSocialType());
 
         SocialAuthUser socialAuthUser = loadSocialUserPort.loadSocialUser(authenticator)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         User user = loadUserPort.loadUser(socialAuthUser)
-                .orElseGet(() -> {
-                    User newUser = User.register();
-                    registerUserPort.registerUser(newUser);
-                    return newUser;
-                });
+                .orElseGet(() -> User.register(now));
+
+        if (user.isNew()) {
+            registerUserPort.registerUser(user);
+        }
 
         Session session = Session.register();
         registerSessionPort.registerSession(session, user);
