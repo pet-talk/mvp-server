@@ -1,5 +1,6 @@
 package petalk.mvp.auth.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,11 +10,18 @@ import java.util.UUID;
 public class User {
     private UserId id;
     private UserAuthorities userAuthorities;
+    private LocalDateTime registrationDate;
+    private RegistrationType registrationType;
+
+    private enum RegistrationType {
+        EXIST, NEW
+    }
 
     //== 생성 메소드 ==//
-    private User(UserId id, UserAuthorities userAuthorities) {
+    private User(UserId id, UserAuthorities userAuthorities, LocalDateTime registrationDate, RegistrationType registrationType) {
         this.id = id;
         this.userAuthorities = userAuthorities;
+        this.registrationDate = registrationDate;
     }
 
     /**
@@ -21,8 +29,8 @@ public class User {
      * @param id 반려인 유저의 id
      * @return 반려인 유저
      */
-    public static User existPetOwner(UUID id) {
-        return new User(UserId.from(id), UserAuthorities.petOwner());
+    public static User existPetOwner(UUID id, LocalDateTime registrationDate) {
+        return new User(UserId.from(id), UserAuthorities.petOwner(), registrationDate, RegistrationType.EXIST);
     }
 
     /**
@@ -30,19 +38,22 @@ public class User {
      * @param id 수의사 유저의 id
      * @return 수의사 유저
      */
-    public static User existVet(UUID id) {
-        return new User(UserId.from(id), UserAuthorities.vet());
+    public static User existVet(UUID id, LocalDateTime registrationDate) {
+        return new User(UserId.from(id), UserAuthorities.vet(), registrationDate, RegistrationType.EXIST);
     }
 
     /**
      * 새로운 반려인 유저를 생성합니다.
      * @return 반려인 유저
      */
-    public static User register() {
-        return new User(UserId.register(), UserAuthorities.petOwner());
+    public static User register(LocalDateTime registrationDate) {
+        return new User(UserId.register(), UserAuthorities.petOwner(), registrationDate, RegistrationType.NEW);
     }
 
     //== 비즈니스 로직 ==//
+    public boolean isNew() {
+        return registrationType == RegistrationType.NEW;
+    }
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//
 
