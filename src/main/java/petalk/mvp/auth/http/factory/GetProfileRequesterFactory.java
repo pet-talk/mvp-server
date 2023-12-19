@@ -17,7 +17,7 @@ public class GetProfileRequesterFactory {
 
     private final GetNaverProfileRequester getNaverProfileRequester;
 
-    public GetSocialProfileRequester getOauthTokenRequester(Authenticator authenticator) {
+    public GetSocialProfileRequester getProfileRequester(Authenticator authenticator) {
         if (authenticator.isNaver()) {
             return getNaverProfileRequester;
         }
