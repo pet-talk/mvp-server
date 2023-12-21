@@ -12,12 +12,6 @@ spring:
     activate:
       on-profile: local # profile이 local일 때만 아래 설정을 적용
 
-  datasource:
-    driver-class-name: org.h2.Driver # h2 DB를 사용하도록 설정
-    url: jdbc:h2:mem:~/local # h2 DB의 url을 설정
-    username: sa # h2 DB의 username 설정
-    password:
-
   jpa:
     hibernate:
       ddl-auto: create # server 실행 시 DB 초기화 후 재성성하도록 설정
@@ -25,15 +19,12 @@ spring:
     properties:
       hibernate:
         format_sql: true # sql 쿼리를 보기 좋게 포맷팅
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect # postgresql 9.5 버전 이상을 지원하도록 설정
     defer-datasource-initialization: true # server 실행 시 hibernate가 초기화 되기 전에 datasource를 실행하지 않도록 설정
   sql:
     init:
       mode: never # server 실행 시 sql 파일을 실행하지 않도록 설정
 
-  h2:
-    console:
-      enabled: true # h2 console을 사용할 수 있도록 설정
-      path: /h2-console # h2 console 접근 경로를 설정
 
 ---
 spring:
@@ -41,12 +32,6 @@ spring:
     activate:
       on-profile: test
 
-  datasource:
-    driver-class-name: org.h2.Driver # h2 DB를 사용하도록 설정
-    url: jdbc:h2:mem:~/test # h2 DB의 url을 설정
-    username: sa # h2 DB의 username 설정
-    password:
-
   jpa:
     hibernate:
       ddl-auto: create # server 실행 시 DB 초기화 후 재성성하도록 설정
@@ -54,6 +39,7 @@ spring:
     properties:
       hibernate:
         format_sql: true # sql 쿼리를 보기 좋게 포맷팅
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect # postgresql 9.5 버전 이상을 지원하도록 설정
 
   sql:
     init:
