@@ -9,7 +9,8 @@ import java.util.UUID;
  */
 public class User {
     private UserId id;
-    private UserAuthorities userAuthorities;
+    private String nickname;
+    private UserAuthorities authorities;
     private LocalDateTime registrationDate;
     private RegistrationType registrationType;
 
@@ -18,9 +19,9 @@ public class User {
     }
 
     //== 생성 메소드 ==//
-    private User(UserId id, UserAuthorities userAuthorities, LocalDateTime registrationDate, RegistrationType registrationType) {
+    private User(UserId id, UserAuthorities authorities, LocalDateTime registrationDate, RegistrationType registrationType) {
         this.id = id;
-        this.userAuthorities = userAuthorities;
+        this.authorities = authorities;
         this.registrationDate = registrationDate;
     }
 
@@ -29,17 +30,8 @@ public class User {
      * @param id 반려인 유저의 id
      * @return 반려인 유저
      */
-    public static User existPetOwner(UUID id, LocalDateTime registrationDate) {
-        return new User(UserId.from(id), UserAuthorities.petOwner(), registrationDate, RegistrationType.EXIST);
-    }
-
-    /**
-     * 기존 수의사 유저를 생성합니다.
-     * @param id 수의사 유저의 id
-     * @return 수의사 유저
-     */
-    public static User existVet(UUID id, LocalDateTime registrationDate) {
-        return new User(UserId.from(id), UserAuthorities.vet(), registrationDate, RegistrationType.EXIST);
+    public static User exist(UUID id, UserAuthority authority, LocalDateTime registrationDate) {
+        return new User(UserId.from(id), UserAuthorities.from(authority), registrationDate, RegistrationType.EXIST);
     }
 
     /**
@@ -58,11 +50,19 @@ public class User {
     //== 조회 메소드 ==//
 
     public UserAuthority getUserAuthority() {
-        return userAuthorities.getAuthority();
+        return authorities.getAuthority();
     }
 
     public UserId getId() {
         return id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
     }
 
     /**

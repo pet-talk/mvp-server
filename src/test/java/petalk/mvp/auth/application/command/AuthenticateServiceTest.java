@@ -49,11 +49,11 @@ class AuthenticateServiceTest {
     void returnSession() {
         //given
         given(loadSocialUserPort.loadSocialUser(any()))
-                .willReturn(Optional.of(NaverSocialAuthUser.from(SocialAuthId.from("id"))));
+                .willReturn(Optional.of(createNaverSocialUser()));
 
         //given
         UUID uuid = UUID.randomUUID();
-        User user = User.existPetOwner(uuid, LocalDateTime.now());
+        User user = User.exist(uuid, UserAuthority.VET, LocalDateTime.now());
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
@@ -73,6 +73,10 @@ class AuthenticateServiceTest {
                 .isInstanceOf(String.class);
     }
 
+    private static NaverSocialAuthUser createNaverSocialUser() {
+        return NaverSocialAuthUser.from(SocialAuthId.from("id"), "email", "nickname", "name");
+    }
+
     /**
      * @given 인증된 소셜 사용자가 존재하고
      * @given 사용자가 존재한다면
@@ -84,11 +88,11 @@ class AuthenticateServiceTest {
     void returnUser() {
         //given
         given(loadSocialUserPort.loadSocialUser(any()))
-                .willReturn(Optional.of(NaverSocialAuthUser.from(SocialAuthId.from("id"))));
+                .willReturn(Optional.of(createNaverSocialUser()));
 
         //given
         UUID uuid = UUID.randomUUID();
-        User user = User.existPetOwner(uuid, LocalDateTime.now());
+        User user = User.exist(uuid, UserAuthority.VET, LocalDateTime.now());
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
@@ -117,7 +121,7 @@ class AuthenticateServiceTest {
     void registerUser() {
         //given
         given(loadSocialUserPort.loadSocialUser(any()))
-                .willReturn(Optional.of(NaverSocialAuthUser.from(SocialAuthId.from("id"))));
+                .willReturn(Optional.of(createNaverSocialUser()));
 
         //given
         given(loadUserPort.loadUser(any()))
