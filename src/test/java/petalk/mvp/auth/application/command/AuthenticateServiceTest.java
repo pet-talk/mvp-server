@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import petalk.mvp.auth.application.command.in.AuthenticateUsecase;
-import petalk.mvp.auth.application.command.out.LoadSocialUserPort;
-import petalk.mvp.auth.application.command.out.LoadUserPort;
-import petalk.mvp.auth.application.command.out.RegisterSessionPort;
-import petalk.mvp.auth.application.command.out.RegisterUserPort;
+import petalk.mvp.auth.application.command.out.*;
 import petalk.mvp.auth.application.command.validator.AuthenticateValidator;
-import petalk.mvp.auth.domain.*;
+import petalk.mvp.auth.domain.NaverSocialAuthUser;
+import petalk.mvp.auth.domain.SocialAuthId;
+import petalk.mvp.auth.domain.User;
+import petalk.mvp.auth.domain.UserAuthority;
 import petalk.mvp.core.annotation.UnitTest;
 
 import java.time.LocalDateTime;
@@ -35,8 +35,9 @@ class AuthenticateServiceTest {
     private final LoadUserPort loadUserPort = Mockito.mock(LoadUserPort.class);
     private final RegisterUserPort registerUserPort = Mockito.mock(RegisterUserPort.class);
     private final RegisterSessionPort registerSessionPort = Mockito.mock(RegisterSessionPort.class);
+    private final RegisterSocialInfoPort registerSocialInfoPort = Mockito.mock(RegisterSocialInfoPort.class);
 
-    private final AuthenticateService authenticateService = new AuthenticateService(loadSocialUserPort, loadUserPort, registerUserPort, registerSessionPort);
+    private final AuthenticateService authenticateService = new AuthenticateService(loadSocialUserPort, loadUserPort, registerUserPort, registerSessionPort, registerSocialInfoPort);
 
     /**
      * @given 인증된 소셜 사용자가 존재하고

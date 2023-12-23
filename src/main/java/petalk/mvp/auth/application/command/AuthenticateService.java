@@ -3,10 +3,7 @@ package petalk.mvp.auth.application.command;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import petalk.mvp.auth.application.command.in.AuthenticateUsecase;
-import petalk.mvp.auth.application.command.out.LoadSocialUserPort;
-import petalk.mvp.auth.application.command.out.LoadUserPort;
-import petalk.mvp.auth.application.command.out.RegisterSessionPort;
-import petalk.mvp.auth.application.command.out.RegisterUserPort;
+import petalk.mvp.auth.application.command.out.*;
 import petalk.mvp.auth.domain.*;
 
 import java.time.LocalDateTime;
@@ -22,12 +19,14 @@ public class AuthenticateService implements AuthenticateUsecase {
     private final LoadUserPort loadUserPort;
     private final RegisterUserPort registerUserPort;
     private final RegisterSessionPort registerSessionPort;
+    private final RegisterSocialInfoPort registerSocialInfoPort;
 
-    public AuthenticateService(LoadSocialUserPort loadSocialUserPort, LoadUserPort loadUserPort, RegisterUserPort registerUserPort, RegisterSessionPort registerSessionPort) {
+    public AuthenticateService(LoadSocialUserPort loadSocialUserPort, LoadUserPort loadUserPort, RegisterUserPort registerUserPort, RegisterSessionPort registerSessionPort, RegisterSocialInfoPort registerSocialInfoPort) {
         this.loadSocialUserPort = loadSocialUserPort;
         this.loadUserPort = loadUserPort;
         this.registerUserPort = registerUserPort;
         this.registerSessionPort = registerSessionPort;
+        this.registerSocialInfoPort = registerSocialInfoPort;
     }
 
     @Override
@@ -44,6 +43,7 @@ public class AuthenticateService implements AuthenticateUsecase {
 
         if (user.isNew()) {
             registerUserPort.registerUser(user);
+            registerSocialInfoPort.registerSocialInfo(user, socialAuthUser);
         }
 
         Session session = Session.register();
