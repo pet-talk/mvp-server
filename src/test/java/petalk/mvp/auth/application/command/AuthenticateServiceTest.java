@@ -54,7 +54,7 @@ class AuthenticateServiceTest {
 
         //given
         UUID uuid = UUID.randomUUID();
-        User user = User.exist(uuid, UserAuthority.VET, LocalDateTime.now());
+        User user = User.exist(User.UserId.from(uuid), "nickname", UserAuthority.VET, LocalDateTime.now());
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
@@ -66,12 +66,12 @@ class AuthenticateServiceTest {
         //then
         then(registerSessionPort)
                 .should(times(1))
-                .registerSession(any(), any());
+                .registerSession(any());
 
         assertThat(authenticate).isNotNull()
                 .extracting("session").isNotNull()
                 .extracting("sessionId").isNotNull()
-                .isInstanceOf(String.class);
+                .isInstanceOf(UUID.class);
     }
 
     private static NaverSocialAuthUser createNaverSocialUser() {
@@ -93,7 +93,7 @@ class AuthenticateServiceTest {
 
         //given
         UUID uuid = UUID.randomUUID();
-        User user = User.exist(uuid, UserAuthority.VET, LocalDateTime.now());
+        User user = User.exist(User.UserId.from(uuid), "nickname", UserAuthority.VET, LocalDateTime.now());
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
@@ -105,10 +105,10 @@ class AuthenticateServiceTest {
         //then
 
         assertThat(authenticate)
+                .extracting("session").isNotNull()
                 .extracting("user").isNotNull()
-                .extracting("userId").isNotNull()
-                .isInstanceOf(String.class)
-                .isEqualTo(uuid.toString());
+                .extracting("userId", "nickname", "userAuthority")
+                .containsExactly(user.getId().getValue(), user.getNickname(), user.getUserAuthority().name());
     }
 
     /**

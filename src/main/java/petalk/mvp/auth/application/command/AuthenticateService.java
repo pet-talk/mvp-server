@@ -1,5 +1,6 @@
 package petalk.mvp.auth.application.command;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import petalk.mvp.auth.application.command.in.AuthenticateUsecase;
@@ -21,6 +22,7 @@ public class AuthenticateService implements AuthenticateUsecase {
     private final RegisterSessionPort registerSessionPort;
     private final RegisterSocialInfoPort registerSocialInfoPort;
 
+    @Autowired
     public AuthenticateService(LoadSocialUserPort loadSocialUserPort, LoadUserPort loadUserPort, RegisterUserPort registerUserPort, RegisterSessionPort registerSessionPort, RegisterSocialInfoPort registerSocialInfoPort) {
         this.loadSocialUserPort = loadSocialUserPort;
         this.loadUserPort = loadUserPort;
@@ -39,17 +41,19 @@ public class AuthenticateService implements AuthenticateUsecase {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
         User user = loadUserPort.loadUser(socialAuthUser)
-                .orElseGet(() -> User.register(now));
+                .orElseGet(() -> User.register(socialAuthUser, now));
 
         if (user.isNew()) {
             registerUserPort.registerUser(user);
-            registerSocialInfoPort.registerSocialInfo(user, socialAuthUser);
+
+            UserSocialInfo userSocialInfo = UserSocialInfo.register(user, socialAuthUser);
+            registerSocialInfoPort.registerSocialInfo(userSocialInfo);
         }
 
-        Session session = Session.register();
-        registerSessionPort.registerSession(session, user);
+        Session session = Session.register(user, LocalDateTime.now());
+        registerSessionPort.registerSession(session);
 
-        return AuthenticateUsecase.AuthenticateResponse.from(session, user);
+        return AuthenticateUsecase.AuthenticateResponse.from(session);
     }
 
 }
