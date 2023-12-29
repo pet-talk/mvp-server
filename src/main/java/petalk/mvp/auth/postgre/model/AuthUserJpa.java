@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "auth_users")
-public class AuthUserJpa extends BaseTimeEntity implements Persistable<Long> {
+public class AuthUserJpa extends BaseTimeEntity implements Persistable<UUID> {
 
     @Id
     @Column(name = "user_id", nullable = false)
