@@ -19,11 +19,11 @@ public class NaverTokenCommandBuilder {
     private final String STATE;
 
     public NaverTokenCommandBuilder(
-            @Value("${spring.social.naver.client_id}") String clientId,
-            @Value("${spring.social.naver.redirect}") String redirectId,
-            @Value("${spring.social.naver.client_secret}") String clientSecret,
-            @Value("${spring.social.naver.grant_type}") String grantType,
-            @Value("${spring.social.naver.state}") String state) {
+            @Value("${value.social.naver.client_id}") String clientId,
+            @Value("${value.social.naver.redirect}") String redirectId,
+            @Value("${value.social.naver.client_secret}") String clientSecret,
+            @Value("${value.social.naver.grant_type}") String grantType,
+            @Value("${value.social.naver.state}") String state) {
         this.CLIENT_ID = clientId;
         this.REDIRECT_ID = redirectId;
         this.CLIENT_SECRET = clientSecret;

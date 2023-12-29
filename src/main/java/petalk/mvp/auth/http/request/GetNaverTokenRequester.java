@@ -29,10 +29,9 @@ public class GetNaverTokenRequester implements GetSocialTokenRequester {
     private final MediaType CONTENT_TYPE = MediaType.APPLICATION_FORM_URLENCODED;
     private final String TOKEN_URL;
 
-
     public GetNaverTokenRequester(
             NaverTokenCommandBuilder naverTokenCommandBuilder, RestTemplate restTemplate, Gson gson,
-            @Value("${spring.social.naver.url.token_url}") String tokenUrl) {
+            @Value("${value.social.naver.url.token}") String tokenUrl) {
         this.naverTokenCommandBuilder = naverTokenCommandBuilder;
         this.restTemplate = restTemplate;
         this.gson = gson;
