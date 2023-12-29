@@ -1,5 +1,6 @@
 package petalk.mvp.auth.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,18 +18,18 @@ public class Session {
      * @see #hashCode()
      */
     private SessionId sessionId;
+    private LocalDateTime registrationDate;
+    private SessionUserInfo sessionUserInfo;
 
     //== 생성 메소드 ==//
-    private Session(SessionId sessionId) {
+    private Session(SessionId sessionId, LocalDateTime registrationDate, SessionUserInfo sessionUserInfo) {
         this.sessionId = sessionId;
+        this.registrationDate = registrationDate;
+        this.sessionUserInfo = sessionUserInfo;
     }
 
-    public static Session of(SessionId sessionId) {
-        return new Session(sessionId);
-    }
-
-    public static Session register() {
-        return new Session(SessionId.register());
+    public static Session register(User user, LocalDateTime now) {
+        return new Session(SessionId.register(), now, SessionUserInfo.register(user));
     }
     //== 비즈니스 로직 ==//
     //== 수정 메소드 ==//
@@ -36,6 +37,21 @@ public class Session {
 
     public SessionId getSessionId() {
         return sessionId;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public User.UserId getUserId() {
+        return sessionUserInfo.getId();
+    }
+    public String getNickname() {
+        return sessionUserInfo.getNickname();
+    }
+
+    public UserAuthority getAuthority() {
+        return sessionUserInfo.getAuthority();
     }
 
     @Override
