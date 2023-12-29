@@ -19,10 +19,12 @@ public class User {
     }
 
     //== 생성 메소드 ==//
-    private User(UserId id, UserAuthorities authorities, LocalDateTime registrationDate, RegistrationType registrationType) {
+    private User(UserId id, String nickname, UserAuthorities authorities, LocalDateTime registrationDate, RegistrationType registrationType) {
         this.id = id;
+        this.nickname = nickname;
         this.authorities = authorities;
         this.registrationDate = registrationDate;
+        this.registrationType = registrationType;
     }
 
     /**
@@ -30,16 +32,16 @@ public class User {
      * @param id 반려인 유저의 id
      * @return 반려인 유저
      */
-    public static User exist(UUID id, UserAuthority authority, LocalDateTime registrationDate) {
-        return new User(UserId.from(id), UserAuthorities.from(authority), registrationDate, RegistrationType.EXIST);
+    public static User exist(User.UserId id, String nickname, UserAuthority authority, LocalDateTime registrationDate) {
+        return new User(id, nickname, UserAuthorities.from(authority), registrationDate, RegistrationType.EXIST);
     }
 
     /**
      * 새로운 반려인 유저를 생성합니다.
      * @return 반려인 유저
      */
-    public static User register(LocalDateTime registrationDate) {
-        return new User(UserId.register(), UserAuthorities.petOwner(), registrationDate, RegistrationType.NEW);
+    public static User register(SocialAuthUser user, LocalDateTime registrationDate) {
+        return new User(UserId.register(), user.getNickname(), UserAuthorities.petOwner(), registrationDate, RegistrationType.NEW);
     }
 
     //== 비즈니스 로직 ==//

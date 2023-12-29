@@ -11,6 +11,6 @@ import petalk.mvp.core.Mapper;
 public class UserMapper {
 
     public User from(AuthUserJpa userJpa) {
-        return User.exist(userJpa.getId(), userJpa.getAuthorityType(), userJpa.getRegistrationDate());
+        return User.exist(User.UserId.from(userJpa.getId()), userJpa.getNickname(), userJpa.getAuthorityType(), userJpa.getRegistrationDate());
     }
 }

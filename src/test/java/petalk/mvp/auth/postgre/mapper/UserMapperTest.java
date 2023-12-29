@@ -12,6 +12,9 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * 이 클래스는 UserMapper 객체를 테스트합니다.
+ */
 @UnitTest
 @DisplayName("UserMapper 단위 테스트")
 class UserMapperTest {
@@ -20,7 +23,7 @@ class UserMapperTest {
 
     /**
      * @given 저장된 사용자 데이터가 존재한다면
-     * @when 사용자 데이터를 사용자 도메인으로 변환한다면
+     * @when 사용자 데이터를 사용자 도메인으로 변환할 때
      * @then 사용자 도메인을 반환한다.
      */
     @Test
