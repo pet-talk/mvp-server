@@ -1,5 +1,6 @@
 package petalk.mvp.auth.application.response;
 
+import petalk.mvp.auth.domain.Session;
 import petalk.mvp.auth.domain.User;
 import petalk.mvp.auth.domain.UserAuthority;
 
@@ -12,21 +13,26 @@ import java.util.UUID;
 public class SessionUserResponse {
 
     private final User.UserId userId;
+    private final String nickname;
 
     private final UserAuthority userAuthority;
 
-    private SessionUserResponse(User.UserId userId, UserAuthority userAuthority) {
+    private SessionUserResponse(User.UserId userId, String nickname, UserAuthority userAuthority) {
         this.userId = userId;
+        this.nickname = nickname;
         this.userAuthority = userAuthority;
     }
 
-    public static SessionUserResponse from(User user) {
-        return new SessionUserResponse(user.getId(), user.getUserAuthority());
+    public static SessionUserResponse from(Session session) {
+        return new SessionUserResponse(session.getUserId(), session.getNickname(), session.getAuthority());
     }
 
-    public String getUserId() {
-        UUID value = userId.getValue();
-        return value.toString();
+    public UUID getUserId() {
+        return userId.getValue();
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public String getUserAuthority() {
