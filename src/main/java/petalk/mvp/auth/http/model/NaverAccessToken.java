@@ -20,6 +20,22 @@ public class NaverAccessToken implements AccessToken {
         this.tokenType = tokenType;
         this.refreshToken = refreshToken;
         this.expiresIn = expiresIn;
+        this.validate();
+    }
+
+    public void validate() {
+        if (accessToken == null || accessToken.isBlank()) {
+            throw new IllegalArgumentException("accessToken is null or empty");
+        }
+        if (tokenType == null || tokenType.isBlank()) {
+            throw new IllegalArgumentException("tokenType is null or empty");
+        }
+        if (refreshToken == null || refreshToken.isBlank()) {
+            throw new IllegalArgumentException("refreshToken is null or empty");
+        }
+        if (expiresIn <= 0) {
+            throw new IllegalArgumentException("expiresIn is less than or equal to zero");
+        }
     }
 
     @Override
