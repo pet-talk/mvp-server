@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import petalk.mvp.auth.application.command.in.AuthenticateUsecase;
-import petalk.mvp.auth.application.command.out.*;
+import petalk.mvp.auth.application.command.out.LoadSocialUserPort;
+import petalk.mvp.auth.application.command.out.LoadUserPort;
+import petalk.mvp.auth.application.command.out.RegisterSocialInfoPort;
+import petalk.mvp.auth.application.command.out.RegisterUserPort;
 import petalk.mvp.auth.application.command.validator.AuthenticateValidator;
 import petalk.mvp.auth.domain.NaverSocialAuthUser;
 import petalk.mvp.auth.domain.SocialAuthId;
@@ -15,13 +18,13 @@ import petalk.mvp.auth.domain.UserAuthority;
 import petalk.mvp.core.annotation.UnitTest;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 /**
@@ -34,45 +37,10 @@ class AuthenticateServiceTest {
     private final LoadSocialUserPort loadSocialUserPort = Mockito.mock(LoadSocialUserPort.class);
     private final LoadUserPort loadUserPort = Mockito.mock(LoadUserPort.class);
     private final RegisterUserPort registerUserPort = Mockito.mock(RegisterUserPort.class);
-    private final RegisterSessionPort registerSessionPort = Mockito.mock(RegisterSessionPort.class);
     private final RegisterSocialInfoPort registerSocialInfoPort = Mockito.mock(RegisterSocialInfoPort.class);
 
-    private final AuthenticateService authenticateService = new AuthenticateService(loadSocialUserPort, loadUserPort, registerUserPort, registerSessionPort, registerSocialInfoPort);
+    private final AuthenticateService authenticateService = new AuthenticateService(loadSocialUserPort, loadUserPort, registerUserPort, registerSocialInfoPort);
 
-    /**
-     * @given 인증된 소셜 사용자가 존재하고
-     * @given 사용자가 존재한다면
-     * @when 인증 요청을 할 때
-     * @then 세션정보를 반환한다.
-     */
-    @Test
-    @DisplayName("인증 요청을 하면 세션 정보를 반환한다.")
-    void returnSession() {
-        //given
-        given(loadSocialUserPort.loadSocialUser(any()))
-                .willReturn(Optional.of(createNaverSocialUser()));
-
-        //given
-        UUID uuid = UUID.randomUUID();
-        User user = User.exist(User.UserId.from(uuid), "nickname", UserAuthority.VET, LocalDateTime.now());
-        given(loadUserPort.loadUser(any()))
-                .willReturn(Optional.of(user));
-
-        //when
-        AuthenticateUsecase.AuthenticateCommand command = this.createCommand();
-
-        AuthenticateUsecase.AuthenticateResponse authenticate = authenticateService.authenticate(command);
-
-        //then
-        then(registerSessionPort)
-                .should(times(1))
-                .registerSession(any());
-
-        assertThat(authenticate).isNotNull()
-                .extracting("session").isNotNull()
-                .extracting("sessionId").isNotNull()
-                .isInstanceOf(UUID.class);
-    }
 
     private static NaverSocialAuthUser createNaverSocialUser() {
         return NaverSocialAuthUser.from(SocialAuthId.from("id"), "email", "nickname", "name");
@@ -105,7 +73,6 @@ class AuthenticateServiceTest {
         //then
 
         assertThat(authenticate)
-                .extracting("session").isNotNull()
                 .extracting("user").isNotNull()
                 .extracting("userId", "nickname", "userAuthority")
                 .containsExactly(user.getId().getValue(), user.getNickname(), user.getUserAuthority().name());
@@ -157,7 +124,7 @@ class AuthenticateServiceTest {
         AuthenticateUsecase.AuthenticateCommand command = this.createCommand();
 
         Assertions.assertThatThrownBy(() -> authenticateService.authenticate(command))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("존재하지 않는 사용자입니다.");
     }
 
