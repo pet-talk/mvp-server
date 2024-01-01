@@ -1,23 +1,21 @@
 package petalk.mvp.auth.domain;
 
 /**
- * 세션을 나타내는 클래스입니다.
+ * 세션의 유저 정보를 담는 클래스입니다.
  *
  */
 public class SessionUserInfo {
     private User.UserId id;
-    private String nickname;
     private UserAuthority authorities;
 
     //== 생성 메소드 ==//
-    public SessionUserInfo(User.UserId id, String nickname, UserAuthority authorities) {
+    private SessionUserInfo(User.UserId id, UserAuthority authorities) {
         this.id = id;
-        this.nickname = nickname;
         this.authorities = authorities;
     }
 
-    public static SessionUserInfo register(User user) {
-        return new SessionUserInfo(user.getId(), user.getNickname(), user.getUserAuthority());
+    public static SessionUserInfo register(User.UserId userId, UserAuthority userAuthority) {
+        return new SessionUserInfo(userId, userAuthority);
     }
 
     //== 비즈니스 로직 ==//
@@ -26,9 +24,6 @@ public class SessionUserInfo {
 
     public User.UserId getId() {
         return id;
-    }
-    public String getNickname() {
-        return nickname;
     }
 
     public UserAuthority getAuthority() {
