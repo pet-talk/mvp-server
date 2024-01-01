@@ -37,11 +37,11 @@ public class AuthenticateValidator {
     private List<ValidationError> validateCommand(AuthenticateUsecase.AuthenticateCommand command) {
         List<ValidationError> errors = new ArrayList<>();
 
-        if (command.getToken() == null) {
+        if (command.getCode() == null) {
             errors.add(ValidationError.of("token", "토큰이 존재하지 않습니다."));
         }
 
-        if (command.getToken() != null) {
+        if (command.getCode() != null) {
             List<ValidationError> validationErrors = validateToken(command);
             errors.addAll(validationErrors);
         }
@@ -53,7 +53,7 @@ public class AuthenticateValidator {
 
     private List<ValidationError> validateToken(AuthenticateUsecase.AuthenticateCommand command) {
         List<ValidationError> errors = new ArrayList<>();
-        AuthorizationCode token = command.getToken();
+        AuthorizationCode token = command.getCode();
 
         if (token.getValue() == null) {
             errors.add(ValidationError.of("token.value", "토큰 값이 존재하지 않습니다."));
