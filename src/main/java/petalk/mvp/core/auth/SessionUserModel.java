@@ -7,14 +7,14 @@ import java.util.UUID;
  */
 public class SessionUserModel {
     private UUID userId;
-    private SessionAuthority userAuthority;
+    private AuthRoleAuthority userAuthority;
 
-    private SessionUserModel(UUID userId, SessionAuthority userAuthority) {
+    private SessionUserModel(UUID userId, AuthRoleAuthority userAuthority) {
         this.userId = userId;
         this.userAuthority = userAuthority;
     }
 
-    public static SessionUserModel of(UUID userId, SessionAuthority userAuthority) {
+    public static SessionUserModel of(UUID userId, AuthRoleAuthority userAuthority) {
         return new SessionUserModel(userId, userAuthority);
     }
 
@@ -22,7 +22,7 @@ public class SessionUserModel {
         return userId;
     }
 
-    public SessionAuthority getUserAuthority() {
+    public AuthRoleAuthority getUserAuthority() {
         return userAuthority;
     }
 }
