@@ -87,6 +87,10 @@ public class User {
             return new UserId(id);
         }
 
+        public static UserId from(String id) {
+            return new UserId(UUID.fromString(id));
+        }
+
         public UUID getValue() {
             return id;
         }
