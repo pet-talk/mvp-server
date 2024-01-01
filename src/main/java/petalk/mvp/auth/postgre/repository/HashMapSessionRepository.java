@@ -1,18 +1,18 @@
 package petalk.mvp.auth.postgre.repository;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import petalk.mvp.core.auth.SessionDBImplementations;
-import petalk.mvp.core.auth.SessionModel;
+import petalk.mvp.core.auth.HttpSessionImplementations;
+import petalk.mvp.core.auth.SessionUserModel;
 
 @Component
 @RequiredArgsConstructor
 public class HashMapSessionRepository implements SessionRepository {
 
-    private final SessionDBImplementations implementations;
+    private final HttpSessionImplementations httpSessionImplementations;
     @Override
-    public void save(SessionModel sessionModel) {
-        implementations.save(sessionModel);
+    public void save(SessionUserModel model, HttpServletRequest httpServletRequest) {
+        httpSessionImplementations.save(model, httpServletRequest);
     }
-
 }
