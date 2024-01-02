@@ -1,5 +1,6 @@
 package petalk.mvp.auth.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -8,12 +9,22 @@ import java.util.UUID;
  */
 public class User {
     private UserId id;
-    private UserAuthorities userAuthorities;
+    private String nickname;
+    private UserAuthorities authorities;
+    private LocalDateTime registrationDate;
+    private RegistrationType registrationType;
+
+    private enum RegistrationType {
+        EXIST, NEW
+    }
 
     //== 생성 메소드 ==//
-    private User(UserId id, UserAuthorities userAuthorities) {
+    private User(UserId id, String nickname, UserAuthorities authorities, LocalDateTime registrationDate, RegistrationType registrationType) {
         this.id = id;
-        this.userAuthorities = userAuthorities;
+        this.nickname = nickname;
+        this.authorities = authorities;
+        this.registrationDate = registrationDate;
+        this.registrationType = registrationType;
     }
 
     /**
@@ -21,37 +32,39 @@ public class User {
      * @param id 반려인 유저의 id
      * @return 반려인 유저
      */
-    public static User existPetOwner(UUID id) {
-        return new User(UserId.from(id), UserAuthorities.petOwner());
-    }
-
-    /**
-     * 기존 수의사 유저를 생성합니다.
-     * @param id 수의사 유저의 id
-     * @return 수의사 유저
-     */
-    public static User existVet(UUID id) {
-        return new User(UserId.from(id), UserAuthorities.vet());
+    public static User exist(User.UserId id, String nickname, UserAuthority authority, LocalDateTime registrationDate) {
+        return new User(id, nickname, UserAuthorities.from(authority), registrationDate, RegistrationType.EXIST);
     }
 
     /**
      * 새로운 반려인 유저를 생성합니다.
      * @return 반려인 유저
      */
-    public static User register() {
-        return new User(UserId.register(), UserAuthorities.petOwner());
+    public static User register(SocialAuthUser user, LocalDateTime registrationDate) {
+        return new User(UserId.register(), user.getNickname(), UserAuthorities.petOwner(), registrationDate, RegistrationType.NEW);
     }
 
     //== 비즈니스 로직 ==//
+    public boolean isNew() {
+        return registrationType == RegistrationType.NEW;
+    }
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//
 
     public UserAuthority getUserAuthority() {
-        return userAuthorities.getAuthority();
+        return authorities.getAuthority();
     }
 
     public UserId getId() {
         return id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
     }
 
     /**
@@ -72,6 +85,10 @@ public class User {
 
         public static UserId from(UUID id) {
             return new UserId(id);
+        }
+
+        public static UserId from(String id) {
+            return new UserId(UUID.fromString(id));
         }
 
         public UUID getValue() {

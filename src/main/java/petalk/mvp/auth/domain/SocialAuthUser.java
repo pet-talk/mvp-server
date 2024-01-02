@@ -6,5 +6,13 @@ package petalk.mvp.auth.domain;
  */
 public interface SocialAuthUser {
 
-    SocialAuthId getSocialAuthId();
+    SocialAuthId getSocialId();
+
+    String getEmail();
+
+    String getName();
+
+    String getNickname();
+
+    SocialType getSocialType();
 }

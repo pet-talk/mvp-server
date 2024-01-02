@@ -28,7 +28,7 @@ bin/
 !**/src/test/**/out/
 
 ### yml ###
-application-oauth.yml
+application.yml
 
 ### NetBeans ###
 /nbproject/private/

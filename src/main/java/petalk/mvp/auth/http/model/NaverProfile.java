@@ -18,14 +18,13 @@ public class NaverProfile implements SocialProfile {
     @Override
     public SocialAuthUser toSocialAuthUser() {
         SocialAuthId id = SocialAuthId.from(response.id);
-        return NaverSocialAuthUser.from(id);
+        return NaverSocialAuthUser.from(id, response.email, response.nickname, response.name);
     }
 
-    @Builder
     public NaverProfile(String resultCode, String message, String id, String email, String nickname, String name, String gender, String age, String birthday, String profileImage, String birthyear, String mobile) {
         this.resultCode = resultCode;
         this.message = message;
-        this.response = Profile.builder()
+        Profile profile = Profile.builder()
                 .id(id)
                 .email(email)
                 .nickname(nickname)
@@ -37,6 +36,8 @@ public class NaverProfile implements SocialProfile {
                 .birthYear(birthyear)
                 .mobile(mobile)
                 .build();
+        profile.validate();
+        this.response = profile;
     }
 
     private static class Profile {
@@ -65,6 +66,16 @@ public class NaverProfile implements SocialProfile {
             this.profileImage = profileImage;
             this.birthYear = birthYear;
             this.mobile = mobile;
+        }
+
+        public void validate() {
+            if (id == null || email == null || nickname == null || name == null) {
+                throw new IllegalArgumentException("Naver 프로필이 올바르지 않습니다.");
+            }
+
+            if (id.isBlank() || email.isBlank() || nickname.isBlank() || name.isBlank()) {
+                throw new IllegalArgumentException("Naver 프로필이 올바르지 않습니다.");
+            }
         }
     }
 }

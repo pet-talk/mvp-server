@@ -6,7 +6,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import petalk.mvp.auth.http.model.*;
+import petalk.mvp.auth.http.model.AccessToken;
+import petalk.mvp.auth.http.model.NaverProfileResponse;
+import petalk.mvp.auth.http.model.SocialProfile;
 
 import java.util.Optional;
 
@@ -23,7 +25,7 @@ public class GetNaverProfileRequester implements GetSocialProfileRequester {
     private final String PROFILE_URL;
     private final String AUTHORIZATION_HEADER = "Authorization";
 
-    public GetNaverProfileRequester(RestTemplate restTemplate, Gson gson, @Value("${spring.social.naver.url.profile}") String profileUrl) {
+    public GetNaverProfileRequester(RestTemplate restTemplate, Gson gson, @Value("${value.social.naver.url.profile}") String profileUrl) {
         this.restTemplate = restTemplate;
         this.gson = gson;
         this.PROFILE_URL = profileUrl;

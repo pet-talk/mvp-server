@@ -41,4 +41,8 @@ public class ValidationErrors {
     public boolean hasError() {
         return errors.isEmpty();
     }
+
+    public List<ValidationError> getErrors() {
+        return errors;
+    }
 }

@@ -8,22 +8,49 @@ import java.util.Objects;
  */
 public class NaverSocialAuthUser implements SocialAuthUser{
     private SocialAuthId socialAuthId;
+    private String email;
+    private String nickname;
+    private String name;
 
     //== 생성 메소드 ==//
-    private NaverSocialAuthUser(SocialAuthId socialAuthId) {
+
+    private NaverSocialAuthUser(SocialAuthId socialAuthId, String email, String nickname, String name) {
         this.socialAuthId = socialAuthId;
+        this.email = email;
+        this.nickname = nickname;
+        this.name = name;
     }
 
-    public static NaverSocialAuthUser from(SocialAuthId socialAuthId) {
-        return new NaverSocialAuthUser(socialAuthId);
+    public static NaverSocialAuthUser from(SocialAuthId socialAuthId, String email, String nickname, String name) {
+        return new NaverSocialAuthUser(socialAuthId, email, nickname, name);
     }
     //== 비즈니스 로직 ==//
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//
 
     @Override
-    public SocialAuthId getSocialAuthId() {
+    public SocialAuthId getSocialId() {
         return socialAuthId;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getNickname() {
+        return nickname;
+    }
+
+    @Override
+    public SocialType getSocialType() {
+        return SocialType.NAVER;
     }
 
     @Override

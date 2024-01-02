@@ -11,20 +11,16 @@ public class UserAuthorities {
         this.authority = authority;
     }
 
+    public static UserAuthorities from(UserAuthority authority) {
+        return new UserAuthorities(authority);
+    }
+
     /**
      * 반려인 권한을 생성합니다.
      * @return 반려인 권한
      */
     public static UserAuthorities petOwner() {
         return new UserAuthorities(UserAuthority.PET_OWNER);
-    }
-
-    /**
-     * 수의사 권한을 생성합니다.
-     * @return 수의사 권한
-     */
-    public static UserAuthorities vet() {
-        return new UserAuthorities(UserAuthority.VET);
     }
 
     public UserAuthority getAuthority() {
