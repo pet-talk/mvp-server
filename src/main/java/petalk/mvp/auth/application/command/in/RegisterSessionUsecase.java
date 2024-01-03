@@ -21,8 +21,8 @@ public interface RegisterSessionUsecase {
             this.servletRequest = servletRequest;
         }
 
-        public static RegisterSessionCommand from(String userId, String userAuthority, HttpServletRequest servletRequest) {
-            return new RegisterSessionCommand(User.UserId.from(UUID.fromString(userId)), UserAuthority.from(userAuthority), servletRequest);
+        public static RegisterSessionCommand from(UUID userId, String userAuthority, HttpServletRequest servletRequest) {
+            return new RegisterSessionCommand(User.UserId.from(userId), UserAuthority.from(userAuthority), servletRequest);
         }
 
         public User.UserId getUserId() {

@@ -6,6 +6,8 @@ import petalk.mvp.auth.domain.AuthorizationCode;
 import petalk.mvp.auth.domain.SocialType;
 import petalk.mvp.auth.domain.User;
 
+import java.util.UUID;
+
 /**
  * 인증을 담당하는 유스케이스입니다.
  */
@@ -61,6 +63,20 @@ public interface AuthenticateUsecase {
 
         public AuthUserResponse getUser() {
             return user;
+        }
+
+
+
+        public UUID getUserId() {
+            return user.getUserId();
+        }
+
+        public String getNickname() {
+            return user.getNickname();
+        }
+
+        public String getUserAuthority() {
+            return user.getUserAuthority();
         }
 
     }
