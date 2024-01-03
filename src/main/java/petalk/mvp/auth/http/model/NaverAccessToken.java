@@ -1,25 +1,22 @@
 package petalk.mvp.auth.http.model;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * third party 서비스의 액세스 토큰을 나타냅니다.
  */
 public class NaverAccessToken implements AccessToken {
-    @SerializedName("access_token")
     private String accessToken;
-    @SerializedName("token_type")
     private String tokenType;
-    @SerializedName("refresh_token")
     private String refreshToken;
-    @SerializedName("expires_in")
-    private long expiresIn;
+    private int expiresIn;
 
-    public NaverAccessToken(String accessToken, String tokenType, String refreshToken, long expiresIn) {
+    public NaverAccessToken(String accessToken, String tokenType, String refreshToken, String expiresIn) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.refreshToken = refreshToken;
-        this.expiresIn = expiresIn;
+        if (expiresIn != null)
+            this.expiresIn = Integer.parseInt(expiresIn);
+        if (expiresIn == null)
+            this.expiresIn = 0;
         this.validate();
     }
 
