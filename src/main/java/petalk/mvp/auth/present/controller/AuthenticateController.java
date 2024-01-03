@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +25,19 @@ public class AuthenticateController {
     private final AuthenticateUsecase authenticateUsecase;
     private final AuthenticateValidator authenticateValidator;
     private final RegisterSessionUsecase registerSessionUsecase;
+    private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticateController.class);
 
     @PostMapping("/auth/authenticate/{provider}")
     public ResponseEntity<Response> authenticate(@RequestBody Request request, @PathVariable String provider, HttpServletRequest httpServletRequest) {
+        logger.info("authenticate request: {}", request);
+
         AuthenticateCommand command = AuthenticateCommand.from(request.getCode(), provider, authenticateValidator);
         AuthenticateResponse response = authenticateUsecase.authenticate(command);
+        logger.info("authenticate response: {}", response);
+
         AuthUserResponse user = response.getUser();
 
-        registerSessionUsecase.registerSession(RegisterSessionCommand.from(user.getUserId().toString(), user.getUserAuthority(), httpServletRequest));
+        registerSessionUsecase.registerSession(RegisterSessionCommand.from(user.getUserId(), user.getUserAuthority(), httpServletRequest));
 
         Response apiResponse = new Response(response.getUser());
 
@@ -49,6 +55,13 @@ public class AuthenticateController {
         public String getCode() {
             return code;
         }
+
+        @Override
+        public String toString() {
+            return "Request{" +
+                    "code='" + code + '\'' +
+                    '}';
+        }
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -57,6 +70,17 @@ public class AuthenticateController {
 
         public Response(AuthUserResponse user) {
             this.user = user;
+        }
+
+        public AuthUserResponse getUser() {
+            return user;
+        }
+
+        @Override
+        public String toString() {
+            return "Response{" +
+                    "user=" + user +
+                    '}';
         }
     }
 }
