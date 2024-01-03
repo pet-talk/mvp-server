@@ -32,10 +32,10 @@ class NaverAccessTokenResponseTest {
         ResponseEntity<String> response = getSuccessResponse();
 
         //given
-        NaverTokenResponse tokenResponse = NaverTokenResponse.from(response);
+        NaverTokenResponse tokenResponse = NaverTokenResponse.from(response, gson);
 
         //when
-        Optional<AccessToken> accessToken = tokenResponse.mapToken(gson);
+        Optional<AccessToken> accessToken = tokenResponse.mapToken();
 
         //then
         assertThat(accessToken).isPresent()
@@ -73,10 +73,10 @@ class NaverAccessTokenResponseTest {
         ResponseEntity<String> response = getFailedResponse();
 
         //given
-        NaverTokenResponse tokenResponse = NaverTokenResponse.from(response);
+        NaverTokenResponse tokenResponse = NaverTokenResponse.from(response, gson);
 
         //when
-        Optional<AccessToken> accessToken = tokenResponse.mapToken(gson);
+        Optional<AccessToken> accessToken = tokenResponse.mapToken();
 
         //then
         assertThat(accessToken).isEmpty();
