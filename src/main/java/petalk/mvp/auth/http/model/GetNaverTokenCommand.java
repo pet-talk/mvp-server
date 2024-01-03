@@ -35,4 +35,28 @@ public class GetNaverTokenCommand {
         this.code = code;
         this.state = state;
     }
+
+    public String getGrantType() {
+        return grantType;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public String getRedirectUri() {
+        return redirectUri;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getState() {
+        return state;
+    }
 }
