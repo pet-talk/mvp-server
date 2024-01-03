@@ -1,6 +1,7 @@
 package petalk.mvp.auth.http.request;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @Component
 public class GetNaverProfileRequester implements GetSocialProfileRequester {
 
-    private final MediaType CONTENT_TYPE = MediaType.APPLICATION_FORM_URLENCODED;
+    private final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON;
 
     private final RestTemplate restTemplate;
     private final Gson gson;
@@ -45,6 +46,8 @@ public class GetNaverProfileRequester implements GetSocialProfileRequester {
 
         logger.debug("naver profile response: {}", responseEntity);
 
-        return response.mapProfile(gson);
+        NaverProfileResponse response = NaverProfileResponse.from(responseEntity, gson);
+
+        return response.mapProfile();
     }
 }
