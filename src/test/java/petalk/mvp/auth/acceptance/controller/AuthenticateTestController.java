@@ -1,4 +1,4 @@
-package petalk.mvp.auth.present.controller;
+package petalk.mvp.auth.acceptance.controller;
 
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Profile;
@@ -12,7 +12,7 @@ public class AuthenticateTestController {
     private final String AUTHORIZATION_HEADER = "Authorization";
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticateTestController.class);
 
-    @PostMapping("/auth/authenticate/naver/profile")
+    @GetMapping("/auth/authenticate/naver/profile")
     public ResponseEntity<String> test(@RequestHeader(AUTHORIZATION_HEADER) String authorization) {
 
         logger.debug("naver profile request: {}", authorization);
