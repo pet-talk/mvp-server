@@ -1,6 +1,7 @@
 package petalk.mvp.auth.http.request;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -18,12 +19,13 @@ import java.util.Optional;
 @Component
 public class GetNaverProfileRequester implements GetSocialProfileRequester {
 
-    private final MediaType CONTENT_TYPE = MediaType.APPLICATION_FORM_URLENCODED;
+    private final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON;
 
     private final RestTemplate restTemplate;
     private final Gson gson;
     private final String PROFILE_URL;
     private final String AUTHORIZATION_HEADER = "Authorization";
+    private final Logger logger = org.slf4j.LoggerFactory.getLogger(GetNaverProfileRequester.class);
 
     public GetNaverProfileRequester(RestTemplate restTemplate, Gson gson, @Value("${value.social.naver.url.profile}") String profileUrl) {
         this.restTemplate = restTemplate;
@@ -38,10 +40,14 @@ public class GetNaverProfileRequester implements GetSocialProfileRequester {
         httpHeaders.set(AUTHORIZATION_HEADER, accessToken.getTokenHeaderValue());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, httpHeaders);
+        logger.debug("naver profile request: {}", httpHeaders);
+
         ResponseEntity<String> responseEntity = restTemplate.exchange(PROFILE_URL, HttpMethod.GET, request, String.class);
 
-        NaverProfileResponse response = NaverProfileResponse.from(responseEntity);
+        logger.debug("naver profile response: {}", responseEntity);
 
-        return response.mapProfile(gson);
+        NaverProfileResponse response = NaverProfileResponse.from(responseEntity, gson);
+
+        return response.mapProfile();
     }
 }

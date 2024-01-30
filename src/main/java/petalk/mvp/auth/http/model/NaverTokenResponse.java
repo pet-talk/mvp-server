@@ -1,6 +1,9 @@
 package petalk.mvp.auth.http.model;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
@@ -11,33 +14,50 @@ import java.util.Optional;
  * 응답에 대한 상태를 확인할 수 있습니다.
  */
 public class NaverTokenResponse {
+    private HttpStatusCode statusCode;
+    @SerializedName("message")
+    private String message;
+    @SerializedName("response")
+    private TokenInfo token;
 
-    private final ResponseEntity<String> response;
-
-    private NaverTokenResponse(ResponseEntity<String> response) {
-        this.response = response;
+    public static NaverTokenResponse from(ResponseEntity<String> response, Gson gson) {
+        NaverTokenResponse profileResponse = gson.fromJson(response.getBody(), NaverTokenResponse.class);
+        profileResponse.addResponse(response);
+        return profileResponse;
     }
 
-    public static NaverTokenResponse from(ResponseEntity<String> response) {
-        return new NaverTokenResponse(response);
+    private void addResponse(ResponseEntity<String> response) {
+        this.statusCode = response.getStatusCode();
     }
 
     public boolean isOk() {
-        return response.getStatusCode().is2xxSuccessful();
+        return statusCode.is2xxSuccessful();
     }
 
     public boolean isFailed() {
-        return !response.getStatusCode().is2xxSuccessful();
+        return !isOk();
     }
 
-    public Optional<AccessToken> mapToken(Gson gson) {
+    public Optional<AccessToken> mapToken() {
         if(isOk()) {
-            return Optional.of(toAccessToken(gson));
+            return Optional.of(toAccessToken());
         }
         return Optional.empty();
     }
 
-    private NaverAccessToken toAccessToken(Gson gson) {
-        return gson.fromJson(response.getBody(), NaverAccessToken.class);
+    private NaverAccessToken toAccessToken() {
+        return new NaverAccessToken(token.accessToken, token.tokenType, token.refreshToken, token.expiresIn);
+    }
+
+    @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+    static class TokenInfo {
+        @SerializedName("access_token")
+        private String accessToken;
+        @SerializedName("token_type")
+        private String tokenType;
+        @SerializedName("refresh_token")
+        private String refreshToken;
+        @SerializedName("expires_in")
+        private String expiresIn;
     }
 }

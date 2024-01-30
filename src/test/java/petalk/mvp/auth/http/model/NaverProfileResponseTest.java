@@ -32,10 +32,10 @@ class NaverProfileResponseTest {
         ResponseEntity<String> response = getSuccessResponse();
 
         //given
-        NaverProfileResponse profileResponse = NaverProfileResponse.from(response);
+        NaverProfileResponse profileResponse = NaverProfileResponse.from(response, gson);
 
         //when
-        Optional<SocialProfile> profile = profileResponse.mapProfile(gson);
+        Optional<SocialProfile> profile = profileResponse.mapProfile();
 
         //then
         assertThat(profile).isPresent()
@@ -86,10 +86,10 @@ class NaverProfileResponseTest {
         ResponseEntity<String> response = getFailedResponse();
 
         //given
-        NaverProfileResponse profileResponse = NaverProfileResponse.from(response);
+        NaverProfileResponse profileResponse = NaverProfileResponse.from(response, gson);
 
         //when
-        Optional<SocialProfile> profile = profileResponse.mapProfile(gson);
+        Optional<SocialProfile> profile = profileResponse.mapProfile();
 
         //then
         assertThat(profile).isEmpty();

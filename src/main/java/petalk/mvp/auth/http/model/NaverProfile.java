@@ -10,7 +10,6 @@ import petalk.mvp.auth.domain.SocialAuthUser;
  * Naver 프로필을 나타냅니다.
  */
 public class NaverProfile implements SocialProfile {
-    @SerializedName("resultcode")
     private String resultCode;
     private String message;
     private Profile response;
