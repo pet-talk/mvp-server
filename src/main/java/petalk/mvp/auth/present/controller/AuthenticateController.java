@@ -1,6 +1,10 @@
 package petalk.mvp.auth.present.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,7 @@ import petalk.mvp.auth.application.command.in.RegisterSessionUsecase.RegisterSes
 import petalk.mvp.auth.application.command.validator.AuthenticateValidator;
 import petalk.mvp.auth.application.response.AuthUserResponse;
 
+@Tag(name = "authenticate", description = "인증 API")
 @RestController
 @RequiredArgsConstructor
 public class AuthenticateController {
@@ -27,8 +32,15 @@ public class AuthenticateController {
     private final RegisterSessionUsecase registerSessionUsecase;
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticateController.class);
 
+    @Operation(summary = "authenticate by social", description = "소셜 인증을 진행합니다.")
     @PostMapping("/auth/authenticate/{provider}")
-    public ResponseEntity<Response> authenticate(@RequestBody Request request, @PathVariable String provider, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Response> authenticate(
+            @RequestBody Request request,
+            @PathVariable
+            @Schema(description = "social type", example = "naver")
+            @NotBlank(message = "소셜 타입은 필수입니다.")
+            String provider,
+            HttpServletRequest httpServletRequest) {
         logger.info("authenticate request: {}", request);
 
         AuthenticateCommand command = AuthenticateCommand.from(request.getCode(), provider, authenticateValidator);
@@ -46,6 +58,8 @@ public class AuthenticateController {
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Request {
+        @NotBlank(message = "코드는 필수입니다.")
+        @Schema(description = "authenticate code", example = "code")
         private String code;
 
         public Request(String code) {
