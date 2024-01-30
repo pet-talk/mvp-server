@@ -31,6 +31,8 @@ dependencies {
 
 	implementation 'com.google.code.gson:gson:2.10.1' // gson 의존성 보유
 
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0' // openapi 의존성 보유
+
 	// logback 의존성 보유
 	implementation 'ch.qos.logback:logback-core:1.4.14'
 	implementation 'ch.qos.logback:logback-classic:1.4.14'
