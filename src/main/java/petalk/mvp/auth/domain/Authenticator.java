@@ -23,4 +23,12 @@ public class Authenticator {
     public boolean isNaver() {
         return socialType == SocialType.NAVER;
     }
+
+    public boolean isKakao() {
+        return socialType == SocialType.KAKAO;
+    }
+
+    public boolean isGoogle() {
+        return socialType == SocialType.GOOGLE;
+    }
 }
