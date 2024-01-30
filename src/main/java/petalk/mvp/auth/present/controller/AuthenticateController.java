@@ -56,12 +56,6 @@ public class AuthenticateController {
             return code;
         }
 
-        @Override
-        public String toString() {
-            return "Request{" +
-                    "code='" + code + '\'' +
-                    '}';
-        }
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -76,11 +70,5 @@ public class AuthenticateController {
             return user;
         }
 
-        @Override
-        public String toString() {
-            return "Response{" +
-                    "user=" + user +
-                    '}';
-        }
     }
 }

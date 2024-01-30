@@ -9,7 +9,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "user_infoes")
+@Table(name = "user_info")
 public class AuthUserInfoJpa {
 
     @Id
