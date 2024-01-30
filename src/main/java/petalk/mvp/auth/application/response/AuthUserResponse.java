@@ -1,7 +1,6 @@
 package petalk.mvp.auth.application.response;
 
 import petalk.mvp.auth.domain.User;
-import petalk.mvp.auth.domain.UserAuthority;
 
 import java.util.UUID;
 
@@ -11,22 +10,22 @@ import java.util.UUID;
  */
 public class AuthUserResponse {
 
-    private final User.UserId userId;
+    private final UUID userId;
     private final String nickname;
-    private final UserAuthority userAuthority;
+    private final String userAuthority;
 
-    private AuthUserResponse(User.UserId userId, String nickname, UserAuthority userAuthority) {
+    private AuthUserResponse(UUID userId, String nickname, String userAuthority) {
         this.userId = userId;
         this.nickname = nickname;
         this.userAuthority = userAuthority;
     }
 
     public static AuthUserResponse from(User user) {
-        return new AuthUserResponse(user.getId(), user.getNickname(), user.getUserAuthority());
+        return new AuthUserResponse(user.getId().getValue(), user.getNickname(), user.getUserAuthority().name());
     }
 
     public UUID getUserId() {
-        return userId.getValue();
+        return userId;
     }
 
     public String getNickname() {
@@ -34,6 +33,6 @@ public class AuthUserResponse {
     }
 
     public String getUserAuthority() {
-        return userAuthority.name();
+        return userAuthority;
     }
 }

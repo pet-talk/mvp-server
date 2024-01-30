@@ -15,13 +15,16 @@ import java.util.Optional;
  */
 public class NaverTokenResponse {
     private HttpStatusCode statusCode;
-    @SerializedName("message")
-    private String message;
     @SerializedName("response")
     private TokenInfo token;
 
+    private NaverTokenResponse(TokenInfo token) {
+        this.token = token;
+    }
+
     public static NaverTokenResponse from(ResponseEntity<String> response, Gson gson) {
-        NaverTokenResponse profileResponse = gson.fromJson(response.getBody(), NaverTokenResponse.class);
+        TokenInfo tokenInfo = gson.fromJson(response.getBody(), TokenInfo.class);
+        NaverTokenResponse profileResponse = new NaverTokenResponse(tokenInfo);
         profileResponse.addResponse(response);
         return profileResponse;
     }
