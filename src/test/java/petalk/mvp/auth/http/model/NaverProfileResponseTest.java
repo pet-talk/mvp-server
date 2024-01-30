@@ -41,7 +41,7 @@ class NaverProfileResponseTest {
         assertThat(profile).isPresent()
                 .get()
                 .extracting("resultCode", "message")
-                .containsExactly("00", "success");
+                .containsExactly("200 OK", "success");
 
         assertThat(profile).isPresent()
                 .get()
@@ -96,7 +96,10 @@ class NaverProfileResponseTest {
     }
 
     private static ResponseEntity<String> getFailedResponse() {
-        String response =  "";
+        String response =  "{\n" +
+                "  \"resultcode\": \"404\",\n" +
+                "  \"message\": \"failed\"\n" +
+                "}";
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }

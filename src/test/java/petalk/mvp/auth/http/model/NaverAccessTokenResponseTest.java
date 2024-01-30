@@ -46,7 +46,7 @@ class NaverAccessTokenResponseTest {
                         "AAAAQosjWDJieBiQZc3to9YQp6HDLvrmyKC+6+iZ3gq7qrkqf50ljZC+Lgoqrg",
                         "c8ceMEJisO4Se7uGisHoX0f5JEii7JnipglQipkOn5Zp3tyP7dHQoP0zNKHUq2gY",
                         "bearer",
-                        3600L);
+                        3600);
     }
 
     private static ResponseEntity<String> getSuccessResponse() {
