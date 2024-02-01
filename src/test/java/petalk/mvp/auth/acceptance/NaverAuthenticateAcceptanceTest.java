@@ -14,7 +14,7 @@ import petalk.mvp.core.annotation.AcceptanceTest;
 
 @AcceptanceTest
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@DisplayName("인증 요청 인수 테스트")
+@DisplayName("네이버 인증 요청 인수 테스트")
 public class NaverAuthenticateAcceptanceTest extends AbstractAcceptanceTest {
 
     @Autowired AuthenticateApiTester apiTester;
