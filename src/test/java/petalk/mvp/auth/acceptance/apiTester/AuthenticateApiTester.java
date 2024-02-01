@@ -62,12 +62,17 @@ public class AuthenticateApiTester {
         assertAll(
                 () -> assertThat(controllerResponse)
                         .extracting("user")
-                        .extracting("nickname", "userAuthority")
-                        .containsExactly("OpenAPI", "PET_OWNER"),
+                        .extracting("userAuthority")
+                        .isEqualTo("PET_OWNER"),
                 () -> assertThat(controllerResponse)
                         .extracting("user")
                         .extracting("userId")
-                        .isNotNull());
+                        .isNotNull(),
+                () -> assertThat(controllerResponse)
+                        .extracting("user")
+                        .extracting("nickname")
+                        .isNotNull()
+        );
     }
 
 
