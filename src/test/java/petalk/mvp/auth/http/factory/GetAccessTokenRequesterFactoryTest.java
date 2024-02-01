@@ -59,4 +59,22 @@ class GetAccessTokenRequesterFactoryTest {
         assertThat(oauthTokenRequester).isInstanceOf(GetNaverTokenRequester.class);
     }
 
+    /**
+     * @given 소셜 인증 서비스가 네이버라면
+     * @when 액세스 토큰 요청자를 가져올 때
+     * @then 구글 액세스 토큰 요청자를 반환한다.
+     */
+    @Test
+    @DisplayName("소셜 타입이 구글일 경우 구글 액세스 토큰 요청자를 반환한다.")
+    void whenTypeIsGoogleThenReturnGoogleRequester() {
+        //given
+        Authenticator naverAuthenticator = Authenticator.of(AuthorizationCode.from("code"), SocialType.GOOGLE);
+
+        //when
+        GetSocialTokenRequester oauthTokenRequester = getAccessTokenRequesterFactory.getOauthTokenRequester(naverAuthenticator);
+
+        //then
+        assertThat(oauthTokenRequester).isInstanceOf(GetGoogleTokenRequester.class);
+    }
+
 }
