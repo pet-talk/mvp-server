@@ -15,7 +15,6 @@ import java.util.Optional;
  */
 public class NaverTokenResponse {
     private HttpStatusCode statusCode;
-    @SerializedName("response")
     private TokenInfo token;
 
     private NaverTokenResponse(TokenInfo token) {
