@@ -49,7 +49,7 @@ public class NaverProfileResponse {
 
     private NaverProfile toSocialProfile() {
 
-        return new NaverProfile(statusCode.toString(), message, user.id, user.email, user.nickname, user.name, user.gender, user.age, user.birthday, user.profileImage, user.birthYear, user.mobile);
+        return NaverProfile.of(user.id, user.email, user.nickname, user.name, user.gender, user.age, user.birthday, user.profileImage, user.birthYear, user.mobile);
     }
 
     @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
