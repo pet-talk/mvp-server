@@ -31,7 +31,7 @@ public class NaverTokenCommandBuilder {
         this.STATE = state;
     }
 
-    public GetNaverTokenCommand getCommand(Authenticator authenticator) {
+    public GetNaverTokenCommand generateCommand(Authenticator authenticator) {
         AuthorizationCode authorizationCode = authenticator.getAuthorizationCode();
 
         return GetNaverTokenCommand.builder()

@@ -42,7 +42,7 @@ public class GetNaverTokenRequester implements GetSocialTokenRequester {
 
     @Override
     public Optional<AccessToken>getAccessToken(Authenticator authenticator) {
-        GetNaverTokenCommand command = naverTokenCommandBuilder.getCommand(authenticator);
+        GetNaverTokenCommand command = naverTokenCommandBuilder.generateCommand(authenticator);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(CONTENT_TYPE);
