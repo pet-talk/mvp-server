@@ -5,5 +5,5 @@ package petalk.mvp.auth.http.model;
  */
 public interface AccessToken {
 
-    String getTokenHeaderValue();
+    String generateAuthenticationCode();
 }

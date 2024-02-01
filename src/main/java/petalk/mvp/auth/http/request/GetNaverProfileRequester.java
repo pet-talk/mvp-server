@@ -37,7 +37,7 @@ public class GetNaverProfileRequester implements GetSocialProfileRequester {
     public Optional<SocialProfile> getProfile(AccessToken accessToken) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(CONTENT_TYPE);
-        httpHeaders.set(AUTHORIZATION_HEADER, accessToken.getTokenHeaderValue());
+        httpHeaders.set(AUTHORIZATION_HEADER, accessToken.generateAuthenticationCode());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, httpHeaders);
         logger.debug("naver profile request: {}", httpHeaders);

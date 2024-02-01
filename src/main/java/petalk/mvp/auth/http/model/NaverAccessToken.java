@@ -36,7 +36,7 @@ public class NaverAccessToken implements AccessToken {
     }
 
     @Override
-    public String getTokenHeaderValue() {
+    public String generateAuthenticationCode() {
         StringBuilder sb = new StringBuilder();
         sb.append(tokenType);
         sb.append(" ");
