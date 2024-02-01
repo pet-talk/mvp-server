@@ -7,7 +7,9 @@ import org.springframework.web.client.RestTemplate;
 import petalk.mvp.auth.domain.Authenticator;
 import petalk.mvp.auth.domain.AuthorizationCode;
 import petalk.mvp.auth.domain.SocialType;
+import petalk.mvp.auth.http.model.GoogleTokenCommandBuilder;
 import petalk.mvp.auth.http.model.NaverTokenCommandBuilder;
+import petalk.mvp.auth.http.request.GetGoogleTokenRequester;
 import petalk.mvp.auth.http.request.GetNaverTokenRequester;
 import petalk.mvp.auth.http.request.GetSocialTokenRequester;
 import petalk.mvp.core.annotation.UnitTest;
@@ -33,8 +35,11 @@ class GetAccessTokenRequesterFactoryTest {
 
     private final NaverTokenCommandBuilder tokenBuilder =
             new NaverTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE, STATE);
+    private final GoogleTokenCommandBuilder googleTokenCommandBuilder =
+            new GoogleTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE);
     private final GetNaverTokenRequester getNaverTokenRequester = new GetNaverTokenRequester(tokenBuilder, restTemplate, gson, URL);
-    private final GetAccessTokenRequesterFactory getAccessTokenRequesterFactory = new GetAccessTokenRequesterFactory(getNaverTokenRequester);
+    private final GetGoogleTokenRequester getGoogleTokenRequester = new GetGoogleTokenRequester(googleTokenCommandBuilder, restTemplate, gson, URL);
+    private final GetAccessTokenRequesterFactory getAccessTokenRequesterFactory = new GetAccessTokenRequesterFactory(getNaverTokenRequester, getGoogleTokenRequester);
 
     /**
      * @given 소셜 인증 서비스가 네이버라면
