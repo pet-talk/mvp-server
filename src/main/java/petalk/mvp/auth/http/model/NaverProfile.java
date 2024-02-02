@@ -44,7 +44,7 @@ public class NaverProfile implements SocialProfile {
         return NaverSocialAuthUser.from(socialAuthId, email, nickname, name);
     }
 
-    public void validate() {
+    private void validate() {
         if (id == null || email == null || nickname == null || name == null) {
             throw new IllegalArgumentException("Naver 프로필이 올바르지 않습니다.");
         }
