@@ -5,8 +5,11 @@ import org.springframework.stereotype.Component;
 import petalk.mvp.auth.domain.Authenticator;
 import petalk.mvp.auth.domain.AuthorizationCode;
 
+/**
+ * 구글 토큰 http 요청 커맨드 빌더입니다.
+ */
 @Component
-public class NaverTokenCommandBuilder {
+public class GoogleTokenCommandBuilder {
 
     private final String CLIENT_ID;
 
@@ -16,30 +19,25 @@ public class NaverTokenCommandBuilder {
 
     private final String GRANT_TYPE;
 
-    private final String STATE;
-
-    public NaverTokenCommandBuilder(
-            @Value("${value.social.naver.client_id}") String clientId,
-            @Value("${value.social.naver.redirect}") String redirectId,
-            @Value("${value.social.naver.client_secret}") String clientSecret,
-            @Value("${value.social.naver.grant_type}") String grantType,
-            @Value("${value.social.naver.state}") String state) {
+    public GoogleTokenCommandBuilder(
+            @Value("${value.social.google.client_id}") String clientId,
+            @Value("${value.social.google.redirect}") String redirectId,
+            @Value("${value.social.google.client_secret}") String clientSecret,
+            @Value("${value.social.google.grant_type}") String grantType) {
         this.CLIENT_ID = clientId;
         this.REDIRECT_ID = redirectId;
         this.CLIENT_SECRET = clientSecret;
         this.GRANT_TYPE = grantType;
-        this.STATE = state;
     }
 
-    public GetNaverTokenCommand generateCommand(Authenticator authenticator) {
+    public GetGoogleTokenCommand generateCommand(Authenticator authenticator) {
         AuthorizationCode authorizationCode = authenticator.getAuthorizationCode();
 
-        return GetNaverTokenCommand.builder()
+        return GetGoogleTokenCommand.builder()
                 .clientSecret(CLIENT_SECRET)
                 .clientId(CLIENT_ID)
                 .grantType(GRANT_TYPE)
                 .redirectUri(REDIRECT_ID)
-                .state(STATE)
                 .code(authorizationCode.getValue())
                 .build();
 

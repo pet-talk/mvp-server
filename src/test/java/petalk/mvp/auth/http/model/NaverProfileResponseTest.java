@@ -40,13 +40,7 @@ class NaverProfileResponseTest {
         //then
         assertThat(profile).isPresent()
                 .get()
-                .extracting("resultCode", "message")
-                .containsExactly("200 OK", "success");
-
-        assertThat(profile).isPresent()
-                .get()
                 .isInstanceOf(NaverProfile.class)
-                .extracting("response")
                 .extracting("id", "email", "nickname", "name", "gender", "age", "birthday", "profileImage", "birthYear", "mobile")
                 .containsExactly("32742776", "openapi@naver.com", "OpenAPI", "오픈 API", "F", "40-49", "10-01", "https://ssl.pstatic.net/static/pwe/address/nodata_33x33.gif", "1900", "010-0000-0000");
 

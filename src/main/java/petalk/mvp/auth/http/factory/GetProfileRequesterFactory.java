@@ -3,6 +3,7 @@ package petalk.mvp.auth.http.factory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import petalk.mvp.auth.domain.Authenticator;
+import petalk.mvp.auth.http.request.GetGoogleProfileRequester;
 import petalk.mvp.auth.http.request.GetNaverProfileRequester;
 import petalk.mvp.auth.http.request.GetSocialProfileRequester;
 
@@ -17,9 +18,15 @@ public class GetProfileRequesterFactory {
 
     private final GetNaverProfileRequester getNaverProfileRequester;
 
+    private final GetGoogleProfileRequester getGoogleProfileRequester;
+
     public GetSocialProfileRequester getProfileRequester(Authenticator authenticator) {
         if (authenticator.isNaver()) {
             return getNaverProfileRequester;
+        }
+
+        if (authenticator.isGoogle()) {
+            return getGoogleProfileRequester;
         }
         return null;
     }

@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import petalk.mvp.auth.domain.Authenticator;
 import petalk.mvp.auth.domain.AuthorizationCode;
 import petalk.mvp.auth.domain.SocialType;
+import petalk.mvp.auth.http.request.GetGoogleProfileRequester;
 import petalk.mvp.auth.http.request.GetNaverProfileRequester;
 import petalk.mvp.auth.http.request.GetSocialProfileRequester;
 import petalk.mvp.core.annotation.UnitTest;
@@ -24,7 +25,8 @@ class GetProfileRequesterFactoryTest {
     private final Gson gson = new Gson();
     private final String URL = "url";
     private final GetNaverProfileRequester getNaverProfileRequester = new GetNaverProfileRequester(restTemplate, gson, URL);
-    private final GetProfileRequesterFactory getProfileRequesterFactory = new GetProfileRequesterFactory(getNaverProfileRequester);
+    private final GetGoogleProfileRequester getGoogleProfileRequester = new GetGoogleProfileRequester(restTemplate, gson, URL);
+    private final GetProfileRequesterFactory getProfileRequesterFactory = new GetProfileRequesterFactory(getNaverProfileRequester, getGoogleProfileRequester);
 
 
     /**

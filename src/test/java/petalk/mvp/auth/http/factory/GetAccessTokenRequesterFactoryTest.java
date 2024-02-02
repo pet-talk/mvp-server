@@ -7,7 +7,9 @@ import org.springframework.web.client.RestTemplate;
 import petalk.mvp.auth.domain.Authenticator;
 import petalk.mvp.auth.domain.AuthorizationCode;
 import petalk.mvp.auth.domain.SocialType;
+import petalk.mvp.auth.http.model.GoogleTokenCommandBuilder;
 import petalk.mvp.auth.http.model.NaverTokenCommandBuilder;
+import petalk.mvp.auth.http.request.GetGoogleTokenRequester;
 import petalk.mvp.auth.http.request.GetNaverTokenRequester;
 import petalk.mvp.auth.http.request.GetSocialTokenRequester;
 import petalk.mvp.core.annotation.UnitTest;
@@ -33,8 +35,11 @@ class GetAccessTokenRequesterFactoryTest {
 
     private final NaverTokenCommandBuilder tokenBuilder =
             new NaverTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE, STATE);
+    private final GoogleTokenCommandBuilder googleTokenCommandBuilder =
+            new GoogleTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE);
     private final GetNaverTokenRequester getNaverTokenRequester = new GetNaverTokenRequester(tokenBuilder, restTemplate, gson, URL);
-    private final GetAccessTokenRequesterFactory getAccessTokenRequesterFactory = new GetAccessTokenRequesterFactory(getNaverTokenRequester);
+    private final GetGoogleTokenRequester getGoogleTokenRequester = new GetGoogleTokenRequester(googleTokenCommandBuilder, restTemplate, gson, URL);
+    private final GetAccessTokenRequesterFactory getAccessTokenRequesterFactory = new GetAccessTokenRequesterFactory(getNaverTokenRequester, getGoogleTokenRequester);
 
     /**
      * @given 소셜 인증 서비스가 네이버라면
@@ -52,6 +57,24 @@ class GetAccessTokenRequesterFactoryTest {
 
         //then
         assertThat(oauthTokenRequester).isInstanceOf(GetNaverTokenRequester.class);
+    }
+
+    /**
+     * @given 소셜 인증 서비스가 네이버라면
+     * @when 액세스 토큰 요청자를 가져올 때
+     * @then 구글 액세스 토큰 요청자를 반환한다.
+     */
+    @Test
+    @DisplayName("소셜 타입이 구글일 경우 구글 액세스 토큰 요청자를 반환한다.")
+    void whenTypeIsGoogleThenReturnGoogleRequester() {
+        //given
+        Authenticator naverAuthenticator = Authenticator.of(AuthorizationCode.from("code"), SocialType.GOOGLE);
+
+        //when
+        GetSocialTokenRequester oauthTokenRequester = getAccessTokenRequesterFactory.getOauthTokenRequester(naverAuthenticator);
+
+        //then
+        assertThat(oauthTokenRequester).isInstanceOf(GetGoogleTokenRequester.class);
     }
 
 }
