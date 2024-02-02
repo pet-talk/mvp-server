@@ -8,7 +8,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import petalk.mvp.auth.domain.Authenticator;
+import petalk.mvp.auth.domain.command.Authenticator;
 import petalk.mvp.auth.http.model.AccessToken;
 import petalk.mvp.auth.http.model.GetNaverTokenCommand;
 import petalk.mvp.auth.http.model.NaverTokenCommandBuilder;

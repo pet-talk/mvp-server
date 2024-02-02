@@ -1,6 +1,6 @@
 package petalk.mvp.auth.http.model;
 
-import petalk.mvp.auth.domain.SocialAuthUser;
+import petalk.mvp.auth.domain.command.SocialAuthUser;
 
 /**
  * 소셜 프로필을 추상화합니다.<br>

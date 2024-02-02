@@ -1,8 +1,8 @@
 package petalk.mvp.auth.http.model;
 
-import petalk.mvp.auth.domain.NaverSocialAuthUser;
-import petalk.mvp.auth.domain.SocialAuthId;
-import petalk.mvp.auth.domain.SocialAuthUser;
+import petalk.mvp.auth.domain.command.NaverSocialAuthUser;
+import petalk.mvp.auth.domain.command.SocialAuthId;
+import petalk.mvp.auth.domain.command.SocialAuthUser;
 
 /**
  * Naver 프로필을 나타냅니다.

@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import petalk.mvp.auth.application.command.in.AuthenticateUsecase;
-import petalk.mvp.auth.application.command.in.AuthenticateUsecase.AuthenticateCommand;
-import petalk.mvp.auth.application.command.in.AuthenticateUsecase.AuthenticateResponse;
-import petalk.mvp.auth.application.command.in.RegisterSessionUsecase;
-import petalk.mvp.auth.application.command.in.RegisterSessionUsecase.RegisterSessionCommand;
-import petalk.mvp.auth.application.command.validator.AuthenticateValidator;
-import petalk.mvp.auth.application.response.AuthUserResponse;
+import petalk.mvp.auth.domain.command.in.AuthenticateUsecase;
+import petalk.mvp.auth.domain.command.in.AuthenticateUsecase.AuthenticateCommand;
+import petalk.mvp.auth.domain.command.in.AuthenticateUsecase.AuthenticateResponse;
+import petalk.mvp.auth.domain.command.in.RegisterSessionUsecase;
+import petalk.mvp.auth.domain.command.in.RegisterSessionUsecase.RegisterSessionCommand;
+import petalk.mvp.auth.domain.command.AuthenticateValidator;
+import petalk.mvp.auth.domain.response.AuthUserResponse;
 
 @Tag(name = "authenticate", description = "인증 API")
 @RestController

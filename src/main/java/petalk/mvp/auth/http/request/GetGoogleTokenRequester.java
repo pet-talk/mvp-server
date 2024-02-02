@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import petalk.mvp.auth.domain.Authenticator;
+import petalk.mvp.auth.domain.command.Authenticator;
 import petalk.mvp.auth.http.model.AccessToken;
 import petalk.mvp.auth.http.model.GetGoogleTokenCommand;
 import petalk.mvp.auth.http.model.GoogleTokenCommandBuilder;

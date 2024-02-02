@@ -2,8 +2,8 @@ package petalk.mvp.auth.http.model;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import petalk.mvp.auth.domain.Authenticator;
-import petalk.mvp.auth.domain.AuthorizationCode;
+import petalk.mvp.auth.domain.command.Authenticator;
+import petalk.mvp.auth.domain.command.AuthorizationCode;
 
 /**
  * 구글 토큰 http 요청 커맨드 빌더입니다.
