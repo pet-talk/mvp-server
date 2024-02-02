@@ -2,7 +2,7 @@ package petalk.mvp.auth.http.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import petalk.mvp.auth.domain.Authenticator;
+import petalk.mvp.auth.domain.command.Authenticator;
 import petalk.mvp.auth.http.request.GetGoogleProfileRequester;
 import petalk.mvp.auth.http.request.GetNaverProfileRequester;
 import petalk.mvp.auth.http.request.GetSocialProfileRequester;

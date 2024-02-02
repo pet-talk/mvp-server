@@ -1,6 +1,6 @@
 package petalk.mvp.auth.http.request;
 
-import petalk.mvp.auth.domain.Authenticator;
+import petalk.mvp.auth.domain.command.Authenticator;
 import petalk.mvp.auth.http.model.AccessToken;
 
 import java.util.Optional;

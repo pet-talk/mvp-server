@@ -1,8 +1,8 @@
 package petalk.mvp.auth.http.adapter;
 
-import petalk.mvp.auth.application.command.out.LoadSocialUserPort;
-import petalk.mvp.auth.domain.Authenticator;
-import petalk.mvp.auth.domain.SocialAuthUser;
+import petalk.mvp.auth.domain.command.out.LoadSocialUserPort;
+import petalk.mvp.auth.domain.command.Authenticator;
+import petalk.mvp.auth.domain.command.SocialAuthUser;
 import petalk.mvp.auth.http.factory.GetAccessTokenRequesterFactory;
 import petalk.mvp.auth.http.factory.GetProfileRequesterFactory;
 import petalk.mvp.auth.http.model.SocialProfile;
