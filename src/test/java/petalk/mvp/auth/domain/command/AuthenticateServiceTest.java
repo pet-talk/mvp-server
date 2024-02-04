@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import petalk.mvp.auth.domain.command.in.AuthenticateUsecase;
-import petalk.mvp.auth.domain.command.out.LoadSocialUserPort;
-import petalk.mvp.auth.domain.command.out.LoadUserPort;
-import petalk.mvp.auth.domain.command.out.RegisterSocialInfoPort;
-import petalk.mvp.auth.domain.command.out.RegisterUserPort;
+import petalk.mvp.auth.domain.command.out.*;
 import petalk.mvp.core.annotation.UnitTest;
 
 import java.time.LocalDateTime;
@@ -33,8 +30,9 @@ class AuthenticateServiceTest {
     private final LoadUserPort loadUserPort = Mockito.mock(LoadUserPort.class);
     private final RegisterUserPort registerUserPort = Mockito.mock(RegisterUserPort.class);
     private final RegisterSocialInfoPort registerSocialInfoPort = Mockito.mock(RegisterSocialInfoPort.class);
+    private final LoadUserSocialInfoPort loadUserSocialInfoPort = Mockito.mock(LoadUserSocialInfoPort.class);
 
-    private final AuthenticateService authenticateService = new AuthenticateService(loadSocialUserPort, loadUserPort, registerUserPort, registerSocialInfoPort);
+    private final AuthenticateService authenticateService = new AuthenticateService(loadSocialUserPort, loadUserPort, registerUserPort, registerSocialInfoPort, loadUserSocialInfoPort);
 
 
     private static NaverSocialAuthUser createNaverSocialUser() {
@@ -43,6 +41,7 @@ class AuthenticateServiceTest {
 
     /**
      * @given 인증된 소셜 사용자가 존재하고
+     * @given 유저 소셜 정보가 존재하고
      * @given 사용자가 존재한다면
      * @when 인증 요청을 할 때
      * @then 유저정보를 반환한다.
@@ -51,12 +50,18 @@ class AuthenticateServiceTest {
     @DisplayName("인증 요청을 하면 유저 정보를 반환한다.")
     void returnUser() {
         //given
+        NaverSocialAuthUser naverSocialUser = createNaverSocialUser();
+
         given(loadSocialUserPort.loadSocialUser(any()))
-                .willReturn(Optional.of(createNaverSocialUser()));
+                .willReturn(Optional.of(naverSocialUser));
 
         //given
-        UUID uuid = UUID.randomUUID();
-        User user = User.exist(User.UserId.from(uuid), "nickname", UserAuthority.VET, LocalDateTime.now());
+        UserSocialInfo userSocialInfo = createUserSocialInfo(naverSocialUser);
+        given(loadUserSocialInfoPort.loadSocialInfo(any()))
+                .willReturn(Optional.of(userSocialInfo));
+
+        //given
+        User user = createUser(userSocialInfo);
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
@@ -71,6 +76,14 @@ class AuthenticateServiceTest {
                 .extracting("user").isNotNull()
                 .extracting("userId", "nickname", "userAuthority")
                 .containsExactly(user.getId().getValue(), user.getNickname(), user.getUserAuthority().name());
+    }
+
+    private static User createUser(UserSocialInfo userSocialInfo) {
+        return User.exist(userSocialInfo.getUserId(), userSocialInfo.getSocialName(), UserAuthority.VET, LocalDateTime.now());
+    }
+
+    private UserSocialInfo createUserSocialInfo(NaverSocialAuthUser naverSocialUser) {
+        return UserSocialInfo.exist(UserSocialInfo.SocialInfoId.from(1L), User.UserId.from(UUID.randomUUID()), naverSocialUser.getEmail(), SocialType.NAVER, naverSocialUser.getSocialId(), naverSocialUser.getName());
     }
 
     /**

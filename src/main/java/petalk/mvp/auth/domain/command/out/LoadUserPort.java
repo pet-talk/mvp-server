@@ -1,7 +1,7 @@
 package petalk.mvp.auth.domain.command.out;
 
-import petalk.mvp.auth.domain.command.SocialAuthUser;
 import petalk.mvp.auth.domain.command.User;
+import petalk.mvp.auth.domain.command.UserSocialInfo;
 
 import java.util.Optional;
 
@@ -10,5 +10,5 @@ import java.util.Optional;
  */
 public interface LoadUserPort {
 
-    Optional<User> loadUser(SocialAuthUser socialAuthUser);
+    Optional<User> loadUser(UserSocialInfo socialInfo);
 }
