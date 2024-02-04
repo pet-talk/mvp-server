@@ -3,15 +3,12 @@ package petalk.mvp.auth.domain.command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import petalk.mvp.auth.domain.command.in.AuthenticateUsecase;
-import petalk.mvp.auth.domain.command.out.LoadSocialUserPort;
-import petalk.mvp.auth.domain.command.out.LoadUserPort;
-import petalk.mvp.auth.domain.command.out.RegisterSocialInfoPort;
-import petalk.mvp.auth.domain.command.out.RegisterUserPort;
+import petalk.mvp.auth.domain.command.out.*;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  * 인증을 담당하는 서비스입니다.
@@ -24,13 +21,15 @@ public class AuthenticateService implements AuthenticateUsecase {
     private final LoadUserPort loadUserPort;
     private final RegisterUserPort registerUserPort;
     private final RegisterSocialInfoPort registerSocialInfoPort;
+    private final LoadUserSocialInfoPort LoadUserSocialInfoPort;
 
     @Autowired
-    public AuthenticateService(LoadSocialUserPort loadSocialUserPort, LoadUserPort loadUserPort, RegisterUserPort registerUserPort, RegisterSocialInfoPort registerSocialInfoPort) {
+    public AuthenticateService(LoadSocialUserPort loadSocialUserPort, LoadUserPort loadUserPort, RegisterUserPort registerUserPort, RegisterSocialInfoPort registerSocialInfoPort, LoadUserSocialInfoPort LoadUserSocialInfoPort) {
         this.loadSocialUserPort = loadSocialUserPort;
         this.loadUserPort = loadUserPort;
         this.registerUserPort = registerUserPort;
         this.registerSocialInfoPort = registerSocialInfoPort;
+        this.LoadUserSocialInfoPort = LoadUserSocialInfoPort;
     }
 
     @Override
@@ -42,16 +41,26 @@ public class AuthenticateService implements AuthenticateUsecase {
         SocialAuthUser socialAuthUser = loadSocialUserPort.loadSocialUser(authenticator)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 사용자입니다."));
 
-        User user = loadUserPort.loadUser(socialAuthUser)
-                .orElseGet(() -> User.register(socialAuthUser, now));
+        Optional<UserSocialInfo> socialInfoOptional = LoadUserSocialInfoPort.loadSocialInfo(socialAuthUser);
 
-        if (user.isNew()) {
-            registerUserPort.registerUser(user);
+        if (socialInfoOptional.isPresent()) {
+            UserSocialInfo userSocialInfo = socialInfoOptional.get();
 
-            UserSocialInfo userSocialInfo = UserSocialInfo.register(user, socialAuthUser);
-            registerSocialInfoPort.registerSocialInfo(userSocialInfo);
+            User user = loadUserPort.loadUser(userSocialInfo)
+                    .orElseThrow(() -> new IllegalArgumentException("소셜유저가 존재하지만 유저가 존재하지 않습니다."));
+
+            return AuthenticateResponse.from(user);
         }
-        return AuthenticateResponse.from(user);
+
+        User registerUser = User.register(socialAuthUser, now);
+
+        registerUserPort.registerUser(registerUser);
+
+        UserSocialInfo userSocialInfo = UserSocialInfo.register(registerUser, socialAuthUser);
+        
+        registerSocialInfoPort.registerSocialInfo(userSocialInfo);
+
+        return AuthenticateResponse.from(registerUser);
     }
 
 }
