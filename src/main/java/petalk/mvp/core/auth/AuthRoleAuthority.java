@@ -1,6 +1,6 @@
 package petalk.mvp.core.auth;
 
-import petalk.mvp.auth.domain.command.UserAuthority;
+import petalk.mvp.domain.auth.command.UserAuthority;
 
 /**
  * 세션에 저장되어있는 유저 권한을 나타내는 enum 클래스입니다.

@@ -2,9 +2,10 @@ package petalk.mvp.auth.storage.mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import petalk.mvp.auth.domain.command.User;
-import petalk.mvp.auth.domain.command.UserAuthority;
-import petalk.mvp.auth.storage.model.AuthUserJpa;
+import petalk.mvp.domain.auth.command.User;
+import petalk.mvp.domain.auth.command.UserAuthority;
+import petalk.mvp.storage.auth.adapter.AuthUserJpaMapper;
+import petalk.mvp.storage.postgre.model.AuthUserJpa;
 import petalk.mvp.core.annotation.UnitTest;
 
 import java.time.LocalDateTime;

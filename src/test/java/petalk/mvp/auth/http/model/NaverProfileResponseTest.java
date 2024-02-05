@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import petalk.mvp.core.annotation.UnitTest;
+import petalk.mvp.http.auth.request.NaverProfile;
+import petalk.mvp.http.auth.request.NaverProfileResponse;
+import petalk.mvp.http.auth.request.SocialProfile;
 
 import java.util.Optional;
 

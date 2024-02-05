@@ -4,6 +4,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import petalk.mvp.core.annotation.UnitTest;
+import petalk.mvp.domain.auth.command.GoogleSocialAuthUser;
+import petalk.mvp.domain.auth.command.SocialAuthId;
+import petalk.mvp.domain.auth.command.SocialAuthUser;
 
 
 /**

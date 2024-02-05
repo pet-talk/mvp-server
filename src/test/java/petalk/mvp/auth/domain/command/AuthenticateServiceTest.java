@@ -5,8 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
-import petalk.mvp.auth.domain.command.in.AuthenticateUsecase;
-import petalk.mvp.auth.domain.command.out.*;
+import petalk.mvp.domain.auth.command.*;
+import petalk.mvp.domain.auth.command.out.*;
+import petalk.mvp.domain.auth.command.in.AuthenticateUsecase;
 import petalk.mvp.core.annotation.UnitTest;
 
 import java.time.LocalDateTime;

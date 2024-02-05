@@ -3,8 +3,8 @@ package petalk.mvp.auth.domain.command;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import petalk.mvp.auth.domain.command.AuthenticateValidator;
-import petalk.mvp.auth.domain.command.in.AuthenticateUsecase;
+import petalk.mvp.domain.auth.command.AuthenticateValidator;
+import petalk.mvp.domain.auth.command.in.AuthenticateUsecase;
 import petalk.mvp.core.annotation.UnitTest;
 import petalk.mvp.core.ValidationErrorException;
 
