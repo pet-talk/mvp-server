@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 
 @RestControllerAdvice(annotations = RestController.class)
@@ -32,6 +33,11 @@ public class ExControllerAdvice {
     logger.error(e.getMessage(), e);
 
     return ResponseEntity.badRequest().body(response);
+  }
+
+  @ExceptionHandler(NoHandlerFoundException.class)
+  public ResponseEntity<ApiResponse<String>> handle404(NoHandlerFoundException exception) {
+    return ResponseEntity.notFound().build();
   }
 
   @ExceptionHandler
