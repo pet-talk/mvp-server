@@ -5,7 +5,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import petalk.mvp.auth.present.controller.AuthenticateController;
+import petalk.mvp.present.auth.controller.AuthenticateController;
 import petalk.mvp.core.acceptance.utils.TestParam;
 import petalk.mvp.core.annotation.ApiTester;
 
