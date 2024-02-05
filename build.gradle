@@ -48,5 +48,28 @@ tasks.named('bootBuildImage') {
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+	useJUnitPlatform {
+		excludeTags('acceptanceTest', 'contextTest')
+	}
+}
+
+tasks.register('unitTest', Test) {
+	group = 'verification'
+	useJUnitPlatform {
+		excludeTags('acceptanceTest', 'contextTest')
+	}
+}
+
+tasks.register('acceptanceTest', Test) {
+	group = 'verification'
+	useJUnitPlatform {
+		includeTags('acceptanceTest')
+	}
+}
+
+tasks.register('contextTest', Test) {
+	group = 'verification'
+	useJUnitPlatform {
+		includeTags('contextTest')
+	}
 }
