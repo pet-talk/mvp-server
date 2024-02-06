@@ -1,5 +1,6 @@
 package petalk.mvp.domain.auth.command;
 
+import org.springframework.util.Assert;
 import petalk.mvp.domain.auth.command.in.AuthenticateUsecase;
 import petalk.mvp.core.ValidationError;
 import petalk.mvp.core.ValidationErrorException;
@@ -16,16 +17,12 @@ import java.util.List;
 public class AuthenticateValidator {
 
     public void validate(AuthenticateUsecase.AuthenticateCommand command) {
+        Assert.notNull(command, "command는 null일 수 없습니다.");
+
         ValidationErrors errors = ValidationErrors.from();
 
-        if (command == null) {
-            errors.add(ValidationError.of("command", "command가 존재하지 않습니다."));
-        }
-
-        if (command != null) {
-            List<ValidationError> validationErrors = validateCommand(command);
-            errors.addAll(validationErrors);
-        }
+        List<ValidationError> validationErrors = validateCommand(command);
+        errors.addAll(validationErrors);
 
         if (!errors.hasError()) {
             throw new ValidationErrorException(errors);

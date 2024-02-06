@@ -52,12 +52,12 @@ public class AuthenticateService implements AuthenticateUsecase {
             return AuthenticateResponse.from(user);
         }
 
-        User registerUser = User.register(socialAuthUser, now);
+        User registerUser = socialAuthUser.registerUser(now);
 
         registerUserPort.registerUser(registerUser);
 
-        UserSocialInfo userSocialInfo = UserSocialInfo.register(registerUser, socialAuthUser);
-        
+        UserSocialInfo userSocialInfo = socialAuthUser.registerInfo(registerUser);
+
         registerSocialInfoPort.registerSocialInfo(userSocialInfo);
 
         return AuthenticateResponse.from(registerUser);
