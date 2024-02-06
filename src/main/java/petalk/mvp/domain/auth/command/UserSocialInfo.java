@@ -41,8 +41,8 @@ public class UserSocialInfo {
         return new UserSocialInfo(id, userId, email, socialType, socialId, socialName);
     }
 
-    public static UserSocialInfo register(User user, SocialAuthUser socialAuthUser) {
-        return new UserSocialInfo(user.getId(), socialAuthUser.getEmail(), socialAuthUser.getSocialType(), socialAuthUser.getSocialId(), socialAuthUser.getName());
+    public static UserSocialInfo register(User.UserId userId, String email, SocialType socialType, SocialAuthId socialId, String socialName) {
+        return new UserSocialInfo(userId, email, socialType, socialId, socialName);
     }
 
     //== 조회 메소드 ==//
