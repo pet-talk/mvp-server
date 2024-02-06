@@ -28,7 +28,9 @@ class GoogleSocialAuthUserTest {
         SocialAuthUser user = GoogleSocialAuthUser.from(SocialAuthId.from("id"), "email", name);
 
         //then
-        Assertions.assertThat(user.getNickname()).isEqualTo(name);
+        Assertions.assertThat(user)
+                .extracting("name")
+                .isEqualTo(name);
     }
 
 }

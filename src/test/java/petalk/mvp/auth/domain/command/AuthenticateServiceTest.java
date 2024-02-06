@@ -51,18 +51,23 @@ class AuthenticateServiceTest {
     @DisplayName("인증 요청을 하면 유저 정보를 반환한다.")
     void returnUser() {
         //given
-        NaverSocialAuthUser naverSocialUser = createNaverSocialUser();
+        String nickname = "nickname";
+        String socialId = "id";
+        String email = "email";
+        NaverSocialAuthUser naverSocialUser = createNaverSocialUser(socialId, email, nickname);
 
         given(loadSocialUserPort.loadSocialUser(any()))
                 .willReturn(Optional.of(naverSocialUser));
 
         //given
-        UserSocialInfo userSocialInfo = createUserSocialInfo(naverSocialUser);
+        UUID userId = UUID.randomUUID();
+        UserSocialInfo userSocialInfo = createUserSocialInfo(userId, email, socialId, nickname);
         given(loadUserSocialInfoPort.loadSocialInfo(any()))
                 .willReturn(Optional.of(userSocialInfo));
 
         //given
-        User user = createUser(userSocialInfo);
+        UserAuthority authority = UserAuthority.VET;
+        User user = createUser(userId, nickname, authority);
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
@@ -76,15 +81,19 @@ class AuthenticateServiceTest {
         assertThat(authenticate)
                 .extracting("user").isNotNull()
                 .extracting("userId", "nickname", "userAuthority")
-                .containsExactly(user.getId().getValue(), user.getNickname(), user.getUserAuthority().name());
+                .containsExactly(userId, nickname, authority.name());
     }
 
-    private static User createUser(UserSocialInfo userSocialInfo) {
-        return User.exist(userSocialInfo.getUserId(), userSocialInfo.getSocialName(), UserAuthority.VET, LocalDateTime.now());
+    private NaverSocialAuthUser createNaverSocialUser(String socialId, String email, String nickname) {
+        return NaverSocialAuthUser.from(SocialAuthId.from(socialId), email, nickname, "name");
     }
 
-    private UserSocialInfo createUserSocialInfo(NaverSocialAuthUser naverSocialUser) {
-        return UserSocialInfo.exist(UserSocialInfo.SocialInfoId.from(1L), User.UserId.from(UUID.randomUUID()), naverSocialUser.getEmail(), SocialType.NAVER, naverSocialUser.getSocialId(), naverSocialUser.getName());
+    private static User createUser(UUID id, String nickname, UserAuthority authority) {
+        return User.exist(User.UserId.from(id), nickname, authority, LocalDateTime.now());
+    }
+
+    private UserSocialInfo createUserSocialInfo(UUID userId, String email, String socialId, String nickname) {
+        return UserSocialInfo.exist(UserSocialInfo.SocialInfoId.from(123L), User.UserId.from(userId), email, SocialType.NAVER, SocialAuthId.from(socialId), nickname);
     }
 
     /**
