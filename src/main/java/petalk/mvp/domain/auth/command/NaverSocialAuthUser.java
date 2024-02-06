@@ -1,5 +1,6 @@
 package petalk.mvp.domain.auth.command;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -11,6 +12,7 @@ public class NaverSocialAuthUser implements SocialAuthUser{
     private String email;
     private String nickname;
     private String name;
+    private SocialType socialType;
 
     //== 생성 메소드 ==//
 
@@ -19,6 +21,7 @@ public class NaverSocialAuthUser implements SocialAuthUser{
         this.email = email;
         this.nickname = nickname;
         this.name = name;
+        this.socialType = SocialType.NAVER;
     }
 
     public static NaverSocialAuthUser from(SocialAuthId socialAuthId, String email, String nickname, String name) {
@@ -34,23 +37,18 @@ public class NaverSocialAuthUser implements SocialAuthUser{
     }
 
     @Override
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getNickname() {
-        return nickname;
-    }
-
-    @Override
     public SocialType getSocialType() {
-        return SocialType.NAVER;
+        return socialType;
+    }
+
+    @Override
+    public UserSocialInfo registerInfo(User user) {
+        return UserSocialInfo.register(user.getId(), this.email, this.socialType, this.socialAuthId, this.name);
+    }
+
+    @Override
+    public User registerUser(LocalDateTime registrationDate) {
+        return User.register(this.nickname, registrationDate);
     }
 
     @Override
