@@ -20,19 +20,19 @@ import java.util.Optional;
 @PersistenceAdapter
 public class LoadSocialUserAdapter implements LoadSocialUserPort {
 
-    private final GetAccessTokenRequesterFactory getAccessTokenRequesterFactory;
-    private final GetProfileRequesterFactory getProfileRequesterFactory;
+    private final AccessTokenRequesterFactory accessTokenRequesterFactory;
+    private final ProfileRequesterFactory profileRequesterFactory;
 
 
-    public LoadSocialUserAdapter(GetAccessTokenRequesterFactory getAccessTokenRequesterFactory, GetProfileRequesterFactory getProfileRequesterFactory) {
-        this.getAccessTokenRequesterFactory = getAccessTokenRequesterFactory;
-        this.getProfileRequesterFactory = getProfileRequesterFactory;
+    public LoadSocialUserAdapter(AccessTokenRequesterFactory accessTokenRequesterFactory, ProfileRequesterFactory profileRequesterFactory) {
+        this.accessTokenRequesterFactory = accessTokenRequesterFactory;
+        this.profileRequesterFactory = profileRequesterFactory;
     }
 
     @Override
     public Optional<SocialAuthUser> loadSocialUser(AuthorizationCode code, SocialType socialType) {
-        SocialTokenRequester socialTokenRequester = getAccessTokenRequesterFactory.getOauthTokenRequester(socialType);
-        SocialProfileRequester profileRequester = getProfileRequesterFactory.getProfileRequester(socialType);
+        SocialTokenRequester socialTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(socialType);
+        SocialProfileRequester profileRequester = profileRequesterFactory.getProfileRequester(socialType);
 
         return socialTokenRequester
                 .getAccessToken(code)

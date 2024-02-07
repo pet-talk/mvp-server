@@ -5,16 +5,16 @@ package petalk.mvp.domain.auth;
  *
  */
 public class SessionUserInfo {
-    private User.UserId id;
+    private AuthUser.UserId id;
     private UserAuthority authorities;
 
     //== 생성 메소드 ==//
-    private SessionUserInfo(User.UserId id, UserAuthority authorities) {
+    private SessionUserInfo(AuthUser.UserId id, UserAuthority authorities) {
         this.id = id;
         this.authorities = authorities;
     }
 
-    public static SessionUserInfo register(User.UserId userId, UserAuthority userAuthority) {
+    public static SessionUserInfo register(AuthUser.UserId userId, UserAuthority userAuthority) {
         return new SessionUserInfo(userId, userAuthority);
     }
 
@@ -22,7 +22,7 @@ public class SessionUserInfo {
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//
 
-    public User.UserId getId() {
+    public AuthUser.UserId getId() {
         return id;
     }
 

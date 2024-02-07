@@ -28,6 +28,13 @@ public class NaverSocialAuthUser implements SocialAuthUser{
         return new NaverSocialAuthUser(socialAuthId, email, nickname, name);
     }
     //== 비즈니스 로직 ==//
+
+
+    @Override
+    public AuthUser registerUser(LocalDateTime registrationDate) {
+        return AuthUser.register(this.email, this.socialType, this.socialAuthId, this.name, this.nickname, registrationDate);
+    }
+
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//
 
@@ -41,15 +48,6 @@ public class NaverSocialAuthUser implements SocialAuthUser{
         return socialType;
     }
 
-    @Override
-    public UserSocialInfo registerInfo(User user) {
-        return UserSocialInfo.register(user.getId(), this.email, this.socialType, this.socialAuthId, this.name);
-    }
-
-    @Override
-    public User registerUser(LocalDateTime registrationDate) {
-        return User.register(this.nickname, registrationDate);
-    }
 
     @Override
     public boolean equals(Object o) {

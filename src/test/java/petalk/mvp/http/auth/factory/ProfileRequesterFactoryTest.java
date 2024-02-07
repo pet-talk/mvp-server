@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 import petalk.mvp.core.annotation.UnitTest;
 import petalk.mvp.domain.auth.SocialType;
-import petalk.mvp.http.auth.adapter.GetProfileRequesterFactory;
+import petalk.mvp.http.auth.adapter.ProfileRequesterFactory;
 import petalk.mvp.http.auth.request.GoogleProfileRequester;
 import petalk.mvp.http.auth.request.NaverProfileRequester;
 import petalk.mvp.http.auth.request.SocialProfileRequester;
@@ -18,14 +18,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @UnitTest
 @DisplayName("소셜 프로필 http 요청자 팩토리 테스트")
-class GetProfileRequesterFactoryTest {
+class ProfileRequesterFactoryTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final Gson gson = new Gson();
     private final String URL = "url";
     private final NaverProfileRequester getNaverProfileRequester = new NaverProfileRequester(restTemplate, gson, URL);
     private final GoogleProfileRequester getGoogleProfileRequester = new GoogleProfileRequester(restTemplate, gson, URL);
-    private final GetProfileRequesterFactory getProfileRequesterFactory = new GetProfileRequesterFactory(getNaverProfileRequester, getGoogleProfileRequester);
+    private final ProfileRequesterFactory profileRequesterFactory = new ProfileRequesterFactory(getNaverProfileRequester, getGoogleProfileRequester);
 
 
     /**
@@ -40,7 +40,7 @@ class GetProfileRequesterFactoryTest {
         SocialType type = SocialType.NAVER;
 
         //when
-        SocialProfileRequester oauthTokenRequester = getProfileRequesterFactory.getProfileRequester(type);
+        SocialProfileRequester oauthTokenRequester = profileRequesterFactory.getProfileRequester(type);
 
         //then
         assertThat(oauthTokenRequester.isCorrectType(type)).isTrue();

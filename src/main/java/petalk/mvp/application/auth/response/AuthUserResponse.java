@@ -1,6 +1,6 @@
 package petalk.mvp.application.auth.response;
 
-import petalk.mvp.domain.auth.User;
+import petalk.mvp.domain.auth.AuthUser;
 
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ public class AuthUserResponse {
         this.userAuthority = userAuthority;
     }
 
-    public static AuthUserResponse from(User user) {
+    public static AuthUserResponse from(AuthUser user) {
         return new AuthUserResponse(user.getId().getValue(), user.getNickname(), user.getUserAuthority().name());
     }
 
