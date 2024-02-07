@@ -9,8 +9,6 @@ public class UserSocialInfo {
 
     private SocialInfoId id;
 
-    private User.UserId userId;
-
     private String email;
 
     private SocialType socialType;
@@ -20,37 +18,32 @@ public class UserSocialInfo {
     private String socialName;
 
     //== 생성 메소드 ==//
-    private UserSocialInfo(SocialInfoId id, User.UserId userId, String email, SocialType socialType, SocialAuthId socialId, String socialName) {
+    private UserSocialInfo(SocialInfoId id, String email, SocialType socialType, SocialAuthId socialId, String socialName) {
         this.id = id;
-        this.userId = userId;
         this.email = email;
         this.socialType = socialType;
         this.socialId = socialId;
         this.socialName = socialName;
     }
 
-    private UserSocialInfo(User.UserId userId, String email, SocialType socialType, SocialAuthId socialId, String socialName) {
-        this.userId = userId;
+    private UserSocialInfo(String email, SocialType socialType, SocialAuthId socialId, String socialName) {
         this.email = email;
         this.socialType = socialType;
         this.socialId = socialId;
         this.socialName = socialName;
     }
 
-    public static UserSocialInfo exist(SocialInfoId id, User.UserId userId, String email, SocialType socialType, SocialAuthId socialId, String socialName) {
-        return new UserSocialInfo(id, userId, email, socialType, socialId, socialName);
+    public static UserSocialInfo exist(SocialInfoId id, String email, SocialType socialType, SocialAuthId socialId, String socialName) {
+        return new UserSocialInfo(id, email, socialType, socialId, socialName);
     }
 
-    public static UserSocialInfo register(User.UserId userId, String email, SocialType socialType, SocialAuthId socialId, String socialName) {
-        return new UserSocialInfo(userId, email, socialType, socialId, socialName);
+    public static UserSocialInfo register(String email, SocialType socialType, SocialAuthId socialId, String socialName) {
+        return new UserSocialInfo(email, socialType, socialId, socialName);
     }
 
     //== 조회 메소드 ==//
     public SocialInfoId getId() {
         return id;
-    }
-    public User.UserId getUserId() {
-        return userId;
     }
     public String getEmail() {
         return email;

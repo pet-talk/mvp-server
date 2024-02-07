@@ -2,9 +2,7 @@ package petalk.mvp.storage.auth.mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import petalk.mvp.domain.auth.User;
-import petalk.mvp.domain.auth.UserAuthority;
-import petalk.mvp.storage.auth.mapper.AuthUserJpaMapper;
+import petalk.mvp.domain.auth.*;
 import petalk.mvp.storage.postgre.model.AuthUserJpa;
 import petalk.mvp.core.annotation.UnitTest;
 
@@ -31,7 +29,12 @@ class AuthUserJpaMapperTest {
     @DisplayName("사용자 도메인 모델을 영속성 모델로 변환할 수 있다.")
     void mapToPersistenceModel() {
         //given
-        User user = getExistUser();
+        UUID userId = UUID.randomUUID();
+        String nickname = "nickname";
+        LocalDateTime registrationDate = LocalDateTime.now();
+        UserAuthority authorityType = UserAuthority.VET;
+
+        AuthUser user = getExistUser(userId, nickname, registrationDate, authorityType);
 
         //when
         AuthUserJpa authUserJpa = authUserJpaMapper.from(user);
@@ -40,14 +43,12 @@ class AuthUserJpaMapperTest {
         assertThat(authUserJpa)
                 .isNotNull()
                 .extracting("id", "nickname", "registrationDate", "authorityType")
-                .containsExactly(user.getId().getValue(), user.getNickname(), user.getRegistrationDate(), user.getUserAuthority());
+                .containsExactly(userId, nickname, registrationDate, authorityType);
     }
 
-    private static User getExistUser() {
-        UUID uuid = UUID.randomUUID();
-        UserAuthority authority = UserAuthority.VET;
-        String nickname = "nickname";
-        LocalDateTime registrationDate = LocalDateTime.now();
-        return User.exist(User.UserId.from(uuid), nickname, authority, registrationDate);
+    private static AuthUser getExistUser(UUID userId, String nickname, LocalDateTime registrationDate, UserAuthority authorityType) {
+        UserSocialInfo userSocialInfo = UserSocialInfo.exist(UserSocialInfo.SocialInfoId.from(123L), "email", SocialType.NAVER, SocialAuthId.from("socialAuthId"), "name");
+
+        return AuthUser.exist(AuthUser.UserId.from(userId), userSocialInfo, nickname, authorityType, registrationDate);
     }
 }

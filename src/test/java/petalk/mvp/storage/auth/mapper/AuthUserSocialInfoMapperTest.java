@@ -3,9 +3,7 @@ package petalk.mvp.storage.auth.mapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import petalk.mvp.core.annotation.UnitTest;
-
 import petalk.mvp.domain.auth.*;
-import petalk.mvp.storage.auth.mapper.AuthUserSocialInfoMapper;
 import petalk.mvp.storage.postgre.model.AuthUserSocialInfoJpa;
 
 import java.time.LocalDateTime;
@@ -23,8 +21,7 @@ class AuthUserSocialInfoMapperTest {
     private final AuthUserSocialInfoMapper authUserSocialInfoMapper = new AuthUserSocialInfoMapper();
 
     /**
-     * @given 사용자 도메인이 존재하고
-     * @given 소셜 사용자 도메인 모델이 존재한다면
+     * @given 사용자 도메인 모델이 존재한다면
      * @when 소셜 정보 도메인 모델을 영속성 모델로 변환할 때
      * @then 영속성 모델이 반환된다.
      */
@@ -33,36 +30,29 @@ class AuthUserSocialInfoMapperTest {
     void WhenExistUserAndSocialUserThenCanMapPersistenceModel() {
         //given
         UUID uuid = UUID.randomUUID();
-        User user = getExistUser(uuid);
+        Long socialInfoId = 213L;
 
-        //given
         String socialAuthId = "id";
         String email = "email";
         String name = "name";
-        SocialAuthUser authUser = createNaverSocialUser(socialAuthId, email, name);
+
+        AuthUser user = getExistUser(uuid, socialInfoId, socialAuthId, email, name);
 
         //when
-
-        UserSocialInfo userSocialInfo = authUser.registerInfo(user);
-        AuthUserSocialInfoJpa userSocialInfoJpa = authUserSocialInfoMapper.from(userSocialInfo);
+        AuthUserSocialInfoJpa userSocialInfoJpa = authUserSocialInfoMapper.from(user);
 
         //then
         assertThat(userSocialInfoJpa)
                 .isNotNull()
-                .extracting("userId", "email", "socialType", "socialId", "socialName")
-                .containsExactly(uuid, email, SocialType.NAVER, socialAuthId, name);
+                .extracting("userId", "email", "socialId", "socialName")
+                .containsExactly(uuid, email, socialAuthId, name);
     }
 
-    private static SocialAuthUser createNaverSocialUser(String userId, String email, String name) {
-        SocialAuthId id = SocialAuthId.from(userId);
-        String nickname = "nickname";
-        return NaverSocialAuthUser.from(id, email, nickname, name);
-    }
-
-    private static User getExistUser(UUID uuid) {
+    private static AuthUser getExistUser(UUID uuid, Long socialInfoId, String socialAuthId, String email, String name) {
         UserAuthority authority = UserAuthority.VET;
         String nickname = "nickname";
         LocalDateTime registrationDate = LocalDateTime.now();
-        return User.exist(User.UserId.from(uuid), nickname, authority, registrationDate);
+        UserSocialInfo userSocialInfo = UserSocialInfo.exist(UserSocialInfo.SocialInfoId.from(socialInfoId), email, SocialType.NAVER, SocialAuthId.from(socialAuthId), name);
+        return AuthUser.exist(AuthUser.UserId.from(uuid), userSocialInfo, nickname, authority, registrationDate);
     }
 }

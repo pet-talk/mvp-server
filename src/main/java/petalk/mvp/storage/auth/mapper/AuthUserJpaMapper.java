@@ -1,6 +1,6 @@
 package petalk.mvp.storage.auth.mapper;
 
-import petalk.mvp.domain.auth.User;
+import petalk.mvp.domain.auth.AuthUser;
 import petalk.mvp.storage.postgre.model.AuthUserJpa;
 import petalk.mvp.core.Mapper;
 
@@ -10,7 +10,7 @@ import petalk.mvp.core.Mapper;
 @Mapper
 public class AuthUserJpaMapper {
 
-    public AuthUserJpa from(User user) {
+    public AuthUserJpa from(AuthUser user) {
         return new AuthUserJpa(user.getId().getValue(), user.getNickname(), user.getRegistrationDate(), user.getUserAuthority());
     }
 }

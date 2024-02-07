@@ -4,7 +4,7 @@ import petalk.mvp.application.auth.command.validator.AuthenticateValidator;
 import petalk.mvp.application.auth.response.AuthUserResponse;
 import petalk.mvp.domain.auth.AuthorizationCode;
 import petalk.mvp.domain.auth.SocialType;
-import petalk.mvp.domain.auth.User;
+import petalk.mvp.domain.auth.AuthUser;
 
 import java.util.UUID;
 
@@ -55,7 +55,7 @@ public interface AuthenticateUsecase {
             this.user = user;
         }
 
-        public static AuthenticateResponse from(User user) {
+        public static AuthenticateResponse from(AuthUser user) {
             return new AuthenticateResponse(AuthUserResponse.from(user));
         }
 

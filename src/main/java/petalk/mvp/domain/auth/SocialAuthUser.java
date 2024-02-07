@@ -12,7 +12,5 @@ public interface SocialAuthUser {
 
     SocialType getSocialType();
 
-    User registerUser(LocalDateTime registrationDate);
-
-    UserSocialInfo registerInfo(User user);
+    AuthUser registerUser(LocalDateTime registrationDate);
 }

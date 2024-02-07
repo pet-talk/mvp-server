@@ -1,13 +1,13 @@
 package petalk.mvp.storage.auth.mapper;
 
-import petalk.mvp.domain.auth.UserSocialInfo;
-import petalk.mvp.storage.postgre.model.AuthUserSocialInfoJpa;
 import petalk.mvp.core.Mapper;
+import petalk.mvp.domain.auth.AuthUser;
+import petalk.mvp.storage.postgre.model.AuthUserSocialInfoJpa;
 
 @Mapper
 public class AuthUserSocialInfoMapper {
 
-    public AuthUserSocialInfoJpa from(UserSocialInfo userSocialInfo) {
-        return new AuthUserSocialInfoJpa(userSocialInfo.getUserId().getValue(), userSocialInfo.getEmail(), userSocialInfo.getSocialType(), userSocialInfo.getSocialId().getValue(), userSocialInfo.getSocialName());
+    public AuthUserSocialInfoJpa from(AuthUser user) {
+        return new AuthUserSocialInfoJpa(user.getId().getValue(), user.getEmail(), user.getSocialType(), user.getSocialId().getValue(), user.getSocialName());
     }
 }

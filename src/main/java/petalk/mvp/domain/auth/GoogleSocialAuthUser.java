@@ -27,13 +27,8 @@ public class GoogleSocialAuthUser implements SocialAuthUser{
     }
     //== 비즈니스 로직 ==//
     @Override
-    public UserSocialInfo registerInfo(User user) {
-        return UserSocialInfo.register(user.getId(), this.email, this.socialType, this.socialAuthId, this.name);
-    }
-
-    @Override
-    public User registerUser(LocalDateTime registrationDate) {
-        return User.register(this.name, registrationDate);
+    public AuthUser registerUser(LocalDateTime registrationDate) {
+        return AuthUser.register(this.email, this.socialType, this.socialAuthId, this.name, this.name, registrationDate);
     }
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//

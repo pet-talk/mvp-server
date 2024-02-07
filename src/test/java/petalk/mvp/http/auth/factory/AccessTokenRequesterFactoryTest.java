@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 import petalk.mvp.core.annotation.UnitTest;
 import petalk.mvp.domain.auth.SocialType;
-import petalk.mvp.http.auth.adapter.GetAccessTokenRequesterFactory;
+import petalk.mvp.http.auth.adapter.AccessTokenRequesterFactory;
 import petalk.mvp.http.auth.request.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @UnitTest
 @DisplayName("소셜 액세스 토큰 http 요청자 팩토리 테스트")
-class GetAccessTokenRequesterFactoryTest {
+class AccessTokenRequesterFactoryTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final Gson gson = new Gson();
@@ -34,7 +34,7 @@ class GetAccessTokenRequesterFactoryTest {
             new GoogleTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE);
     private final NaverTokenRequester getNaverTokenRequester = new NaverTokenRequester(tokenBuilder, restTemplate, gson, URL);
     private final GoogleTokenRequester getGoogleTokenRequester = new GoogleTokenRequester(googleTokenCommandBuilder, restTemplate, gson, URL);
-    private final GetAccessTokenRequesterFactory getAccessTokenRequesterFactory = new GetAccessTokenRequesterFactory(getNaverTokenRequester, getGoogleTokenRequester);
+    private final AccessTokenRequesterFactory accessTokenRequesterFactory = new AccessTokenRequesterFactory(getNaverTokenRequester, getGoogleTokenRequester);
 
     /**
      * @given 소셜 인증 서비스가 네이버라면
@@ -48,7 +48,7 @@ class GetAccessTokenRequesterFactoryTest {
         SocialType type = SocialType.NAVER;
 
         //when
-        SocialTokenRequester oauthTokenRequester = getAccessTokenRequesterFactory.getOauthTokenRequester(type);
+        SocialTokenRequester oauthTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(type);
 
         //then
         assertThat(oauthTokenRequester.isCorrectType(type)).isTrue();
@@ -66,7 +66,7 @@ class GetAccessTokenRequesterFactoryTest {
         SocialType type = SocialType.GOOGLE;
 
         //when
-        SocialTokenRequester oauthTokenRequester = getAccessTokenRequesterFactory.getOauthTokenRequester(type);
+        SocialTokenRequester oauthTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(type);
 
         //then
         assertThat(oauthTokenRequester.isCorrectType(type)).isTrue();

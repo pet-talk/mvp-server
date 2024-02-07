@@ -7,24 +7,20 @@ import java.util.UUID;
 /**
  * 인증된 유저를 나타내는 클래스입니다.
  */
-public class User {
+public class AuthUser {
     private UserId id;
+    private UserSocialInfo socialInfo;
     private String nickname;
     private UserAuthorities authorities;
     private LocalDateTime registrationDate;
-    private RegistrationType registrationType;
-
-    private enum RegistrationType {
-        EXIST, NEW
-    }
 
     //== 생성 메소드 ==//
-    private User(UserId id, String nickname, UserAuthorities authorities, LocalDateTime registrationDate, RegistrationType registrationType) {
+    private AuthUser(UserId id, UserSocialInfo socialInfo, String nickname, UserAuthorities authorities, LocalDateTime registrationDate) {
         this.id = id;
+        this.socialInfo = socialInfo;
         this.nickname = nickname;
         this.authorities = authorities;
         this.registrationDate = registrationDate;
-        this.registrationType = registrationType;
     }
 
     /**
@@ -32,18 +28,20 @@ public class User {
      * @param id 반려인 유저의 id
      * @return 반려인 유저
      */
-    public static User exist(User.UserId id, String nickname, UserAuthority authority, LocalDateTime registrationDate) {
-        return new User(id, nickname, UserAuthorities.from(authority), registrationDate, RegistrationType.EXIST);
+    public static AuthUser exist(AuthUser.UserId id, UserSocialInfo socialInfo, String nickname, UserAuthority authority, LocalDateTime registrationDate) {
+        return new AuthUser(id, socialInfo, nickname, UserAuthorities.from(authority), registrationDate);
     }
 
-    public static User register(String nickname, LocalDateTime registrationDate) {
-        return new User(UserId.register(), nickname, UserAuthorities.petOwner(), registrationDate, RegistrationType.NEW);
+    public static AuthUser register(UserSocialInfo socialInfo, String nickname, LocalDateTime registrationDate) {
+        return new AuthUser(UserId.register(), socialInfo, nickname, UserAuthorities.petOwner(), registrationDate);
+    }
+
+    public static AuthUser register(String email, SocialType socialType, SocialAuthId socialId, String socialName, String nickname, LocalDateTime registrationDate) {
+        UserSocialInfo socialInfo = UserSocialInfo.register(email, socialType, socialId, socialName);
+        return new AuthUser(UserId.register(), socialInfo, nickname, UserAuthorities.petOwner(), registrationDate);
     }
 
     //== 비즈니스 로직 ==//
-    public boolean isNew() {
-        return registrationType == RegistrationType.NEW;
-    }
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//
 
@@ -61,6 +59,22 @@ public class User {
 
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
+    }
+
+    public String getEmail() {
+        return socialInfo.getEmail();
+    }
+
+    public SocialType getSocialType() {
+        return socialInfo.getSocialType();
+    }
+
+    public SocialAuthId getSocialId() {
+        return socialInfo.getSocialId();
+    }
+
+    public String getSocialName() {
+        return socialInfo.getSocialName();
     }
 
     /**

@@ -34,12 +34,10 @@ class AuthenticateServiceTest {
     private final LoadSocialUserPort loadSocialUserPort = Mockito.mock(LoadSocialUserPort.class);
     private final LoadUserPort loadUserPort = Mockito.mock(LoadUserPort.class);
     private final RegisterUserPort registerUserPort = Mockito.mock(RegisterUserPort.class);
-    private final RegisterSocialInfoPort registerSocialInfoPort = Mockito.mock(RegisterSocialInfoPort.class);
-    private final LoadUserSocialInfoPort loadUserSocialInfoPort = Mockito.mock(LoadUserSocialInfoPort.class);
 
     private final Clock clock = Clock.fixed(Instant.parse("2020-01-01T00:00:00Z"), ZoneId.systemDefault());
 
-    private final AuthenticateService authenticateService = new AuthenticateService(loadSocialUserPort, loadUserPort, registerUserPort, registerSocialInfoPort, loadUserSocialInfoPort, clock);
+    private final AuthenticateService authenticateService = new AuthenticateService(loadSocialUserPort, loadUserPort, registerUserPort, clock);
 
 
     private static NaverSocialAuthUser createNaverSocialUser() {
@@ -58,22 +56,15 @@ class AuthenticateServiceTest {
     void returnUser() {
         //given
         String nickname = "nickname";
-        String socialId = "id";
-        String email = "email";
-        NaverSocialAuthUser naverSocialUser = createNaverSocialUser(socialId, email, nickname);
+        NaverSocialAuthUser naverSocialUser = createNaverSocialUser(nickname);
 
         given(loadSocialUserPort.loadSocialUser(any(), any()))
                 .willReturn(Optional.of(naverSocialUser));
 
         //given
         UUID userId = UUID.randomUUID();
-        UserSocialInfo userSocialInfo = createUserSocialInfo(userId, email, socialId, nickname);
-        given(loadUserSocialInfoPort.loadSocialInfo(any()))
-                .willReturn(Optional.of(userSocialInfo));
-
-        //given
         UserAuthority authority = UserAuthority.VET;
-        User user = createUser(userId, nickname, authority);
+        AuthUser user = createUser(userId, nickname, authority);
         given(loadUserPort.loadUser(any()))
                 .willReturn(Optional.of(user));
 
@@ -90,16 +81,23 @@ class AuthenticateServiceTest {
                 .containsExactly(userId, nickname, authority.name());
     }
 
-    private NaverSocialAuthUser createNaverSocialUser(String socialId, String email, String nickname) {
-        return NaverSocialAuthUser.from(SocialAuthId.from(socialId), email, nickname, "name");
+    private NaverSocialAuthUser createNaverSocialUser(String nickname) {
+        String socialId = "id";
+        String email = "email";
+        String name = "name";
+
+        return NaverSocialAuthUser.from(SocialAuthId.from(socialId), email, nickname, name);
     }
 
-    private static User createUser(UUID id, String nickname, UserAuthority authority) {
-        return User.exist(User.UserId.from(id), nickname, authority, LocalDateTime.now());
+    private AuthUser createUser(UUID id, String nickname, UserAuthority authority) {
+        String socialId = "id";
+        String email = "email";
+        String name = "name";
+        return AuthUser.exist(AuthUser.UserId.from(id), createUserSocialInfo(email, socialId, name), nickname, authority, LocalDateTime.now());
     }
 
-    private UserSocialInfo createUserSocialInfo(UUID userId, String email, String socialId, String nickname) {
-        return UserSocialInfo.exist(UserSocialInfo.SocialInfoId.from(123L), User.UserId.from(userId), email, SocialType.NAVER, SocialAuthId.from(socialId), nickname);
+    private UserSocialInfo createUserSocialInfo(String email, String socialId, String socialName) {
+        return UserSocialInfo.exist(UserSocialInfo.SocialInfoId.from(123L), email, SocialType.NAVER, SocialAuthId.from(socialId), socialName);
     }
 
     /**

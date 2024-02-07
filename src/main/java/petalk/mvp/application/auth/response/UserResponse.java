@@ -1,6 +1,6 @@
 package petalk.mvp.application.auth.response;
 
-import petalk.mvp.domain.auth.User;
+import petalk.mvp.domain.auth.AuthUser;
 
 import java.util.UUID;
 
@@ -8,13 +8,13 @@ import java.util.UUID;
  * 유저를 나타내는 응답 모델입니다.
  */
 public class UserResponse {
-    private User.UserId userId;
+    private AuthUser.UserId userId;
 
-    private UserResponse(User.UserId userId) {
+    private UserResponse(AuthUser.UserId userId) {
         this.userId = userId;
     }
 
-    public static UserResponse from(User user) {
+    public static UserResponse from(AuthUser user) {
         return new UserResponse(user.getId());
     }
 
