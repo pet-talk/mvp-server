@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @ApiTester
 public class AuthenticateApiTester {
 
-    private final String PATH = "/auth/authenticate";
+    private final String PATH = "/api/auth/authenticate";
 
     private ExtractableResponse<Response> request(String provider, String code) {
 
