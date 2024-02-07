@@ -1,5 +1,6 @@
 package petalk.mvp.domain.auth.command;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -10,6 +11,7 @@ public class GoogleSocialAuthUser implements SocialAuthUser{
     private SocialAuthId socialAuthId;
     private String email;
     private String name;
+    private SocialType socialType;
 
     //== 생성 메소드 ==//
 
@@ -17,12 +19,22 @@ public class GoogleSocialAuthUser implements SocialAuthUser{
         this.socialAuthId = socialAuthId;
         this.email = email;
         this.name = name;
+        this.socialType = SocialType.GOOGLE;
     }
 
     public static GoogleSocialAuthUser from(SocialAuthId socialAuthId, String email, String name) {
         return new GoogleSocialAuthUser(socialAuthId, email, name);
     }
     //== 비즈니스 로직 ==//
+    @Override
+    public UserSocialInfo registerInfo(User user) {
+        return UserSocialInfo.register(user.getId(), this.email, this.socialType, this.socialAuthId, this.name);
+    }
+
+    @Override
+    public User registerUser(LocalDateTime registrationDate) {
+        return User.register(this.name, registrationDate);
+    }
     //== 수정 메소드 ==//
     //== 조회 메소드 ==//
 
@@ -32,23 +44,8 @@ public class GoogleSocialAuthUser implements SocialAuthUser{
     }
 
     @Override
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getNickname() {
-        return name;
-    }
-
-    @Override
     public SocialType getSocialType() {
-        return SocialType.NAVER;
+        return socialType;
     }
 
     @Override

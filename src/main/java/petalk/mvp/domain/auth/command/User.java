@@ -36,12 +36,8 @@ public class User {
         return new User(id, nickname, UserAuthorities.from(authority), registrationDate, RegistrationType.EXIST);
     }
 
-    /**
-     * 새로운 반려인 유저를 생성합니다.
-     * @return 반려인 유저
-     */
-    public static User register(SocialAuthUser user, LocalDateTime registrationDate) {
-        return new User(UserId.register(), user.getNickname(), UserAuthorities.petOwner(), registrationDate, RegistrationType.NEW);
+    public static User register(String nickname, LocalDateTime registrationDate) {
+        return new User(UserId.register(), nickname, UserAuthorities.petOwner(), registrationDate, RegistrationType.NEW);
     }
 
     //== 비즈니스 로직 ==//
@@ -85,10 +81,6 @@ public class User {
 
         public static UserId from(UUID id) {
             return new UserId(id);
-        }
-
-        public static UserId from(String id) {
-            return new UserId(UUID.fromString(id));
         }
 
         public UUID getValue() {

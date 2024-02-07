@@ -32,32 +32,34 @@ class AuthUserSocialInfoMapperTest {
     @DisplayName("사용자와 소셜 사용자가 존재하면 소셜 정보 영속성 모델로 변환이 가능하다.")
     void WhenExistUserAndSocialUserThenCanMapPersistenceModel() {
         //given
-        User user = getExistUser();
+        UUID uuid = UUID.randomUUID();
+        User user = getExistUser(uuid);
 
         //given
-        SocialAuthUser authUser = createNaverSocialUser();
+        String socialAuthId = "id";
+        String email = "email";
+        String name = "name";
+        SocialAuthUser authUser = createNaverSocialUser(socialAuthId, email, name);
 
         //when
-        UserSocialInfo userSocialInfo = UserSocialInfo.register(user, authUser);
+
+        UserSocialInfo userSocialInfo = authUser.registerInfo(user);
         AuthUserSocialInfoJpa userSocialInfoJpa = authUserSocialInfoMapper.from(userSocialInfo);
 
         //then
         assertThat(userSocialInfoJpa)
                 .isNotNull()
                 .extracting("userId", "email", "socialType", "socialId", "socialName")
-                .containsExactly(user.getId().getValue(), authUser.getEmail(), authUser.getSocialType(), authUser.getSocialId().getValue(), authUser.getName());
+                .containsExactly(uuid, email, SocialType.NAVER, socialAuthId, name);
     }
 
-    private static SocialAuthUser createNaverSocialUser() {
-        SocialAuthId id = SocialAuthId.from("id");
-        String email = "email";
-        String name = "name";
+    private static SocialAuthUser createNaverSocialUser(String userId, String email, String name) {
+        SocialAuthId id = SocialAuthId.from(userId);
         String nickname = "nickname";
         return NaverSocialAuthUser.from(id, email, nickname, name);
     }
 
-    private static User getExistUser() {
-        UUID uuid = UUID.randomUUID();
+    private static User getExistUser(UUID uuid) {
         UserAuthority authority = UserAuthority.VET;
         String nickname = "nickname";
         LocalDateTime registrationDate = LocalDateTime.now();
