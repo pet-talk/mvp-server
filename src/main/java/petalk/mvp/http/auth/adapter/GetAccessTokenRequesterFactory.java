@@ -2,12 +2,10 @@ package petalk.mvp.http.auth.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import petalk.mvp.domain.auth.command.Authenticator;
-
-import petalk.mvp.http.auth.request.GetSocialTokenRequester;
-import petalk.mvp.http.auth.request.GetGoogleTokenRequester;
-import petalk.mvp.http.auth.request.GetNaverTokenRequester;
+import petalk.mvp.domain.auth.SocialType;
+import petalk.mvp.http.auth.request.GoogleTokenRequester;
+import petalk.mvp.http.auth.request.NaverTokenRequester;
+import petalk.mvp.http.auth.request.SocialTokenRequester;
 
 
 /**
@@ -19,15 +17,15 @@ import petalk.mvp.http.auth.request.GetNaverTokenRequester;
 @RequiredArgsConstructor
 public class GetAccessTokenRequesterFactory {
 
-    private final GetNaverTokenRequester naverTokenRequester;
-    private final GetGoogleTokenRequester googleTokenRequester;
+    private final NaverTokenRequester naverTokenRequester;
+    private final GoogleTokenRequester googleTokenRequester;
 
-    public GetSocialTokenRequester getOauthTokenRequester(Authenticator authenticator) {
-        if (authenticator.isNaver()) {
+    public SocialTokenRequester getOauthTokenRequester(SocialType socialType) {
+        if (naverTokenRequester.isCorrectType(socialType)) {
             return naverTokenRequester;
         }
 
-        if (authenticator.isGoogle()) {
+        if (googleTokenRequester.isCorrectType(socialType)) {
             return googleTokenRequester;
         }
         return null;

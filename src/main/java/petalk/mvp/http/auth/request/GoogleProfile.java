@@ -1,9 +1,9 @@
 package petalk.mvp.http.auth.request;
 
 import lombok.Builder;
-import petalk.mvp.domain.auth.command.GoogleSocialAuthUser;
-import petalk.mvp.domain.auth.command.SocialAuthId;
-import petalk.mvp.domain.auth.command.SocialAuthUser;
+import petalk.mvp.domain.auth.GoogleSocialAuthUser;
+import petalk.mvp.domain.auth.SocialAuthId;
+import petalk.mvp.domain.auth.SocialAuthUser;
 
 /**
  * Naver 프로필을 나타냅니다.

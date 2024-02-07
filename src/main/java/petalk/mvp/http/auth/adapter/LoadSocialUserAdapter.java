@@ -1,13 +1,12 @@
 package petalk.mvp.http.auth.adapter;
 
-import petalk.mvp.domain.auth.command.out.LoadSocialUserPort;
-import petalk.mvp.domain.auth.command.Authenticator;
-import petalk.mvp.domain.auth.command.SocialAuthUser;
-
+import petalk.mvp.application.auth.command.out.LoadSocialUserPort;
 import petalk.mvp.core.PersistenceAdapter;
-
-import petalk.mvp.http.auth.request.GetSocialProfileRequester;
-import petalk.mvp.http.auth.request.GetSocialTokenRequester;
+import petalk.mvp.domain.auth.AuthorizationCode;
+import petalk.mvp.domain.auth.SocialAuthUser;
+import petalk.mvp.domain.auth.SocialType;
+import petalk.mvp.http.auth.request.SocialProfileRequester;
+import petalk.mvp.http.auth.request.SocialTokenRequester;
 import petalk.mvp.http.auth.request.SocialProfile;
 
 import java.util.Optional;
@@ -31,15 +30,14 @@ public class LoadSocialUserAdapter implements LoadSocialUserPort {
     }
 
     @Override
-    public Optional<SocialAuthUser> loadSocialUser(Authenticator authenticator) {
-        GetSocialTokenRequester getSocialTokenRequester = getAccessTokenRequesterFactory.getOauthTokenRequester(authenticator);
-        GetSocialProfileRequester profileRequester = getProfileRequesterFactory.getProfileRequester(authenticator);
+    public Optional<SocialAuthUser> loadSocialUser(AuthorizationCode code, SocialType socialType) {
+        SocialTokenRequester socialTokenRequester = getAccessTokenRequesterFactory.getOauthTokenRequester(socialType);
+        SocialProfileRequester profileRequester = getProfileRequesterFactory.getProfileRequester(socialType);
 
-        return getSocialTokenRequester
-                .getAccessToken(authenticator)
-                .flatMap(accessToken -> profileRequester
-                        .getProfile(accessToken)
-                        .map(SocialProfile::toSocialAuthUser));
+        return socialTokenRequester
+                .getAccessToken(code)
+                .flatMap(profileRequester::getProfile)
+                .map(SocialProfile::toSocialAuthUser);
 
     }
 }

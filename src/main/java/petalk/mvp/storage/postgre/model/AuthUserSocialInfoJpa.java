@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import petalk.mvp.domain.auth.command.SocialType;
+import petalk.mvp.domain.auth.SocialType;
 
 import java.util.UUID;
 

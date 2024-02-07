@@ -1,7 +1,7 @@
 package petalk.mvp.storage.postgre;
 
 import jakarta.servlet.http.HttpServletRequest;
-import petalk.mvp.core.auth.SessionUserModel;
+import petalk.mvp.support.auth.SessionUserModel;
 
 public interface SessionRepository {
 

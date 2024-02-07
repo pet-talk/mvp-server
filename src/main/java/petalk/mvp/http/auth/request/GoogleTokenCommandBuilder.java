@@ -2,8 +2,7 @@ package petalk.mvp.http.auth.request;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import petalk.mvp.domain.auth.command.Authenticator;
-import petalk.mvp.domain.auth.command.AuthorizationCode;
+import petalk.mvp.domain.auth.AuthorizationCode;
 
 /**
  * 구글 토큰 http 요청 커맨드 빌더입니다.
@@ -30,15 +29,14 @@ public class GoogleTokenCommandBuilder {
         this.GRANT_TYPE = grantType;
     }
 
-    public GetGoogleTokenCommand generateCommand(Authenticator authenticator) {
-        AuthorizationCode authorizationCode = authenticator.getAuthorizationCode();
+    public GoogleTokenCommand generateCommand(AuthorizationCode code) {
 
-        return GetGoogleTokenCommand.builder()
+        return GoogleTokenCommand.builder()
                 .clientSecret(CLIENT_SECRET)
                 .clientId(CLIENT_ID)
                 .grantType(GRANT_TYPE)
                 .redirectUri(REDIRECT_ID)
-                .code(authorizationCode.getValue())
+                .code(code.getValue())
                 .build();
 
     }

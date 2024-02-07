@@ -1,9 +1,10 @@
 package petalk.mvp.storage.auth.adapter;
 
 import lombok.RequiredArgsConstructor;
-import petalk.mvp.domain.auth.command.User;
-import petalk.mvp.domain.auth.command.UserSocialInfo;
-import petalk.mvp.domain.auth.command.out.LoadUserPort;
+import petalk.mvp.domain.auth.User;
+import petalk.mvp.domain.auth.UserSocialInfo;
+import petalk.mvp.application.auth.command.out.LoadUserPort;
+import petalk.mvp.storage.auth.mapper.UserMapper;
 import petalk.mvp.storage.postgre.AuthUserJpaRepository;
 import petalk.mvp.core.PersistenceAdapter;
 

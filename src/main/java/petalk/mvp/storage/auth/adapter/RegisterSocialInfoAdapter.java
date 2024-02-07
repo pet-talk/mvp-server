@@ -2,9 +2,10 @@ package petalk.mvp.storage.auth.adapter;
 
 import lombok.RequiredArgsConstructor;
 
-import petalk.mvp.domain.auth.command.out.RegisterSocialInfoPort;
-import petalk.mvp.domain.auth.command.UserSocialInfo;
+import petalk.mvp.application.auth.command.out.RegisterSocialInfoPort;
+import petalk.mvp.domain.auth.UserSocialInfo;
 
+import petalk.mvp.storage.auth.mapper.AuthUserSocialInfoMapper;
 import petalk.mvp.storage.postgre.model.AuthUserSocialInfoJpa;
 import petalk.mvp.storage.postgre.AuthUserSocialInfoJpaRepository;
 
