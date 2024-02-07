@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
-import petalk.mvp.domain.auth.command.UserAuthority;
+import petalk.mvp.domain.auth.UserAuthority;
 import petalk.mvp.core.BaseTimeEntity;
 
 import java.time.LocalDateTime;

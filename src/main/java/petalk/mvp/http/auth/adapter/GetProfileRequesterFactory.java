@@ -2,12 +2,10 @@ package petalk.mvp.http.auth.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import petalk.mvp.domain.auth.command.Authenticator;
-
-import petalk.mvp.http.auth.request.GetGoogleProfileRequester;
-import petalk.mvp.http.auth.request.GetNaverProfileRequester;
-import petalk.mvp.http.auth.request.GetSocialProfileRequester;
+import petalk.mvp.domain.auth.SocialType;
+import petalk.mvp.http.auth.request.GoogleProfileRequester;
+import petalk.mvp.http.auth.request.NaverProfileRequester;
+import petalk.mvp.http.auth.request.SocialProfileRequester;
 
 /**
  * 소셜 프로필 http 요청자를 생성하는 팩토리 클래스입니다.
@@ -18,16 +16,16 @@ import petalk.mvp.http.auth.request.GetSocialProfileRequester;
 @RequiredArgsConstructor
 public class GetProfileRequesterFactory {
 
-    private final GetNaverProfileRequester getNaverProfileRequester;
+    private final NaverProfileRequester getNaverProfileRequester;
 
-    private final GetGoogleProfileRequester getGoogleProfileRequester;
+    private final GoogleProfileRequester getGoogleProfileRequester;
 
-    public GetSocialProfileRequester getProfileRequester(Authenticator authenticator) {
-        if (authenticator.isNaver()) {
+    public SocialProfileRequester getProfileRequester(SocialType socialType) {
+        if (getNaverProfileRequester.isCorrectType(socialType)) {
             return getNaverProfileRequester;
         }
 
-        if (authenticator.isGoogle()) {
+        if (getGoogleProfileRequester.isCorrectType(socialType)) {
             return getGoogleProfileRequester;
         }
         return null;

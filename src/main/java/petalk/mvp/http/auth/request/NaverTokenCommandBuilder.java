@@ -2,8 +2,7 @@ package petalk.mvp.http.auth.request;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import petalk.mvp.domain.auth.command.Authenticator;
-import petalk.mvp.domain.auth.command.AuthorizationCode;
+import petalk.mvp.domain.auth.AuthorizationCode;
 
 @Component
 public class NaverTokenCommandBuilder {
@@ -31,16 +30,15 @@ public class NaverTokenCommandBuilder {
         this.STATE = state;
     }
 
-    public GetNaverTokenCommand generateCommand(Authenticator authenticator) {
-        AuthorizationCode authorizationCode = authenticator.getAuthorizationCode();
+    public NaverTokenCommand generateCommand(AuthorizationCode code) {
 
-        return GetNaverTokenCommand.builder()
+        return NaverTokenCommand.builder()
                 .clientSecret(CLIENT_SECRET)
                 .clientId(CLIENT_ID)
                 .grantType(GRANT_TYPE)
                 .redirectUri(REDIRECT_ID)
                 .state(STATE)
-                .code(authorizationCode.getValue())
+                .code(code.getValue())
                 .build();
 
     }

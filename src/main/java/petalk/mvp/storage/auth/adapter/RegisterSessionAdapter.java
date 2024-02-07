@@ -2,11 +2,12 @@ package petalk.mvp.storage.auth.adapter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import petalk.mvp.domain.auth.command.out.RegisterSessionPort;
-import petalk.mvp.domain.auth.command.SessionUserInfo;
+import petalk.mvp.application.auth.command.out.RegisterSessionPort;
+import petalk.mvp.domain.auth.SessionUserInfo;
+import petalk.mvp.storage.auth.mapper.SessionUserModelMapper;
 import petalk.mvp.storage.postgre.SessionRepository;
 import petalk.mvp.core.PersistenceAdapter;
-import petalk.mvp.core.auth.SessionUserModel;
+import petalk.mvp.support.auth.SessionUserModel;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
