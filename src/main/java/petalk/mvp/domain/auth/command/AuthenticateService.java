@@ -21,7 +21,7 @@ public class AuthenticateService implements AuthenticateUsecase {
     private final LoadUserPort loadUserPort;
     private final RegisterUserPort registerUserPort;
     private final RegisterSocialInfoPort registerSocialInfoPort;
-    private final petalk.mvp.domain.auth.command.out.LoadUserSocialInfoPort LoadUserSocialInfoPort;
+    private final LoadUserSocialInfoPort LoadUserSocialInfoPort;
 
     @Autowired
     public AuthenticateService(LoadSocialUserPort loadSocialUserPort, LoadUserPort loadUserPort, RegisterUserPort registerUserPort, RegisterSocialInfoPort registerSocialInfoPort, LoadUserSocialInfoPort LoadUserSocialInfoPort) {
