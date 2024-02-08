@@ -9,6 +9,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import petalk.mvp.domain.auth.SocialType;
+import petalk.mvp.http.auth.adapter.SocialProfile;
+import petalk.mvp.http.auth.adapter.SocialProfileReader;
+import petalk.mvp.http.auth.adapter.SocialTokenResponse;
 
 import java.net.URI;
 import java.util.Optional;
@@ -17,7 +20,7 @@ import java.util.Optional;
  * 구글 프로필 http 요청자 인터페이스입니다.
  */
 @Component
-public class GoogleProfileRequester implements SocialProfileRequester {
+public class GoogleProfileRequester implements SocialProfileReader {
 
     private final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON;
 
@@ -34,7 +37,7 @@ public class GoogleProfileRequester implements SocialProfileRequester {
     }
 
     @Override
-    public Optional<SocialProfile> getProfile(AccessToken accessToken) {
+    public Optional<SocialProfile> getProfile(SocialTokenResponse tokenResponse) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(CONTENT_TYPE);
 
@@ -42,7 +45,7 @@ public class GoogleProfileRequester implements SocialProfileRequester {
         logger.debug("naver profile request: {}", httpHeaders);
 
         URI url = UriComponentsBuilder.fromUriString(PROFILE_URL)
-                .queryParam(AUTHORIZATION_KEY, accessToken.generateAuthenticationCode())
+                .queryParam(AUTHORIZATION_KEY, tokenResponse.generateKey())
                 .encode()
                 .build()
                 .toUri();

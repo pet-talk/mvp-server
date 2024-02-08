@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import petalk.mvp.http.auth.adapter.SocialTokenResponse;
 
 import java.util.Optional;
 
@@ -40,15 +41,15 @@ public class GoogleTokenResponse {
         return !isOk();
     }
 
-    public Optional<AccessToken> mapToken() {
+    public Optional<SocialTokenResponse> mapToken() {
         if(isOk()) {
             return Optional.of(toAccessToken());
         }
         return Optional.empty();
     }
 
-    private GoogleAccessToken toAccessToken() {
-        return new GoogleAccessToken(token.accessToken, token.tokenType, token.scope, token.expiresIn);
+    private GoogleAccessTokenResponse toAccessToken() {
+        return new GoogleAccessTokenResponse(token.accessToken, token.tokenType, token.scope, token.expiresIn);
     }
 
     @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)

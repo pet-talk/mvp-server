@@ -2,44 +2,52 @@ package petalk.mvp.http.auth.request;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 import petalk.mvp.domain.auth.AuthorizationCode;
+
+import java.net.URI;
 
 @Component
 public class NaverTokenCommandBuilder {
 
-    private final String CLIENT_ID;
+    private final String clientId;
 
-    private final String REDIRECT_ID;
+    private final String redirectUrl;
 
-    private final String CLIENT_SECRET;
+    private final String clientSecret;
 
-    private final String GRANT_TYPE;
+    private final String grantType;
 
-    private final String STATE;
+    private final String state;
+    private final String url;
 
     public NaverTokenCommandBuilder(
             @Value("${value.social.naver.client_id}") String clientId,
-            @Value("${value.social.naver.redirect}") String redirectId,
+            @Value("${value.social.naver.redirect}") String redirectUrl,
             @Value("${value.social.naver.client_secret}") String clientSecret,
             @Value("${value.social.naver.grant_type}") String grantType,
-            @Value("${value.social.naver.state}") String state) {
-        this.CLIENT_ID = clientId;
-        this.REDIRECT_ID = redirectId;
-        this.CLIENT_SECRET = clientSecret;
-        this.GRANT_TYPE = grantType;
-        this.STATE = state;
+            @Value("${value.social.naver.state}") String state,
+            @Value("${value.social.naver.url.token}") String tokenUrl) {
+        this.clientId = clientId;
+        this.redirectUrl = redirectUrl;
+        this.clientSecret = clientSecret;
+        this.grantType = grantType;
+        this.state = state;
+        this.url = tokenUrl;
     }
 
-    public NaverTokenCommand generateCommand(AuthorizationCode code) {
+    public URI generateCommand(AuthorizationCode code) {
 
-        return NaverTokenCommand.builder()
-                .clientSecret(CLIENT_SECRET)
-                .clientId(CLIENT_ID)
-                .grantType(GRANT_TYPE)
-                .redirectUri(REDIRECT_ID)
-                .state(STATE)
-                .code(code.getValue())
-                .build();
+        return UriComponentsBuilder.fromUriString(url)
+                .queryParam("client_id", clientId)
+                .queryParam("client_secret", clientSecret)
+                .queryParam("grant_type", grantType)
+                .queryParam("redirect_uri", redirectUrl)
+                .queryParam("state", state)
+                .queryParam("code", code)
+                .encode()
+                .build()
+                .toUri();
 
     }
 }

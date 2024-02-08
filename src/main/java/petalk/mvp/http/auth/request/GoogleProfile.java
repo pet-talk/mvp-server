@@ -4,6 +4,7 @@ import lombok.Builder;
 import petalk.mvp.domain.auth.GoogleSocialAuthUser;
 import petalk.mvp.domain.auth.SocialAuthId;
 import petalk.mvp.domain.auth.SocialAuthUser;
+import petalk.mvp.http.auth.adapter.SocialProfile;
 
 /**
  * Naver 프로필을 나타냅니다.

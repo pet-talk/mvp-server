@@ -32,10 +32,6 @@ public class AuthUser {
         return new AuthUser(id, socialInfo, nickname, UserAuthorities.from(authority), registrationDate);
     }
 
-    public static AuthUser register(UserSocialInfo socialInfo, String nickname, LocalDateTime registrationDate) {
-        return new AuthUser(UserId.register(), socialInfo, nickname, UserAuthorities.petOwner(), registrationDate);
-    }
-
     public static AuthUser register(String email, SocialType socialType, SocialAuthId socialId, String socialName, String nickname, LocalDateTime registrationDate) {
         UserSocialInfo socialInfo = UserSocialInfo.register(email, socialType, socialId, socialName);
         return new AuthUser(UserId.register(), socialInfo, nickname, UserAuthorities.petOwner(), registrationDate);
