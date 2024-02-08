@@ -10,9 +10,11 @@ import java.util.UUID;
  */
 public class AuthUserResponse {
 
-    private final UUID userId;
-    private final String nickname;
-    private final String userAuthority;
+    private UUID userId;
+    private String nickname;
+    private String userAuthority;
+
+    private AuthUserResponse() {}
 
     private AuthUserResponse(UUID userId, String nickname, String userAuthority) {
         this.userId = userId;
