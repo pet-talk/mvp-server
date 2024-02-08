@@ -1,4 +1,4 @@
-package petalk.mvp.http.auth.request;
+package petalk.mvp.http.auth.adapter;
 
 import petalk.mvp.domain.auth.SocialAuthUser;
 
