@@ -14,6 +14,8 @@ public class UserResponse {
         this.userId = userId;
     }
 
+    private UserResponse() {}
+
     public static UserResponse from(AuthUser user) {
         return new UserResponse(user.getId());
     }
