@@ -26,12 +26,4 @@ public class HttpConfig {
                 .build();
     }
 
-    /**
-     * Gson 을 Bean 으로 등록합니다.
-     * @return Gson
-     */
-    @Bean
-    public Gson gson() {
-        return new Gson();
-    }
 }

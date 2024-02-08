@@ -1,9 +1,9 @@
 package petalk.mvp.application.auth.command.validator;
 
 import org.springframework.util.Assert;
-import petalk.mvp.core.ValidationError;
-import petalk.mvp.core.ValidationErrorException;
-import petalk.mvp.core.ValidationErrors;
+import petalk.mvp.core.errors.ValidationError;
+import petalk.mvp.core.errors.ValidationErrorException;
+import petalk.mvp.core.errors.ValidationErrors;
 import petalk.mvp.core.Validator;
 
 /**
@@ -25,7 +25,7 @@ public class AuthenticateValidator {
             errors.add(ValidationError.of("socialTypeName", "소셜 타입이 비어있습니다."));
         }
 
-        if (!errors.hasError()) {
+        if (errors.hasError()) {
             throw new ValidationErrorException(errors);
         }
     }

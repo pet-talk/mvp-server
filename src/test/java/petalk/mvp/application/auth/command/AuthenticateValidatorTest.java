@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import petalk.mvp.application.auth.command.validator.AuthenticateValidator;
 import petalk.mvp.application.auth.command.in.AuthenticateUsecase;
 import petalk.mvp.core.annotation.UnitTest;
-import petalk.mvp.core.ValidationErrorException;
+import petalk.mvp.core.errors.ValidationErrorException;
 
 import static org.assertj.core.groups.Tuple.tuple;
 

@@ -1,4 +1,4 @@
-package petalk.mvp.core;
+package petalk.mvp.core.errors;
 
 /**
  * 유효성 검사 오류 정보를 나타내는 클래스입니다.

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import petalk.mvp.core.errors.ParameterValids;
+import petalk.mvp.core.errors.ValidationErrorException;
 
 
 @RestControllerAdvice(annotations = RestController.class)
@@ -16,10 +18,10 @@ public class ExControllerAdvice {
 
 
   @ExceptionHandler
-  public ResponseEntity<ApiResponse<ParameterValids>> exHandler(ValidationErrorException e) {
+  public ResponseEntity<ApiResult<ParameterValids>> exHandler(ValidationErrorException e) {
 
     ParameterValids valids = ParameterValids.from(e.getErrors());
-    ApiResponse<ParameterValids> response = ApiResponse.validationError(valids);
+    ApiResult<ParameterValids> response = ApiResult.validationError(valids);
 
     logger.error(e.getMessage(), e);
 
@@ -27,8 +29,8 @@ public class ExControllerAdvice {
   }
 
   @ExceptionHandler
-  public ResponseEntity<ApiResponse<String>> exHandler(RuntimeException e) {
-    ApiResponse<String> response = ApiResponse.fail(e.getMessage());
+  public ResponseEntity<ApiResult<String>> exHandler(RuntimeException e) {
+    ApiResult<String> response = ApiResult.fail(e.getMessage());
 
     logger.error(e.getMessage(), e);
 
@@ -36,13 +38,13 @@ public class ExControllerAdvice {
   }
 
   @ExceptionHandler(NoHandlerFoundException.class)
-  public ResponseEntity<ApiResponse<String>> handle404(NoHandlerFoundException exception) {
+  public ResponseEntity<ApiResult<String>> handle404(NoHandlerFoundException exception) {
     return ResponseEntity.notFound().build();
   }
 
   @ExceptionHandler
-  public ResponseEntity<ApiResponse<String>> exHandler(Exception e) {
-    ApiResponse<String> response = ApiResponse.fail(e.getMessage());
+  public ResponseEntity<ApiResult<String>> exHandler(Exception e) {
+    ApiResult<String> response = ApiResult.fail(e.getMessage());
 
     logger.error(e.getMessage(), e);
 
