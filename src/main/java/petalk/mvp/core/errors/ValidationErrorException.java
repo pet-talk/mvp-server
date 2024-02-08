@@ -1,6 +1,4 @@
-package petalk.mvp.core;
-
-import java.util.List;
+package petalk.mvp.core.errors;
 
 /**
  * 유효성 검사 오류를 나타내는 클래스입니다.

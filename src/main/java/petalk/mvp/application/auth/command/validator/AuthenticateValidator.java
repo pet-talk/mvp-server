@@ -1,9 +1,9 @@
 package petalk.mvp.application.auth.command.validator;
 
 import org.springframework.util.Assert;
-import petalk.mvp.core.ValidationError;
-import petalk.mvp.core.ValidationErrorException;
-import petalk.mvp.core.ValidationErrors;
+import petalk.mvp.core.errors.ValidationError;
+import petalk.mvp.core.errors.ValidationErrorException;
+import petalk.mvp.core.errors.ValidationErrors;
 import petalk.mvp.core.Validator;
 
 /**

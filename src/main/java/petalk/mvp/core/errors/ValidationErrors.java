@@ -1,4 +1,4 @@
-package petalk.mvp.core;
+package petalk.mvp.core.errors;
 
 import java.util.ArrayList;
 import java.util.List;

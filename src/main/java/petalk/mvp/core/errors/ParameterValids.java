@@ -1,4 +1,8 @@
-package petalk.mvp.core;
+package petalk.mvp.core.errors;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,17 +31,6 @@ public class ParameterValids {
         public ParameterValid(String field, String message) {
             this.field = field;
             this.message = message;
-        }
-
-        public ParameterValid() {
-        }
-
-        public String getField() {
-            return field;
-        }
-
-        public String getMessage() {
-            return message;
         }
     }
 }

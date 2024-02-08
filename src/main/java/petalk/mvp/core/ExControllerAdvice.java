@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import petalk.mvp.core.errors.ParameterValids;
+import petalk.mvp.core.errors.ValidationErrorException;
 
 
 @RestControllerAdvice(annotations = RestController.class)
