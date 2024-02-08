@@ -48,7 +48,7 @@ public class NaverAuthenticateAcceptanceTest extends AbstractAcceptanceTest {
      */
     @Test
     @DisplayName("서비스 계정이 없다면 인증 요청을 할 때 닉네임이 자동으로 설정된다.")
-    void whenIdIsNotExistThenNicknameIsSetUpBySocialInfo() {
+    void whenIdIsNotExistThenNicknameIsSetUpBySocialInfo() throws Exception {
 
         //when
         ExtractableResponse<Response> 인증_요청_응답 = apiTester.인증_요청("naver", 소셜계정코드);
@@ -63,7 +63,7 @@ public class NaverAuthenticateAcceptanceTest extends AbstractAcceptanceTest {
      */
     @Test
     @DisplayName("계정이 존재한다면 인증 요청을 할 때 응답에서 현재 계정의 권한, id, 닉네임을 확인할 수 있다.")
-    void whenIdIsExistThenCanCheckAuthorityAndIdAndNickname() {
+    void whenIdIsExistThenCanCheckAuthorityAndIdAndNickname() throws Exception {
 
         //when
         ExtractableResponse<Response> 인증_요청_응답 = apiTester.인증_요청("naver", 소셜계정코드);
