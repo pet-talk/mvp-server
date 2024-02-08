@@ -1,65 +1,57 @@
 package petalk.mvp.http.auth.request;
 
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
-import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-
-import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.ToString;
+import petalk.mvp.http.auth.adapter.SocialTokenResponse;
 
 /**
- * 소셜 프로필 요청에 대한 응답을 나타냅니다.
- *
- * 응답에 대한 상태를 확인할 수 있습니다.
+ * 네이버 서비스의 액세스 토큰을 나타냅니다.
  */
-public class NaverTokenResponse {
-    private HttpStatusCode statusCode;
-    private TokenInfo token;
+@JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
+public class NaverTokenResponse implements SocialTokenResponse {
+    private String accessToken;
+    private String tokenType;
+    private String refreshToken;
+    private int expiresIn;
 
-    private NaverTokenResponse(TokenInfo token) {
-        this.token = token;
+    @JsonCreator
+    public NaverTokenResponse(
+            @JsonProperty("access_token") String accessToken,
+            @JsonProperty("token_type") String tokenType,
+            @JsonProperty("refresh_token") String refreshToken,
+            @JsonProperty("expires_in") String expiresIn) {
+        this.accessToken = accessToken;
+        this.tokenType = tokenType;
+        this.refreshToken = refreshToken;
+        this.expiresIn = (expiresIn != null) ? Integer.parseInt(expiresIn) :  0;
+
+        this.validate();
     }
 
-    public static NaverTokenResponse from(ResponseEntity<String> response, Gson gson) {
-        TokenInfo tokenInfo = gson.fromJson(response.getBody(), TokenInfo.class);
-        NaverTokenResponse profileResponse = new NaverTokenResponse(tokenInfo);
-        profileResponse.addResponse(response);
-        return profileResponse;
-    }
-
-    private void addResponse(ResponseEntity<String> response) {
-        this.statusCode = response.getStatusCode();
-    }
-
-    public boolean isOk() {
-        return statusCode.is2xxSuccessful();
-    }
-
-    public boolean isFailed() {
-        return !isOk();
-    }
-
-    public Optional<AccessToken> mapToken() {
-        if(isOk()) {
-            return Optional.of(toAccessToken());
+    public void validate() {
+        if (accessToken == null || accessToken.isBlank()) {
+            throw new IllegalArgumentException("accessToken is null or empty");
         }
-        return Optional.empty();
+        if (tokenType == null || tokenType.isBlank()) {
+            throw new IllegalArgumentException("tokenType is null or empty");
+        }
+        if (refreshToken == null || refreshToken.isBlank()) {
+            throw new IllegalArgumentException("refreshToken is null or empty");
+        }
+        if (expiresIn <= 0) {
+            throw new IllegalArgumentException("expiresIn is less than or equal to zero");
+        }
     }
 
-    private NaverAccessToken toAccessToken() {
-        return new NaverAccessToken(token.accessToken, token.tokenType, token.refreshToken, token.expiresIn);
-    }
-
-    @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-    static class TokenInfo {
-        @SerializedName("access_token")
-        private String accessToken;
-        @SerializedName("token_type")
-        private String tokenType;
-        @SerializedName("refresh_token")
-        private String refreshToken;
-        @SerializedName("expires_in")
-        private String expiresIn;
+    @Override
+    public String generateKey() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(tokenType);
+        sb.append(" ");
+        sb.append(accessToken);
+        return sb.toString();
     }
 }
