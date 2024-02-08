@@ -3,7 +3,6 @@ package petalk.mvp.http.auth.adapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import petalk.mvp.domain.auth.SocialType;
-import petalk.mvp.http.auth.request.SocialProfileRequester;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,16 +15,16 @@ import java.util.List;
 @Component
 public class ProfileRequesterFactory {
 
-    private final List<SocialProfileRequester> socialProfileRequesters;
+    private final List<SocialProfileReader> socialProfileReaders;
 
     @Autowired
-    public ProfileRequesterFactory(SocialProfileRequester... socialProfileRequesters) {
-        this.socialProfileRequesters = Arrays.asList(socialProfileRequesters);
+    public ProfileRequesterFactory(SocialProfileReader... socialProfileReaders) {
+        this.socialProfileReaders = Arrays.asList(socialProfileReaders);
     }
 
-    public SocialProfileRequester getProfileRequester(SocialType socialType) {
+    public SocialProfileReader getProfileRequester(SocialType socialType) {
 
-        return socialProfileRequesters
+        return socialProfileReaders
                 .stream()
                 .filter(socialTokenRequester -> socialTokenRequester.isCorrectType(socialType))
                 .findAny()

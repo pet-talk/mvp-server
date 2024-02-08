@@ -1,4 +1,4 @@
-package petalk.mvp.http.auth.factory;
+package petalk.mvp.http.auth.adapter;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 import petalk.mvp.core.annotation.UnitTest;
 import petalk.mvp.domain.auth.SocialType;
-import petalk.mvp.http.auth.adapter.AccessTokenRequesterFactory;
 import petalk.mvp.http.auth.request.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,10 +28,10 @@ class AccessTokenRequesterFactoryTest {
     private final String URL = "url";
 
     private final NaverTokenCommandBuilder tokenBuilder =
-            new NaverTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE, STATE);
+            new NaverTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE, STATE, URL);
     private final GoogleTokenCommandBuilder googleTokenCommandBuilder =
             new GoogleTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE);
-    private final NaverTokenRequester getNaverTokenRequester = new NaverTokenRequester(tokenBuilder, restTemplate, gson, URL);
+    private final NaverTokenRequester getNaverTokenRequester = new NaverTokenRequester(tokenBuilder, restTemplate);
     private final GoogleTokenRequester getGoogleTokenRequester = new GoogleTokenRequester(googleTokenCommandBuilder, restTemplate, gson, URL);
     private final AccessTokenRequesterFactory accessTokenRequesterFactory = new AccessTokenRequesterFactory(getNaverTokenRequester, getGoogleTokenRequester);
 
@@ -48,7 +47,7 @@ class AccessTokenRequesterFactoryTest {
         SocialType type = SocialType.NAVER;
 
         //when
-        SocialTokenRequester oauthTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(type);
+        SocialProfileKeyReader oauthTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(type);
 
         //then
         assertThat(oauthTokenRequester.isCorrectType(type)).isTrue();
@@ -66,7 +65,7 @@ class AccessTokenRequesterFactoryTest {
         SocialType type = SocialType.GOOGLE;
 
         //when
-        SocialTokenRequester oauthTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(type);
+        SocialProfileKeyReader oauthTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(type);
 
         //then
         assertThat(oauthTokenRequester.isCorrectType(type)).isTrue();
