@@ -13,4 +13,9 @@ public class ValidationErrorException extends RuntimeException {
     public ValidationErrors getErrors() {
         return errors;
     }
+
+    @Override
+    public String getMessage() {
+        return errors.toString();
+    }
 }
