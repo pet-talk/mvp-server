@@ -22,7 +22,7 @@ import petalk.mvp.application.auth.command.in.RegisterSessionUsecase;
 import petalk.mvp.application.auth.command.in.RegisterSessionUsecase.RegisterSessionCommand;
 import petalk.mvp.application.auth.command.validator.AuthenticateValidator;
 import petalk.mvp.application.auth.response.AuthUserResponse;
-import petalk.mvp.core.ApiResponse;
+import petalk.mvp.core.ApiResult;
 
 @Tag(name = "authenticate", description = "인증 API")
 @RestController
@@ -57,7 +57,7 @@ public class AuthenticateController {
     @PostMapping(
             value = "/auth/authenticate/{provider}",
             produces = "application/json; charset=UTF-8")
-    public ResponseEntity<ApiResponse<Response>> authenticate(
+    public ResponseEntity<ApiResult<Result>> authenticate(
             @RequestBody Request request,
             @PathVariable
             @Schema(description = "social type", example = "naver, kakao, google", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -75,7 +75,7 @@ public class AuthenticateController {
 
         registerSessionUsecase.registerSession(RegisterSessionCommand.from(user.getUserId(), user.getUserAuthority(), httpServletRequest));
 
-        return ResponseEntity.ok(ApiResponse.ok(new Response(response.getUser())));
+        return ResponseEntity.ok(ApiResult.ok(new Result(response.getUser())));
     }
 
     @ToString
@@ -96,10 +96,10 @@ public class AuthenticateController {
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Response {
+    public static class Result {
         AuthUserResponse user;
 
-        public Response(AuthUserResponse user) {
+        public Result(AuthUserResponse user) {
             this.user = user;
         }
 

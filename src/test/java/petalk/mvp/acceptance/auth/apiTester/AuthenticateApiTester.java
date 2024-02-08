@@ -5,9 +5,9 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import petalk.mvp.presentation.auth.controller.AuthenticateController;
 import petalk.mvp.core.acceptance.utils.TestParam;
 import petalk.mvp.core.annotation.ApiTester;
+import petalk.mvp.presentation.auth.controller.AuthenticateController;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
