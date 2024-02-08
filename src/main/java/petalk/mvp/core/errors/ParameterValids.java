@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ParameterValids {
     private List<ParameterValid> valids;
 
@@ -24,6 +26,8 @@ public class ParameterValids {
         return new ParameterValids(response);
     }
 
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class ParameterValid {
         private String field;
         private String message;
