@@ -2,6 +2,7 @@ package petalk.mvp.core.errors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 유효성 검사 오류들을 관리하는 클래스입니다.
@@ -39,10 +40,17 @@ public class ValidationErrors {
     }
 
     public boolean hasError() {
-        return errors.isEmpty();
+        return !errors.isEmpty();
     }
 
     public List<ValidationError> getErrors() {
         return errors;
+    }
+
+    @Override
+    public String toString() {
+        return errors.stream()
+                .map(error -> "Field: '" + error.getField() + "', Message: '" + error.getMessage() + "'")
+                .collect(Collectors.joining("; ", "Validation Errors: [", "]"));
     }
 }

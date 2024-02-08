@@ -25,7 +25,7 @@ public class AuthenticateValidator {
             errors.add(ValidationError.of("socialTypeName", "소셜 타입이 비어있습니다."));
         }
 
-        if (!errors.hasError()) {
+        if (errors.hasError()) {
             throw new ValidationErrorException(errors);
         }
     }
