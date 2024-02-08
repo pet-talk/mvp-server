@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import petalk.mvp.http.auth.adapter.SocialProfile;
 
 import java.util.Optional;
 

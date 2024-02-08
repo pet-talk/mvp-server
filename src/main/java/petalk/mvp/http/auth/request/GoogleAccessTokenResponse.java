@@ -1,22 +1,22 @@
 package petalk.mvp.http.auth.request;
 
+import petalk.mvp.http.auth.adapter.SocialTokenResponse;
+
 /**
- * third party 서비스의 액세스 토큰을 나타냅니다.
+ * 구글 서비스의 액세스 토큰을 나타냅니다.
  */
-public class GoogleAccessToken implements AccessToken {
+public class GoogleAccessTokenResponse implements SocialTokenResponse {
     private String accessToken;
     private String tokenType;
     private String scope;
     private int expiresIn;
 
-    public GoogleAccessToken(String accessToken, String tokenType, String scope, String expiresIn) {
+    public GoogleAccessTokenResponse(String accessToken, String tokenType, String scope, String expiresIn) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.scope = scope;
-        if (expiresIn != null)
-            this.expiresIn = Integer.parseInt(expiresIn);
-        if (expiresIn == null)
-            this.expiresIn = 0;
+        this.expiresIn = (expiresIn != null) ? Integer.parseInt(expiresIn) :  0;
+
         this.validate();
     }
 
@@ -36,7 +36,7 @@ public class GoogleAccessToken implements AccessToken {
     }
 
     @Override
-    public String generateAuthenticationCode() {
+    public String generateKey() {
         return accessToken;
     }
 }

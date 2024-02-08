@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import petalk.mvp.domain.auth.AuthorizationCode;
 import petalk.mvp.domain.auth.SocialType;
+import petalk.mvp.http.auth.adapter.SocialProfileKeyReader;
+import petalk.mvp.http.auth.adapter.SocialTokenResponse;
 
 import java.util.Optional;
 
@@ -18,7 +20,7 @@ import java.util.Optional;
  * 구글 액세스 토큰 http 요청자 인터페이스입니다.
  */
 @Component
-public class GoogleTokenRequester implements SocialTokenRequester {
+public class GoogleTokenRequester implements SocialProfileKeyReader {
 
     private final GoogleTokenCommandBuilder tokenCommandBuilder;
 
@@ -38,7 +40,7 @@ public class GoogleTokenRequester implements SocialTokenRequester {
     }
 
     @Override
-    public Optional<AccessToken> getAccessToken(AuthorizationCode code) {
+    public Optional<SocialTokenResponse> getKey(AuthorizationCode code) {
         GoogleTokenCommand command = tokenCommandBuilder.generateCommand(code);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -52,7 +54,8 @@ public class GoogleTokenRequester implements SocialTokenRequester {
 
         GoogleTokenResponse response = GoogleTokenResponse.from(responseEntity, gson);
 
-        return response.mapToken();    }
+        return response.mapToken();
+    }
 
     @Override
     public boolean isCorrectType(SocialType type) {
