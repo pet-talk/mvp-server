@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @UnitTest
 @DisplayName("소셜 액세스 토큰 http 요청자 팩토리 테스트")
-class AccessTokenRequesterFactoryTest {
+class ProfileKeyReaderFactoryTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final Gson gson = new Gson();
@@ -33,7 +33,7 @@ class AccessTokenRequesterFactoryTest {
             new GoogleTokenCommandBuilder(CLIENT_ID, REDIRECT_ID, CLIENT_SECRET, GRANT_TYPE);
     private final NaverTokenRequester getNaverTokenRequester = new NaverTokenRequester(tokenBuilder, restTemplate);
     private final GoogleTokenRequester getGoogleTokenRequester = new GoogleTokenRequester(googleTokenCommandBuilder, restTemplate, gson, URL);
-    private final AccessTokenRequesterFactory accessTokenRequesterFactory = new AccessTokenRequesterFactory(getNaverTokenRequester, getGoogleTokenRequester);
+    private final ProfileKeyReaderFactory profileKeyReaderFactory = new ProfileKeyReaderFactory(getNaverTokenRequester, getGoogleTokenRequester);
 
     /**
      * @given 소셜 인증 서비스가 네이버라면
@@ -47,7 +47,7 @@ class AccessTokenRequesterFactoryTest {
         SocialType type = SocialType.NAVER;
 
         //when
-        SocialProfileKeyReader oauthTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(type);
+        SocialProfileKeyReader oauthTokenRequester = profileKeyReaderFactory.getOauthTokenRequester(type);
 
         //then
         assertThat(oauthTokenRequester.isCorrectType(type)).isTrue();
@@ -65,7 +65,7 @@ class AccessTokenRequesterFactoryTest {
         SocialType type = SocialType.GOOGLE;
 
         //when
-        SocialProfileKeyReader oauthTokenRequester = accessTokenRequesterFactory.getOauthTokenRequester(type);
+        SocialProfileKeyReader oauthTokenRequester = profileKeyReaderFactory.getOauthTokenRequester(type);
 
         //then
         assertThat(oauthTokenRequester.isCorrectType(type)).isTrue();
