@@ -16,14 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @UnitTest
 @DisplayName("소셜 프로필 http 요청자 팩토리 테스트")
-class ProfileRequesterFactoryTest {
+class ProfileReaderFactoryTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final Gson gson = new Gson();
     private final String URL = "url";
     private final NaverProfileRequester getNaverProfileRequester = new NaverProfileRequester(restTemplate, URL);
     private final GoogleProfileRequester getGoogleProfileRequester = new GoogleProfileRequester(restTemplate, gson, URL);
-    private final ProfileRequesterFactory profileRequesterFactory = new ProfileRequesterFactory(getNaverProfileRequester, getGoogleProfileRequester);
+    private final ProfileReaderFactory profileReaderFactory = new ProfileReaderFactory(getNaverProfileRequester, getGoogleProfileRequester);
 
 
     /**
@@ -38,7 +38,7 @@ class ProfileRequesterFactoryTest {
         SocialType type = SocialType.NAVER;
 
         //when
-        SocialProfileReader oauthTokenRequester = profileRequesterFactory.getProfileRequester(type);
+        SocialProfileReader oauthTokenRequester = profileReaderFactory.getProfileRequester(type);
 
         //then
         assertThat(oauthTokenRequester.isCorrectType(type)).isTrue();
