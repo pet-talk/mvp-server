@@ -11,25 +11,25 @@ import java.util.Optional;
 /**
  * 소셜 사용자 정보 로드 어댑터 클래스입니다.
  * <p>
- * 이 클래스는 LoadSocialUserPort 인터페이스의 구현입니다.
+ * 이 클래스는 LoadSocialUserPort 인터페이스의 구현입니다. <br>
  * 제공된 인증기를 활용하여 소셜 사용자 정보를 로드하는 역할을 합니다.
  */
 @PersistenceAdapter
 public class LoadSocialUserAdapter implements LoadSocialUserPort {
 
-    private final AccessTokenRequesterFactory accessTokenRequesterFactory;
-    private final ProfileRequesterFactory profileRequesterFactory;
+    private final ProfileKeyReaderFactory profileKeyReaderFactory;
+    private final ProfileReaderFactory profileReaderFactory;
 
 
-    public LoadSocialUserAdapter(AccessTokenRequesterFactory accessTokenRequesterFactory, ProfileRequesterFactory profileRequesterFactory) {
-        this.accessTokenRequesterFactory = accessTokenRequesterFactory;
-        this.profileRequesterFactory = profileRequesterFactory;
+    public LoadSocialUserAdapter(ProfileKeyReaderFactory profileKeyReaderFactory, ProfileReaderFactory profileReaderFactory) {
+        this.profileKeyReaderFactory = profileKeyReaderFactory;
+        this.profileReaderFactory = profileReaderFactory;
     }
 
     @Override
     public Optional<SocialAuthUser> loadSocialUser(AuthorizationCode code, SocialType socialType) {
-        SocialProfileKeyReader profileKeyReader = accessTokenRequesterFactory.getOauthTokenRequester(socialType);
-        SocialProfileReader profileRequester = profileRequesterFactory.getProfileRequester(socialType);
+        SocialProfileKeyReader profileKeyReader = profileKeyReaderFactory.getOauthTokenRequester(socialType);
+        SocialProfileReader profileRequester = profileReaderFactory.getProfileRequester(socialType);
 
         return profileKeyReader
                 .getKey(code)

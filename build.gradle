@@ -41,6 +41,8 @@ dependencies {
 	// guava 의존성 보유
 	implementation 'com.google.guava:guava:32.1.3-jre'
 
+	implementation 'commons-codec:commons-codec:1.16.0' // commons-codec 의존성 보유
+
 }
 
 tasks.named('bootBuildImage') {

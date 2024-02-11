@@ -24,13 +24,28 @@ public class AuthUser {
     }
 
     /**
-     * 기존 반려인 유저를 생성합니다.
-     * @param id 반려인 유저의 id
+     * 존재하는 반려인 유저를 생성합니다.
+     * @param id 유저 id
+     * @param socialInfo 소셜 정보
+     * @param nickname 닉네임
+     * @param authority 권한
+     * @param registrationDate 등록일
      * @return 반려인 유저
      */
     public static AuthUser exist(AuthUser.UserId id, UserSocialInfo socialInfo, String nickname, UserAuthority authority, LocalDateTime registrationDate) {
         return new AuthUser(id, socialInfo, nickname, UserAuthorities.from(authority), registrationDate);
     }
+
+    /**
+     * 새로운 반려인 유저를 생성합니다.
+     * @param email 이메일
+     * @param socialType 소셜 타입
+     * @param socialId 소셜 아이디
+     * @param socialName 소셜 이름
+     * @param nickname 닉네임
+     * @param registrationDate 등록일
+     * @return 반려인 유저
+     */
 
     public static AuthUser register(String email, SocialType socialType, SocialAuthId socialId, String socialName, String nickname, LocalDateTime registrationDate) {
         UserSocialInfo socialInfo = UserSocialInfo.register(email, socialType, socialId, socialName);
