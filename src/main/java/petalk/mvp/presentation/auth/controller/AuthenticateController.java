@@ -9,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,13 +27,12 @@ import petalk.mvp.core.ApiResult;
 @Tag(name = "authenticate", description = "인증 API")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticateController {
 
     private final AuthenticateUsecase authenticateUsecase;
     private final AuthenticateValidator authenticateValidator;
     private final RegisterSessionUsecase registerSessionUsecase;
-    private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticateController.class);
-
 
     @Operation(
             summary = "authenticate by social",
@@ -64,12 +63,12 @@ public class AuthenticateController {
             @NotBlank(message = "소셜 타입은 필수입니다.")
             String provider,
             HttpServletRequest httpServletRequest) {
-        logger.info("request: {}", request);
+        log.info("request: {}", request);
 
         AuthenticateCommand command = AuthenticateCommand.from(request.getCode(), provider, authenticateValidator);
         AuthenticateResponse response = authenticateUsecase.authenticate(command);
 
-        logger.info("authenticate response: {}", response);
+        log.info("authenticate response: {}", response);
 
         AuthUserResponse user = response.getUser();
 

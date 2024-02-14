@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticateTestController {
 
     private final String NAVER_AUTHORIZATION_HEADER = "Authorization";
-    private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticateTestController.class);
+    private final Logger log = org.slf4j.LoggerFactory.getLogger(AuthenticateTestController.class);
 
     @GetMapping("/auth/test/authenticate/naver/profile")
     public ResponseEntity<String> profileNaver(@RequestHeader(NAVER_AUTHORIZATION_HEADER) String authorization) {
 
-        logger.debug("naver profile request: {}", authorization);
+        log.debug("naver profile request: {}", authorization);
 
         String response = """
                 {
@@ -43,12 +43,12 @@ public class AuthenticateTestController {
 
     @GetMapping("/auth/test/authenticate/naver/token")
     public ResponseEntity<String> tokenNaver(@RequestParam String grant_type, @RequestParam String client_id, @RequestParam String client_secret, @RequestParam String redirect_uri, @RequestParam String code, @RequestParam String state) {
-        logger.debug("naver token request grant_type: {}", grant_type);
-        logger.debug("naver token request client_id: {}", client_id);
-        logger.debug("naver token request client_secret: {}", client_secret);
-        logger.debug("naver token request redirect_uri: {}", redirect_uri);
-        logger.debug("naver token request code: {}", code);
-        logger.debug("naver token request state: {}", state);
+        log.debug("naver token request grant_type: {}", grant_type);
+        log.debug("naver token request client_id: {}", client_id);
+        log.debug("naver token request client_secret: {}", client_secret);
+        log.debug("naver token request redirect_uri: {}", redirect_uri);
+        log.debug("naver token request code: {}", code);
+        log.debug("naver token request state: {}", state);
 
         String response = """
                 {
@@ -65,7 +65,7 @@ public class AuthenticateTestController {
     @GetMapping("/auth/test/authenticate/google/profile")
     public ResponseEntity<String> profileGoogle(@RequestParam(name = "access_token") String authorization) {
 
-        logger.debug("naver profile request: {}", authorization);
+        log.debug("naver profile request: {}", authorization);
 
         String response = """
                 {
@@ -84,11 +84,11 @@ public class AuthenticateTestController {
 
     @PostMapping("/auth/test/authenticate/google/token")
     public ResponseEntity<String> tokenGoogle(@RequestBody GoogleRequest request) {
-        logger.debug("naver token request grant_type: {}", request.getGrantType());
-        logger.debug("naver token request client_id: {}", request.getClientId());
-        logger.debug("naver token request client_secret: {}", request.getClientSecret());
-        logger.debug("naver token request redirect_uri: {}", request.getRedirectUri());
-        logger.debug("naver token request code: {}", request.getCode());
+        log.debug("naver token request grant_type: {}", request.getGrantType());
+        log.debug("naver token request client_id: {}", request.getClientId());
+        log.debug("naver token request client_secret: {}", request.getClientSecret());
+        log.debug("naver token request redirect_uri: {}", request.getRedirectUri());
+        log.debug("naver token request code: {}", request.getCode());
 
         String response = """
                 {
@@ -102,6 +102,73 @@ public class AuthenticateTestController {
 
         return ResponseEntity.ok().body(response);
     }
+
+
+    @PostMapping(value = "/auth/test/authenticate/kakao/token")
+    public ResponseEntity<String> tokenGoogle(
+            @RequestParam("grant_type") String grantType,
+            @RequestParam("client_id") String clientId,
+            @RequestParam("client_secret") String clientSecret,
+            @RequestParam("redirect_uri") String redirectUri,
+            @RequestParam("code") String code
+    ) {
+        log.debug("naver token request grant_type: {}", grantType);
+        log.debug("naver token request client_id: {}", clientId);
+        log.debug("naver token request client_secret: {}", clientSecret);
+        log.debug("naver token request redirect_uri: {}", redirectUri);
+        log.debug("naver token request code: {}", code);
+
+        String response = """
+                {
+                    "token_type": "bearer",
+                    "access_token": "${ACCESS_TOKEN}",
+                    "id_token": "eyJraWQiOiI5ZjI1MmRhZGQ1ZjIzM2Y5M2QyZmE1MjhkMTJmZWEiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiOiIzZTcxODliNmE3YTIyMGExM2EzZjY4YTg3NWM5NGNiYyIsInN1YiI6IjMzMzQ4MzUzMTgiLCJhdXRoX3RpbWUiOjE3MDc1Njg0OTEsImlzcyI6Imh0dHBzOi8va2F1dGgua2FrYW8uY29tIiwibmlja25hbWUiOiLtjqvthqEiLCJleHAiOjE3MDc1OTAwOTEsImlhdCI6MTcwNzU2ODQ5MSwicGljdHVyZSI6Imh0dHA6Ly9rLmtha2FvY2RuLm5ldC9kbi8xRzlrcC9idHNBb3Q4bGlPbi84Q1d1ZGkzdXkwN3J2Rk5Va2szRVIwL2ltZ18xMTB4MTEwLmpwZyJ9",
+                    "expires_in": 7199,
+                    "refresh_token": "${REFRESH_TOKEN}",
+                    "refresh_token_expires_in": 86399,
+                    "scope": "profile_image openid profile_nickname"
+                }
+                """;
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    private static class KakaoRequest {
+        @JsonProperty("grant_type")
+        private String grantType;
+        @JsonProperty("client_id")
+        private String clientId;
+        @JsonProperty("client_secret")
+        private String clientSecret;
+        @JsonProperty("redirect_uri")
+        private String redirectUri;
+        @JsonProperty("code")
+        private String code;
+
+        public KakaoRequest() {
+        }
+
+        public String getGrantType() {
+            return grantType;
+        }
+
+        public String getClientId() {
+            return clientId;
+        }
+
+        public String getClientSecret() {
+            return clientSecret;
+        }
+
+        public String getRedirectUri() {
+            return redirectUri;
+        }
+
+        public String getCode() {
+            return code;
+        }
+    }
+
 
     private static class GoogleRequest {
         @JsonProperty("grant_type")

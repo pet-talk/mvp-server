@@ -1,6 +1,6 @@
 package petalk.mvp.http.auth.request;
 
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,7 @@ import java.util.Optional;
  * 네이버 프로필 http 요청자 인터페이스입니다.
  */
 @Component
+@Slf4j
 public class NaverProfileRequester implements SocialProfileReader {
 
     private final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON;
@@ -24,7 +25,6 @@ public class NaverProfileRequester implements SocialProfileReader {
     private final RestTemplate restTemplate;
     private final String PROFILE_URL;
     private final String AUTHORIZATION_HEADER = "Authorization";
-    private final Logger logger = org.slf4j.LoggerFactory.getLogger(NaverProfileRequester.class);
 
     public NaverProfileRequester(RestTemplate restTemplate, @Value("${value.social.naver.url.profile}") String profileUrl) {
         this.restTemplate = restTemplate;
@@ -38,20 +38,20 @@ public class NaverProfileRequester implements SocialProfileReader {
         httpHeaders.set(AUTHORIZATION_HEADER, tokenResponse.generateKey());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, httpHeaders);
-        logger.debug("naver profile request: {}", tokenResponse.generateKey());
+        log.debug("naver profile request: {}", tokenResponse.generateKey());
 
         try {
             ResponseEntity<NaverProfile> responseEntity = restTemplate.exchange(PROFILE_URL, HttpMethod.GET, request, NaverProfile.class);
 
             NaverProfile response = responseEntity.getBody();
-            logger.debug("naver profile response: {}", response);
+            log.debug("naver profile response: {}", response);
 
             if (responseEntity.getStatusCode().is2xxSuccessful() && response != null) {
                 return Optional.of(response);
             }
 
         } catch (Exception e) {
-            logger.error("naver profile request error", e);
+            log.error("naver profile request error");
         }
 
         return Optional.empty();
