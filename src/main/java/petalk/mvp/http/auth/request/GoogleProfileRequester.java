@@ -1,7 +1,7 @@
 package petalk.mvp.http.auth.request;
 
 import com.google.gson.Gson;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,7 @@ import java.util.Optional;
  * 구글 프로필 http 요청자 인터페이스입니다.
  */
 @Component
+@Slf4j
 public class GoogleProfileRequester implements SocialProfileReader {
 
     private final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON;
@@ -28,7 +29,6 @@ public class GoogleProfileRequester implements SocialProfileReader {
     private final Gson gson;
     private final String PROFILE_URL;
     private final String AUTHORIZATION_KEY = "access_token";
-    private final Logger logger = org.slf4j.LoggerFactory.getLogger(GoogleProfileRequester.class);
 
     public GoogleProfileRequester(RestTemplate restTemplate, Gson gson, @Value("${value.social.google.url.profile}") String profileUrl) {
         this.restTemplate = restTemplate;
@@ -42,7 +42,7 @@ public class GoogleProfileRequester implements SocialProfileReader {
         httpHeaders.setContentType(CONTENT_TYPE);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, httpHeaders);
-        logger.debug("naver profile request: {}", httpHeaders);
+        log.debug("naver profile request: {}", httpHeaders);
 
         URI url = UriComponentsBuilder.fromUriString(PROFILE_URL)
                 .queryParam(AUTHORIZATION_KEY, tokenResponse.generateKey())
@@ -52,7 +52,7 @@ public class GoogleProfileRequester implements SocialProfileReader {
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
 
-        logger.debug("google profile response: {}", responseEntity);
+        log.debug("google profile response: {}", responseEntity);
 
         GoogleProfileResponse response = GoogleProfileResponse.from(responseEntity, gson);
 

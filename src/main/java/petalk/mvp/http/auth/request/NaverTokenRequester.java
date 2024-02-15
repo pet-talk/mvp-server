@@ -1,7 +1,6 @@
 package petalk.mvp.http.auth.request;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -17,11 +16,11 @@ import java.util.Optional;
  * 네이버 액세스 토큰 http 요청자 인터페이스입니다.
  */
 @Component
+@Slf4j
 public class NaverTokenRequester implements SocialProfileKeyReader {
 
     private final NaverTokenCommandBuilder naverTokenCommandBuilder;
     private final RestTemplate restTemplate;
-    private final Logger logger = LoggerFactory.getLogger(NaverTokenRequester.class);
 
     public NaverTokenRequester(
             NaverTokenCommandBuilder naverTokenCommandBuilder, RestTemplate restTemplate) {
@@ -38,13 +37,13 @@ public class NaverTokenRequester implements SocialProfileKeyReader {
 
             NaverTokenResponse response = responseEntity.getBody();
 
-            logger.debug("naver token response: {}", response);
+            log.debug("naver token response: {}", response);
 
             if (responseEntity.getStatusCode().is2xxSuccessful() && response != null) {
                 return Optional.of(response);
             }
         } catch (Exception e) {
-            logger.error("naver token request error", e);
+            log.error("naver token request error");
         }
         return Optional.empty();
     }

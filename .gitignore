@@ -29,6 +29,7 @@ bin/
 
 ### yml ###
 *.yml
+logback-spring.xml
 
 ### NetBeans ###
 /nbproject/private/

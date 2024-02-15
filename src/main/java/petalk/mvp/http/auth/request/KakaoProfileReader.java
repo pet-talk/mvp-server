@@ -41,7 +41,7 @@ public class KakaoProfileReader implements SocialProfileReader {
             KakaoProfile kakaoProfile = objectMapper.readValue(profileStr, KakaoProfile.class);
             return Optional.of(kakaoProfile);
         } catch (Exception e) {
-            log.error("kakao profile parsing error", e);
+            log.error("kakao profile parsing error");
             return Optional.empty();
         }
     }

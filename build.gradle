@@ -43,6 +43,12 @@ dependencies {
 
 	implementation 'commons-codec:commons-codec:1.16.0' // commons-codec 의존성 보유
 
+	implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+
+	implementation 'ca.pjer:logback-awslogs-appender:1.6.0'
+
+
+
 }
 
 tasks.named('bootBuildImage') {
