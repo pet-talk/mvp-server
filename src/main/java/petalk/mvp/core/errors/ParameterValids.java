@@ -16,6 +16,13 @@ public class ParameterValids {
         this.valids = valids;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "valids=" + valids +
+                '}';
+    }
+
     public static ParameterValids from(ValidationErrors errors) {
         List<ParameterValids.ParameterValid> response =
                 errors.getErrors()
@@ -35,6 +42,14 @@ public class ParameterValids {
         public ParameterValid(String field, String message) {
             this.field = field;
             this.message = message;
+        }
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "field='" + field + '\'' +
+                    ", message='" + message + '\'' +
+                    '}';
         }
     }
 }
