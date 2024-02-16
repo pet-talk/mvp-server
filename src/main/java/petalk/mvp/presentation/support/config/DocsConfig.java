@@ -1,4 +1,4 @@
-package petalk.mvp.support.docs;
+package petalk.mvp.presentation.support.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

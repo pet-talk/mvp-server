@@ -9,7 +9,7 @@ import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import petalk.mvp.core.ApiResult;
+import petalk.mvp.presentation.support.ApiResult;
 import petalk.mvp.core.acceptance.utils.TestParam;
 import petalk.mvp.core.annotation.ApiTester;
 import petalk.mvp.presentation.auth.controller.AuthenticateController.Result;

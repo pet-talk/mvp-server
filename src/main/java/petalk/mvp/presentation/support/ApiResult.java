@@ -1,4 +1,4 @@
-package petalk.mvp.core;
+package petalk.mvp.presentation.support;
 
 import lombok.AccessLevel;
 import lombok.Getter;
