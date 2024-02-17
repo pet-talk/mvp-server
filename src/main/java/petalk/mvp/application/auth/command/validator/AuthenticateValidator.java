@@ -11,9 +11,10 @@ import petalk.mvp.core.Validator;
  */
 @Validator
 public class AuthenticateValidator {
-    public void validate(String tokenValue, String socialTypeName) {
+    public void validate(String tokenValue, String tokenType, String socialTypeName) {
         Assert.notNull(tokenValue, "tokenValue must not be null");
         Assert.notNull(socialTypeName, "socialTypeName must not be null");
+        Assert.notNull(tokenType, "tokenType must not be null");
 
         ValidationErrors errors = ValidationErrors.from();
 
@@ -23,6 +24,10 @@ public class AuthenticateValidator {
 
         if (socialTypeName.isBlank()) {
             errors.add(ValidationError.of("socialTypeName", "소셜 타입이 비어있습니다."));
+        }
+
+        if (tokenType.isBlank()) {
+            errors.add(ValidationError.of("tokenType", "토큰 타입이 비어있습니다."));
         }
 
         if (errors.hasError()) {

@@ -25,6 +25,7 @@ class AuthenticateValidatorTest {
     void validateAuthenticateRequest() {
         //given
         String token = "token";
+        String tokenType = "bearer";
 
         //given
         String social = "naver";
@@ -32,7 +33,7 @@ class AuthenticateValidatorTest {
         //when
         //then
         AuthenticateValidator validator = new AuthenticateValidator();
-        AuthenticateUsecase.AuthenticateCommand command = AuthenticateUsecase.AuthenticateCommand.from(token, social, validator);
+        AuthenticateUsecase.AuthenticateCommand command = AuthenticateUsecase.AuthenticateCommand.from(token, tokenType, social, validator);
 
     }
 
@@ -47,20 +48,20 @@ class AuthenticateValidatorTest {
     void cantRequestBlank() {
         //given
         String token = " ";
-
+        String tokenType = " ";
         //given
         String social = "naver";
 
         //when
         //then
         AuthenticateValidator validator = new AuthenticateValidator();
-        Assertions.assertThatThrownBy(() -> AuthenticateUsecase.AuthenticateCommand.from(token, social, validator))
+        Assertions.assertThatThrownBy(() -> AuthenticateUsecase.AuthenticateCommand.from(token, tokenType, social, validator))
                 .isInstanceOf(ValidationErrorException.class)
                 .extracting("errors")
                 .extracting("errors").asList()
-                .hasSize(1)
+                .hasSize(2)
                 .extracting("field", "message")
-                .containsExactly(tuple("tokenValue", "토큰 값이 비어있습니다."));
+                .containsExactly(tuple("tokenValue", "토큰 값이 비어있습니다."), tuple("tokenType", "토큰 타입이 비어있습니다."));
     }
 
     /**
@@ -74,6 +75,7 @@ class AuthenticateValidatorTest {
     void cantRequestNotExistSocial() {
         //given
         String token = "fasdfasdf";
+        String tokenType = "bearer";
 
         //given
         String social = "daum";
@@ -81,7 +83,7 @@ class AuthenticateValidatorTest {
         //when
         //then
         AuthenticateValidator validator = new AuthenticateValidator();
-        Assertions.assertThatThrownBy(() -> AuthenticateUsecase.AuthenticateCommand.from(token, social, validator))
+        Assertions.assertThatThrownBy(() -> AuthenticateUsecase.AuthenticateCommand.from(token, tokenType, social, validator))
                 .isInstanceOf(IllegalArgumentException.class)
                 .extracting( "message")
                 .isEqualTo("잘못된 소셜 타입입니다.");
