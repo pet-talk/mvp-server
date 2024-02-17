@@ -2,7 +2,6 @@ package petalk.mvp.acceptance.auth;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,6 @@ public class NaverAuthenticateAcceptanceTest extends AbstractAcceptanceTest {
     @Autowired
     AuthenticateApiTester apiTester;
 
-    private String 소셜계정코드;
-
-    @BeforeEach
-    protected void setUp() {
-        소셜계정코드 = "code";
-    }
-
     /**
      * @when 인증 요청을 할 때
      * @then 회원 인증이 가능하다.
@@ -36,10 +28,14 @@ public class NaverAuthenticateAcceptanceTest extends AbstractAcceptanceTest {
     void whenHaveSocialIdThenCanAuthenticate() {
 
         //when
-        ExtractableResponse<Response> 인증_요청_응답 = apiTester.인증_요청("naver", 소셜계정코드);
+        ExtractableResponse<Response> 인증_요청_응답 = 네이버에게_인증요청();
 
         //then
         apiTester.인증_성공(인증_요청_응답);
+    }
+
+    private ExtractableResponse<Response> 네이버에게_인증요청() {
+        return apiTester.인증_요청("naver", "accessToken", "tokenType");
     }
 
     /**
@@ -51,7 +47,7 @@ public class NaverAuthenticateAcceptanceTest extends AbstractAcceptanceTest {
     void whenIdIsNotExistThenNicknameIsSetUpBySocialInfo() throws Exception {
 
         //when
-        ExtractableResponse<Response> 인증_요청_응답 = apiTester.인증_요청("naver", 소셜계정코드);
+        ExtractableResponse<Response> 인증_요청_응답 = 네이버에게_인증요청();
 
         //then
         apiTester.요청_닉네임_체크(인증_요청_응답);
@@ -66,7 +62,7 @@ public class NaverAuthenticateAcceptanceTest extends AbstractAcceptanceTest {
     void whenIdIsExistThenCanCheckAuthorityAndIdAndNickname() throws Exception {
 
         //when
-        ExtractableResponse<Response> 인증_요청_응답 = apiTester.인증_요청("naver", 소셜계정코드);
+        ExtractableResponse<Response> 인증_요청_응답 = 네이버에게_인증요청();
 
         //then
         apiTester.요청_아이디_권한_체크(인증_요청_응답);
@@ -82,7 +78,7 @@ public class NaverAuthenticateAcceptanceTest extends AbstractAcceptanceTest {
     void whenAuthenticateThenCanCheck() {
 
         //when
-        ExtractableResponse<Response> 인증_요청_응답 = apiTester.인증_요청("naver", 소셜계정코드);
+        ExtractableResponse<Response> 인증_요청_응답 = 네이버에게_인증요청();
 
         //then
         apiTester.요청_세션_체크(인증_요청_응답);

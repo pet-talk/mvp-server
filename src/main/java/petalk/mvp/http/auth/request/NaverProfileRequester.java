@@ -1,15 +1,20 @@
 package petalk.mvp.http.auth.request;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import petalk.mvp.domain.auth.AccessToken;
 import petalk.mvp.domain.auth.SocialType;
 import petalk.mvp.http.auth.adapter.SocialProfile;
 import petalk.mvp.http.auth.adapter.SocialProfileReader;
-import petalk.mvp.http.auth.adapter.SocialTokenResponse;
 
 import java.util.Optional;
 
@@ -24,35 +29,47 @@ public class NaverProfileRequester implements SocialProfileReader {
 
     private final RestTemplate restTemplate;
     private final String PROFILE_URL;
+    private final ObjectMapper objectMapper;
     private final String AUTHORIZATION_HEADER = "Authorization";
 
-    public NaverProfileRequester(RestTemplate restTemplate, @Value("${value.social.naver.url.profile}") String profileUrl) {
+    public NaverProfileRequester(RestTemplate restTemplate, @Value("${value.social.naver.url.profile}") String profileUrl, ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
         this.PROFILE_URL = profileUrl;
+        this.objectMapper = objectMapper;
     }
 
     @Override
-    public Optional<SocialProfile> getProfile(SocialTokenResponse tokenResponse) {
+    public Optional<SocialProfile> getProfile(AccessToken accessToken) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(CONTENT_TYPE);
-        httpHeaders.set(AUTHORIZATION_HEADER, tokenResponse.generateKey());
+        httpHeaders.set(AUTHORIZATION_HEADER, accessToken.getType() + " " + accessToken.getValue());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, httpHeaders);
-        log.debug("naver profile request: {}", tokenResponse.generateKey());
+        log.debug("naver profile request: {}", httpHeaders);
 
         try {
-            ResponseEntity<NaverProfile> responseEntity = restTemplate.exchange(PROFILE_URL, HttpMethod.GET, request, NaverProfile.class);
+            ResponseEntity<String> responseEntity = restTemplate.exchange(PROFILE_URL, HttpMethod.GET, request, String.class);
 
-            NaverProfile response = responseEntity.getBody();
-            log.debug("naver profile response: {}", response);
+            log.debug("naver profile response: {}", responseEntity.getBody());
 
-            if (responseEntity.getStatusCode().is2xxSuccessful() && response != null) {
+            NaverProfile response = objectMapper.readValue(responseEntity.getBody(), NaverProfile.class);
+
+            if (response != null) {
                 return Optional.of(response);
             }
 
+        } catch (HttpClientErrorException e) {
+            log.error("네이버 프로필 요청 중 클라이언트에 에러가 발생했습니다.", e);
+        } catch (RestClientException e) {
+            log.error("네이버 프로필 요청 중 서버에 에러가 발생했습니다.", e);
+        } catch (JsonMappingException e) {
+            log.error("네이버 프로필 요청 중 매핑에 에러가 발생했습니다.", e);
+        } catch (JsonProcessingException e) {
+            log.error("네이버 프로필 요청 중 응답을 매핑하는 중 에러가 발생했습니다.", e);
         } catch (Exception e) {
-            log.error("naver profile request error");
+            log.error("네이버 프로필 요청 중 알 수 없는 에러가 발생했습니다.", e);
         }
+        log.error("네이버 프로필 요청 중 응답이 없습니다.");
 
         return Optional.empty();
     }
