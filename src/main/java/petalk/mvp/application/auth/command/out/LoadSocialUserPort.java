@@ -1,6 +1,6 @@
 package petalk.mvp.application.auth.command.out;
 
-import petalk.mvp.domain.auth.AuthorizationCode;
+import petalk.mvp.domain.auth.AccessToken;
 import petalk.mvp.domain.auth.SocialAuthUser;
 import petalk.mvp.domain.auth.SocialType;
 
@@ -11,5 +11,5 @@ import java.util.Optional;
  */
 public interface LoadSocialUserPort {
 
-    Optional<SocialAuthUser> loadSocialUser(AuthorizationCode code, SocialType socialType);
+    Optional<SocialAuthUser> loadSocialUser(AccessToken code, SocialType socialType);
 }

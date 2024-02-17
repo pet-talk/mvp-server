@@ -35,7 +35,7 @@ public class AuthenticateService implements AuthenticateUsecase {
 
     @Override
     public AuthenticateResponse authenticate(AuthenticateCommand command) {
-        SocialAuthUser socialAuthUser = loadSocialUserPort.loadSocialUser(command.getCode(), command.getSocialType())
+        SocialAuthUser socialAuthUser = loadSocialUserPort.loadSocialUser(command.getToken(), command.getSocialType())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 사용자입니다."));
 
         Optional<AuthUser> userOptional = loadUserPort.loadUser(socialAuthUser);
