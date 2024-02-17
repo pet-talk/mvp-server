@@ -1,5 +1,6 @@
 package petalk.mvp.http.auth.adapter;
 
+import petalk.mvp.domain.auth.AccessToken;
 import petalk.mvp.domain.auth.SocialType;
 
 import java.util.Optional;
@@ -9,6 +10,6 @@ import java.util.Optional;
  */
 public interface SocialProfileReader {
 
-    Optional<SocialProfile> getProfile(SocialTokenResponse tokenResponse);
+    Optional<SocialProfile> getProfile(AccessToken token);
     boolean isCorrectType(SocialType type);
 }
