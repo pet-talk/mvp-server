@@ -152,8 +152,10 @@ class AuthenticateServiceTest {
 
     private AuthenticateUsecase.AuthenticateCommand createCommand() {
         String token = "token";
+        String tokenType = "bearer";
+
         String social = "naver";
         AuthenticateValidator validator = new AuthenticateValidator();
-        return AuthenticateUsecase.AuthenticateCommand.from(token, social, validator);
+        return AuthenticateUsecase.AuthenticateCommand.from(token, tokenType, social, validator);
     }
 }
