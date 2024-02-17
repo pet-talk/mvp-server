@@ -2,7 +2,7 @@ package petalk.mvp.http.auth.adapter;
 
 import petalk.mvp.application.auth.command.out.LoadSocialUserPort;
 import petalk.mvp.core.PersistenceAdapter;
-import petalk.mvp.domain.auth.AuthorizationCode;
+import petalk.mvp.domain.auth.AccessToken;
 import petalk.mvp.domain.auth.SocialAuthUser;
 import petalk.mvp.domain.auth.SocialType;
 
@@ -17,23 +17,19 @@ import java.util.Optional;
 @PersistenceAdapter
 public class LoadSocialUserAdapter implements LoadSocialUserPort {
 
-    private final ProfileKeyReaderFactory profileKeyReaderFactory;
     private final ProfileReaderFactory profileReaderFactory;
 
 
-    public LoadSocialUserAdapter(ProfileKeyReaderFactory profileKeyReaderFactory, ProfileReaderFactory profileReaderFactory) {
-        this.profileKeyReaderFactory = profileKeyReaderFactory;
+    public LoadSocialUserAdapter(ProfileReaderFactory profileReaderFactory) {
         this.profileReaderFactory = profileReaderFactory;
     }
 
     @Override
-    public Optional<SocialAuthUser> loadSocialUser(AuthorizationCode code, SocialType socialType) {
-        SocialProfileKeyReader profileKeyReader = profileKeyReaderFactory.getOauthTokenRequester(socialType);
+    public Optional<SocialAuthUser> loadSocialUser(AccessToken token, SocialType socialType) {
         SocialProfileReader profileRequester = profileReaderFactory.getProfileRequester(socialType);
 
-        return profileKeyReader
-                .getKey(code)
-                .flatMap(profileRequester::getProfile)
+        return profileRequester
+                .getProfile(token)
                 .map(SocialProfile::toSocialAuthUser);
 
     }

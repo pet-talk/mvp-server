@@ -1,6 +1,6 @@
 package petalk.mvp.http.auth.adapter;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
@@ -19,10 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ProfileReaderFactoryTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final Gson gson = new Gson();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final String URL = "url";
-    private final NaverProfileRequester getNaverProfileRequester = new NaverProfileRequester(restTemplate, URL);
-    private final GoogleProfileRequester getGoogleProfileRequester = new GoogleProfileRequester(restTemplate, gson, URL);
+    private final NaverProfileRequester getNaverProfileRequester = new NaverProfileRequester(restTemplate, URL, objectMapper);
+    private final GoogleProfileRequester getGoogleProfileRequester = new GoogleProfileRequester(objectMapper, restTemplate, URL);
     private final ProfileReaderFactory profileReaderFactory = new ProfileReaderFactory(getNaverProfileRequester, getGoogleProfileRequester);
 
 
