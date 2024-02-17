@@ -26,11 +26,12 @@ public class AuthenticateApiTester {
     @Autowired private ObjectMapper objectMapper;
     private final String PATH = "/api/auth/authenticate";
 
-    private ExtractableResponse<Response> request(String provider, String code) {
+    private ExtractableResponse<Response> request(String provider, String accessToken, String tokenType) {
 
         TestParam param = TestParam
                 .builder()
-                .add("code", code);
+                .add("accessToken", accessToken)
+                .add("tokenType", tokenType);
 
         String path = PATH +
                 '/' +
@@ -46,8 +47,8 @@ public class AuthenticateApiTester {
                 .extract();
     }
 
-    public ExtractableResponse<Response> 인증_요청(String provider, String code) {
-        return request(provider, code);
+    public ExtractableResponse<Response> 인증_요청(String provider, String accessToken, String tokenType) {
+        return request(provider, accessToken, tokenType);
     }
 
     public void 인증_성공(ExtractableResponse<Response> response) {

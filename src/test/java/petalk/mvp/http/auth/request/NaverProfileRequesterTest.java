@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import petalk.mvp.core.annotation.UnitTest;
+import petalk.mvp.domain.auth.AccessToken;
 import petalk.mvp.http.auth.adapter.SocialProfile;
 import petalk.mvp.http.auth.adapter.SocialProfileReader;
-import petalk.mvp.http.auth.adapter.SocialTokenResponse;
 
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ class NaverProfileRequesterTest {
     private final RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final SocialProfileReader profileReader = new NaverProfileRequester(restTemplate, "url");
+    private final SocialProfileReader profileReader = new NaverProfileRequester(restTemplate, "url", objectMapper);
 
     /**
      * @given 토큰을 받았고
@@ -41,16 +41,16 @@ class NaverProfileRequesterTest {
     @DisplayName("승인된 네이버 프로필 응답을 소셜 프로필로 변환한다.")
     void whenRequestNaverProfileThenReturnNaverProfile() throws Exception {
         //given
-        SocialTokenResponse tokenResponse = new NaverTokenResponse("token", "refresh", "type", "3600");
+        AccessToken accessToken = AccessToken.from("token", "bearer");
 
         //given
-        ResponseEntity<NaverProfile> response = getSuccessResponse();
+        ResponseEntity<String> response = getSuccessResponse();
 
-        given(restTemplate.exchange(anyString(), eq(HttpMethod.GET), any(), eq(NaverProfile.class)))
+        given(restTemplate.exchange(anyString(), eq(HttpMethod.GET), any(), eq(String.class)))
                 .willReturn(response);
 
         //when
-        Optional<SocialProfile> result = profileReader.getProfile(tokenResponse);
+        Optional<SocialProfile> result = profileReader.getProfile(accessToken);
 
         //then
         assertThat(result)
@@ -62,7 +62,7 @@ class NaverProfileRequesterTest {
 
     }
 
-    private ResponseEntity<NaverProfile> getSuccessResponse() throws JsonProcessingException {
+    private ResponseEntity<String> getSuccessResponse() throws JsonProcessingException {
         String str =  "{\n" +
                 "  \"resultcode\": \"00\",\n" +
                 "  \"message\": \"success\",\n" +
@@ -80,10 +80,7 @@ class NaverProfileRequesterTest {
                 "  }\n" +
                 "}";
 
-        NaverProfile response = objectMapper.readValue(str, NaverProfile.class);
-
-
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(str);
     }
 
     /**
@@ -96,24 +93,24 @@ class NaverProfileRequesterTest {
     @DisplayName("승인되지 않은 네이버 프로필 응답은 빈 값을 반환한다.")
     void whenFailedThenReturnEmpty() throws Exception{
         //given
-        SocialTokenResponse tokenResponse = new NaverTokenResponse("token", "refresh", "type", "3600");
+        AccessToken accessToken = AccessToken.from("token", "type");
 
         //given
-        ResponseEntity<NaverProfile> response = getFailedResponse();
+        ResponseEntity<String> response = getFailedResponse();
 
-        given(restTemplate.exchange(anyString(), eq(HttpMethod.GET), any(), eq(NaverProfile.class)))
+        given(restTemplate.exchange(anyString(), eq(HttpMethod.GET), any(), eq(String.class)))
                 .willReturn(response);
 
         //when
-        Optional<SocialProfile> result = profileReader.getProfile(tokenResponse);
+        Optional<SocialProfile> result = profileReader.getProfile(accessToken);
 
         //then
         assertThat(result).isEmpty();
     }
 
-    private ResponseEntity<NaverProfile> getFailedResponse() throws JsonProcessingException {
+    private ResponseEntity<String> getFailedResponse() throws JsonProcessingException {
 
-        NaverProfile response = null;
+        String response = "null은 아니다";
 
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);

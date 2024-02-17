@@ -5,10 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,7 +62,7 @@ public class AuthenticateController {
             HttpServletRequest httpServletRequest) {
         log.info("request: {}", request);
 
-        AuthenticateCommand command = AuthenticateCommand.from(request.getCode(), provider, authenticateValidator);
+        AuthenticateCommand command = AuthenticateCommand.from(request.getAccessToken(), request.getTokenType(), provider, authenticateValidator);
         AuthenticateResponse response = authenticateUsecase.authenticate(command);
 
         log.info("authenticate response: {}", response);
@@ -79,17 +76,19 @@ public class AuthenticateController {
 
     @ToString
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @Getter
     public static class Request {
-        @NotBlank(message = "코드는 필수입니다.")
-        @Schema(description = "인증 코드 입니다.", example = "code", requiredMode = Schema.RequiredMode.REQUIRED)
-        private String code;
+        @NotBlank(message = "토큰 값은 필수입니다.")
+        @Schema(description = "액세스 토큰입니다.", example = "accessToken", requiredMode = Schema.RequiredMode.REQUIRED)
+        private String accessToken;
 
-        public Request(String code) {
-            this.code = code;
-        }
+        @NotBlank(message = "토큰 타입은 필수입니다.")
+        @Schema(description = "토큰 타입입니다.", example = "bearer", requiredMode = Schema.RequiredMode.REQUIRED)
+        private String tokenType;
 
-        public String getCode() {
-            return code;
+        public Request(String accessToken, String tokenType) {
+            this.accessToken = accessToken;
+            this.tokenType = tokenType;
         }
 
     }

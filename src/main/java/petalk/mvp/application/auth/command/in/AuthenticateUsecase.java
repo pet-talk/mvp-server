@@ -2,7 +2,7 @@ package petalk.mvp.application.auth.command.in;
 
 import petalk.mvp.application.auth.command.validator.AuthenticateValidator;
 import petalk.mvp.application.auth.response.AuthUserResponse;
-import petalk.mvp.domain.auth.AuthorizationCode;
+import petalk.mvp.domain.auth.AccessToken;
 import petalk.mvp.domain.auth.SocialType;
 import petalk.mvp.domain.auth.AuthUser;
 
@@ -21,25 +21,25 @@ public interface AuthenticateUsecase {
     AuthenticateResponse authenticate(AuthenticateCommand command);
 
     class AuthenticateCommand {
-        private AuthorizationCode code;
+        private AccessToken token;
         private SocialType socialType;
 
-        private AuthenticateCommand(AuthorizationCode code, SocialType socialType) {
-            this.code = code;
+        private AuthenticateCommand(AccessToken token, SocialType socialType) {
+            this.token = token;
             this.socialType = socialType;
         }
 
-        public static AuthenticateCommand from(String tokenValue, String socialTypeName, AuthenticateValidator validator) {
-            validator.validate(tokenValue, socialTypeName);
+        public static AuthenticateCommand from(String tokenValue, String tokenType, String socialTypeName, AuthenticateValidator validator) {
+            validator.validate(tokenValue, tokenType, socialTypeName);
 
-            AuthorizationCode token = AuthorizationCode.from(tokenValue);
+            AccessToken token = AccessToken.from(tokenValue, tokenType);
             SocialType socialType = SocialType.from(socialTypeName);
 
             return new AuthenticateCommand(token, socialType);
         }
 
-        public AuthorizationCode getCode() {
-            return code;
+        public AccessToken getToken() {
+            return token;
         }
 
         public SocialType getSocialType() {
