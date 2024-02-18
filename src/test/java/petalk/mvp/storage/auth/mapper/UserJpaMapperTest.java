@@ -3,7 +3,7 @@ package petalk.mvp.storage.auth.mapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import petalk.mvp.domain.auth.*;
-import petalk.mvp.storage.postgre.model.AuthUserJpa;
+import petalk.mvp.storage.postgre.model.UserJpa;
 import petalk.mvp.core.annotation.UnitTest;
 
 import java.time.LocalDateTime;
@@ -16,9 +16,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @UnitTest
 @DisplayName("AuthUserJpaMapper 단위 테스트")
-class AuthUserJpaMapperTest {
+class UserJpaMapperTest {
 
-    private final AuthUserJpaMapper authUserJpaMapper = new AuthUserJpaMapper();
+    private final UserJpaMapper userJpaMapper = new UserJpaMapper();
 
     /**
      * @given 사용자가 존재한다면
@@ -37,10 +37,10 @@ class AuthUserJpaMapperTest {
         AuthUser user = getExistUser(userId, nickname, registrationDate, authorityType);
 
         //when
-        AuthUserJpa authUserJpa = authUserJpaMapper.from(user);
+        UserJpa userJpa = userJpaMapper.from(user);
 
         //then
-        assertThat(authUserJpa)
+        assertThat(userJpa)
                 .isNotNull()
                 .extracting("id", "nickname", "registrationDate", "authorityType")
                 .containsExactly(userId, nickname, registrationDate, authorityType);

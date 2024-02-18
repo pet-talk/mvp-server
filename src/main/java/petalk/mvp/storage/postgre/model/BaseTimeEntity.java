@@ -1,4 +1,4 @@
-package petalk.mvp.core;
+package petalk.mvp.storage.postgre.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

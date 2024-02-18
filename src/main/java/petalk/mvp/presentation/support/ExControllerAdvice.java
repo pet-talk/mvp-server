@@ -1,4 +1,4 @@
-package petalk.mvp.core;
+package petalk.mvp.presentation.support;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;

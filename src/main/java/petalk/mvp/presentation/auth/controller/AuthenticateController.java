@@ -1,7 +1,10 @@
 package petalk.mvp.presentation.auth.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +22,7 @@ import petalk.mvp.application.auth.command.in.RegisterSessionUsecase;
 import petalk.mvp.application.auth.command.in.RegisterSessionUsecase.RegisterSessionCommand;
 import petalk.mvp.application.auth.command.validator.AuthenticateValidator;
 import petalk.mvp.application.auth.response.AuthUserResponse;
-import petalk.mvp.core.ApiResult;
+import petalk.mvp.presentation.support.ApiResult;
 
 @Tag(name = "authenticate", description = "인증 API")
 @RestController
@@ -35,21 +38,25 @@ public class AuthenticateController {
             summary = "authenticate by social",
             description = """
                     소셜 로그인을 통해 인증합니다.  
-                    
+                                        
                     각 소셜의 OAuth2 인증 코드를 받아서 인증합니다.  
-                    
+                                        
                     인증 완료 후 쿠키에 세션을 등록합니다.  
-                    
+                                        
                     쿠키 세션은 마지막 히트 후 1시간 동안 유효합니다.  
-                    
+                                        
                     **서비스 별 리다이렉트 URL**  
-                    
+                                        
                     | 서비스      | Reason              |
                     | ---------------- | ------------ |
                     | 네이버             | /api/auth/login/oauth2/naver     |
                     | 카카오             | /api/auth/login/oauth2/kakao |
                     | 구글              | /api/auth/login/oauth2/google  |
                     """)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "인증 성공"),
+            @ApiResponse(responseCode = "400+", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = ApiResult.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ApiResult.class)))})
     @PostMapping(
             value = "/auth/authenticate/{provider}",
             produces = "application/json; charset=UTF-8")
@@ -60,23 +67,20 @@ public class AuthenticateController {
             @NotBlank(message = "소셜 타입은 필수입니다.")
             String provider,
             HttpServletRequest httpServletRequest) {
-        log.info("request: {}", request);
 
         AuthenticateCommand command = AuthenticateCommand.from(request.getAccessToken(), request.getTokenType(), provider, authenticateValidator);
         AuthenticateResponse response = authenticateUsecase.authenticate(command);
-
-        log.info("authenticate response: {}", response);
 
         AuthUserResponse user = response.getUser();
 
         registerSessionUsecase.registerSession(RegisterSessionCommand.from(user.getUserId(), user.getUserAuthority(), httpServletRequest));
 
-        return ResponseEntity.ok(ApiResult.ok(new Result(response.getUser())));
+        return ResponseEntity.ok(ApiResult.ok(new Result(response)));
     }
 
     @ToString
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Request {
         @NotBlank(message = "토큰 값은 필수입니다.")
         @Schema(description = "액세스 토큰입니다.", example = "accessToken", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -93,17 +97,13 @@ public class AuthenticateController {
 
     }
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Result {
-        AuthUserResponse user;
+        AuthUserDocsResponse user;
 
-        public Result(AuthUserResponse user) {
-            this.user = user;
+        public Result(AuthenticateResponse response) {
+            this.user = AuthUserDocsResponse.from(response.getUser());
         }
-
-        public AuthUserResponse getUser() {
-            return user;
-        }
-
     }
 }
