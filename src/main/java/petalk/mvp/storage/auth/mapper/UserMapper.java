@@ -3,7 +3,7 @@ package petalk.mvp.storage.auth.mapper;
 import petalk.mvp.domain.auth.AuthUser;
 import petalk.mvp.domain.auth.SocialAuthId;
 import petalk.mvp.domain.auth.UserSocialInfo;
-import petalk.mvp.storage.postgre.model.AuthUserJpa;
+import petalk.mvp.storage.postgre.model.UserJpa;
 import petalk.mvp.core.Mapper;
 import petalk.mvp.storage.postgre.model.AuthUserSocialInfoJpa;
 
@@ -12,7 +12,7 @@ import petalk.mvp.storage.postgre.model.AuthUserSocialInfoJpa;
  */
 @Mapper
 public class UserMapper {
-    public AuthUser from(AuthUserJpa userJpa, AuthUserSocialInfoJpa socialInfoJpa) {
+    public AuthUser from(UserJpa userJpa, AuthUserSocialInfoJpa socialInfoJpa) {
         return AuthUser.exist(
                 AuthUser.UserId.from(userJpa.getId()),
                 toUserSocialInfo(socialInfoJpa),

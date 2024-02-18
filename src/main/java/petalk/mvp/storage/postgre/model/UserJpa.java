@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
 import petalk.mvp.domain.auth.UserAuthority;
-import petalk.mvp.core.BaseTimeEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "users")
-public class AuthUserJpa extends BaseTimeEntity implements Persistable<UUID> {
+public class UserJpa extends BaseTimeEntity implements Persistable<UUID> {
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -34,7 +33,7 @@ public class AuthUserJpa extends BaseTimeEntity implements Persistable<UUID> {
     @Column(name = "authority_type", nullable = false)
     private UserAuthority authorityType;
 
-    public AuthUserJpa(UUID id, String nickname, LocalDateTime registrationDate, UserAuthority authorityType) {
+    public UserJpa(UUID id, String nickname, LocalDateTime registrationDate, UserAuthority authorityType) {
         this.id = id;
         this.nickname = nickname;
         this.registrationDate = registrationDate;

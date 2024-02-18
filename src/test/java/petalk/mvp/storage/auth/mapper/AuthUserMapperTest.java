@@ -6,7 +6,7 @@ import petalk.mvp.core.annotation.UnitTest;
 import petalk.mvp.domain.auth.AuthUser;
 import petalk.mvp.domain.auth.SocialType;
 import petalk.mvp.domain.auth.UserAuthority;
-import petalk.mvp.storage.postgre.model.AuthUserJpa;
+import petalk.mvp.storage.postgre.model.UserJpa;
 import petalk.mvp.storage.postgre.model.AuthUserSocialInfoJpa;
 
 import java.time.LocalDateTime;
@@ -41,7 +41,7 @@ class AuthUserMapperTest {
         SocialType socialType = SocialType.NAVER;
         String socialId = "id";
 
-        AuthUserJpa userJpa = createUserJpa(uuid, registrationDate, authorityType);
+        UserJpa userJpa = createUserJpa(uuid, registrationDate, authorityType);
 
         AuthUserSocialInfoJpa socialInfoJpa = new AuthUserSocialInfoJpa(uuid, email, socialType, socialId, name);
 
@@ -55,8 +55,8 @@ class AuthUserMapperTest {
                 .containsExactly(uuid, authorityType, registrationDate, email, socialType, socialId, name);
     }
 
-    private static AuthUserJpa createUserJpa(UUID uuid, LocalDateTime registrationDate, UserAuthority authorityType) {
+    private static UserJpa createUserJpa(UUID uuid, LocalDateTime registrationDate, UserAuthority authorityType) {
         String nickname = "vet";
-        return new AuthUserJpa(uuid, nickname, registrationDate, authorityType);
+        return new UserJpa(uuid, nickname, registrationDate, authorityType);
     }
 }
