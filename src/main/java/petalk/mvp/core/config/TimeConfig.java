@@ -1,4 +1,4 @@
-package petalk.mvp.application.config;
+package petalk.mvp.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
