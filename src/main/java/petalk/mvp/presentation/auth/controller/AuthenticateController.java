@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -65,15 +64,14 @@ public class AuthenticateController {
             @PathVariable
             @Schema(description = "social type", example = "naver, kakao, google", requiredMode = Schema.RequiredMode.REQUIRED)
             @NotBlank(message = "소셜 타입은 필수입니다.")
-            String provider,
-            HttpServletRequest httpServletRequest) {
+            String provider) {
 
         AuthenticateCommand command = AuthenticateCommand.from(request.getAccessToken(), request.getTokenType(), provider, authenticateValidator);
         AuthenticateResponse response = authenticateUsecase.authenticate(command);
 
         AuthUserResponse user = response.getUser();
 
-        registerSessionUsecase.registerSession(RegisterSessionCommand.from(user.getUserId(), user.getUserAuthority(), httpServletRequest));
+        registerSessionUsecase.registerSession(RegisterSessionCommand.from(user.getUserId(), user.getUserAuthority()));
 
         return ResponseEntity.ok(ApiResult.ok(new Result(response)));
     }
