@@ -8,5 +8,5 @@ import petalk.mvp.domain.auth.SessionUserInfo;
  */
 public interface RegisterSessionPort {
 
-    void registerSession(SessionUserInfo user, HttpServletRequest httpServletRequest);
+    void registerSession(SessionUserInfo user);
 }

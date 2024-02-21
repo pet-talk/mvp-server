@@ -1,8 +1,10 @@
 package petalk.mvp.support.auth;
 
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public interface SessionRepository {
 
-    void save(Provider sessionModel, HttpServletRequest httpServletRequest);
+    void save(Provider sessionModel);
+
+    Optional<Provider> getProvider(String sessionId);
 }

@@ -17,6 +17,6 @@ public class RegisterSessionService implements RegisterSessionUsecase {
     @Override
     public void registerSession(RegisterSessionCommand command) {
         SessionUserInfo user = SessionUserInfo.register(command.getUserId(), command.getUserAuthority());
-        registerSessionPort.registerSession(user, command.getServletRequest());
+        registerSessionPort.registerSession(user);
     }
 }
