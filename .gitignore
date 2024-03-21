@@ -40,3 +40,5 @@ logback-spring.xml
 
 ### VS Code ###
 .vscode/
+
+*.sh
