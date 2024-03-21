@@ -45,7 +45,7 @@ public class GoogleProfile implements SocialProfile {
     @Override
     public SocialAuthUser toSocialAuthUser() {
         SocialAuthId id = SocialAuthId.from(this.id);
-        return GoogleSocialAuthUser.from(id, this.email, this.familyName + this.givenName, this.name);
+        return GoogleSocialAuthUser.of(id, this.email, this.familyName + this.givenName, this.name);
     }
 
     private void validate() {

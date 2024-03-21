@@ -41,7 +41,7 @@ class NaverProfileRequesterTest {
     @DisplayName("승인된 네이버 프로필 응답을 소셜 프로필로 변환한다.")
     void whenRequestNaverProfileThenReturnNaverProfile() throws Exception {
         //given
-        AccessToken accessToken = AccessToken.from("token", "bearer");
+        AccessToken accessToken = AccessToken.of("token", "bearer");
 
         //given
         ResponseEntity<String> response = getSuccessResponse();
@@ -93,7 +93,7 @@ class NaverProfileRequesterTest {
     @DisplayName("승인되지 않은 네이버 프로필 응답은 빈 값을 반환한다.")
     void whenFailedThenReturnEmpty() throws Exception{
         //given
-        AccessToken accessToken = AccessToken.from("token", "type");
+        AccessToken accessToken = AccessToken.of("token", "type");
 
         //given
         ResponseEntity<String> response = getFailedResponse();

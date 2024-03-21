@@ -13,7 +13,7 @@ public class AccessToken {
         this.type = type;
     }
 
-    public static AccessToken from(String token, String tokenType) {
+    public static AccessToken of(String token, String tokenType) {
         return new AccessToken(token, tokenType);
     }
 

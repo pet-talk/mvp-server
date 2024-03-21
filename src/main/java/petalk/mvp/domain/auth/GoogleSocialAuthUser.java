@@ -24,7 +24,7 @@ public class GoogleSocialAuthUser implements SocialAuthUser{
         this.nickname = nickname;
     }
 
-    public static GoogleSocialAuthUser from(SocialAuthId socialAuthId, String email, String name, String nickname) {
+    public static GoogleSocialAuthUser of(SocialAuthId socialAuthId, String email, String name, String nickname) {
         return new GoogleSocialAuthUser(socialAuthId, email, name, nickname);
     }
     //== 비즈니스 로직 ==//

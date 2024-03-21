@@ -41,7 +41,7 @@ class AuthenticateServiceTest {
 
 
     private static NaverSocialAuthUser createNaverSocialUser() {
-        return NaverSocialAuthUser.from(SocialAuthId.from("id"), "email", "nickname", "name");
+        return NaverSocialAuthUser.of(SocialAuthId.from("id"), "email", "nickname", "name");
     }
 
     /**
@@ -86,7 +86,7 @@ class AuthenticateServiceTest {
         String email = "email";
         String name = "name";
 
-        return NaverSocialAuthUser.from(SocialAuthId.from(socialId), email, nickname, name);
+        return NaverSocialAuthUser.of(SocialAuthId.from(socialId), email, nickname, name);
     }
 
     private AuthUser createUser(UUID id, String nickname, UserAuthority authority) {

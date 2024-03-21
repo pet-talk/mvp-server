@@ -27,7 +27,7 @@ public class ValidationErrors {
         return new ValidationErrors(List.of(error));
     }
 
-    public static ValidationErrors from() {
+    public static ValidationErrors startValidate() {
         return new ValidationErrors();
     }
 
