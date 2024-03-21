@@ -13,9 +13,9 @@ public class DefaultSlice<T> implements Slice<T> {
     private final boolean hasNext;
     private final int size;
     private final Sort sort;
-    private final Cursor nextCursor;
+    private final String nextCursor;
 
-    public DefaultSlice(List<T> contents, boolean hasNext, int size, Sort sort, Cursor nextCursor) {
+    public DefaultSlice(List<T> contents, boolean hasNext, int size, Sort sort, String nextCursor) {
         this.contents = Collections.unmodifiableList(contents);
         this.hasNext = hasNext;
         this.size = size;
@@ -40,7 +40,7 @@ public class DefaultSlice<T> implements Slice<T> {
     }
 
     @Override
-    public Cursor getNextCursor() {
+    public String getNextCursor() {
         return nextCursor;
     }
 }
