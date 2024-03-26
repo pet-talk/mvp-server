@@ -1,5 +1,7 @@
 package petalk.mvp.core.pagination;
 
+import java.util.Arrays;
+
 /**
  * 정렬 정보를 의미합니다.
  */
@@ -27,8 +29,7 @@ public class Sort {
     }
 
     private static String[] extractSortComponents(String sortSpecification) {
-        String trimmedSortSpecification = sortSpecification.trim();
-        return trimmedSortSpecification.split(DELIMITER);
+        return Arrays.stream(sortSpecification.split(DELIMITER)).map(String::trim).toArray(String[]::new);
     }
 
     public String getSortField() {
