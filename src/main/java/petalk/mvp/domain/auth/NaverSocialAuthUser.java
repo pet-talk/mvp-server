@@ -24,7 +24,7 @@ public class NaverSocialAuthUser implements SocialAuthUser{
         this.socialType = SocialType.NAVER;
     }
 
-    public static NaverSocialAuthUser from(SocialAuthId socialAuthId, String email, String nickname, String name) {
+    public static NaverSocialAuthUser of(SocialAuthId socialAuthId, String email, String nickname, String name) {
         return new NaverSocialAuthUser(socialAuthId, email, nickname, name);
     }
     //== 비즈니스 로직 ==//

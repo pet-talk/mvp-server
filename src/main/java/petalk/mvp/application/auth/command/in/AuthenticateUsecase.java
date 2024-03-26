@@ -4,7 +4,6 @@ import petalk.mvp.application.auth.command.validator.AuthenticateValidator;
 import petalk.mvp.application.auth.response.AuthUserResponse;
 import petalk.mvp.domain.auth.AccessToken;
 import petalk.mvp.domain.auth.SocialType;
-import petalk.mvp.domain.auth.AuthUser;
 
 import java.util.UUID;
 
@@ -30,12 +29,14 @@ public interface AuthenticateUsecase {
         }
 
         public static AuthenticateCommand from(String tokenValue, String tokenType, String socialTypeName, AuthenticateValidator validator) {
-            validator.validate(tokenValue, tokenType, socialTypeName);
-
-            AccessToken token = AccessToken.from(tokenValue, tokenType);
+            AccessToken token = AccessToken.of(tokenValue, tokenType);
             SocialType socialType = SocialType.from(socialTypeName);
 
-            return new AuthenticateCommand(token, socialType);
+            AuthenticateCommand authenticateCommand = new AuthenticateCommand(token, socialType);
+
+            validator.validate(authenticateCommand);
+
+            return authenticateCommand;
         }
 
         public AccessToken getToken() {
@@ -55,8 +56,8 @@ public interface AuthenticateUsecase {
             this.user = user;
         }
 
-        public static AuthenticateResponse from(AuthUser user) {
-            return new AuthenticateResponse(AuthUserResponse.from(user));
+        public static AuthenticateResponse from(AuthUserResponse user) {
+            return new AuthenticateResponse(user);
         }
 
         public AuthUserResponse getUser() {

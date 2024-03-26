@@ -75,7 +75,7 @@ public class NaverProfile implements SocialProfile {
 
         public SocialAuthUser toSocialAuthUser() {
             SocialAuthId socialAuthId = SocialAuthId.from(id);
-            return NaverSocialAuthUser.from(socialAuthId, email, nickname, name);
+            return NaverSocialAuthUser.of(socialAuthId, email, nickname, name);
         }
 
         private void validate() {

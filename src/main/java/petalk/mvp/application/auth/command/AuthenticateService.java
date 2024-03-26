@@ -3,8 +3,11 @@ package petalk.mvp.application.auth.command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import petalk.mvp.application.auth.command.in.AuthenticateUsecase;
 import petalk.mvp.application.auth.command.out.*;
+import petalk.mvp.application.auth.response.AuthUserResponse;
+
 import petalk.mvp.domain.auth.AuthUser;
 import petalk.mvp.domain.auth.SocialAuthUser;
 
@@ -41,14 +44,14 @@ public class AuthenticateService implements AuthenticateUsecase {
         Optional<AuthUser> userOptional = loadUserPort.loadUser(socialAuthUser);
 
         if (userOptional.isPresent()) {
-            return AuthenticateResponse.from(userOptional.get());
+            return AuthenticateResponse.from(AuthUserResponse.from(userOptional.get()));
         }
 
         AuthUser registerUser = socialAuthUser.registerUser(LocalDateTime.now(clock));
 
         registerUserPort.registerUser(registerUser);
 
-        return AuthenticateResponse.from(registerUser);
+        return AuthenticateResponse.from(AuthUserResponse.from(registerUser));
     }
 
 }

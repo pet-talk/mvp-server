@@ -13,6 +13,6 @@ public interface Slice<T> {
     boolean hasNext();
     int getSize();
     Sort getSort();
-    Cursor getNextCursor();
+    String getNextCursor();
 
 }
